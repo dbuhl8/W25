@@ -1,0 +1,287 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm} %proof environment
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{enumitem} %nice lists
+\usepackage{verbatim} %useful for something 
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{blindtext} % I have no idea what this is 
+\usepackage{caption}  % need this for unnumbered captions/figures
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{AM 275 - Magnetohydrodynamics: Lecture Notes}
+\author{Dante Buhl}
+\date{Jan 9, 2025}
+
+
+\newcommand{\wrms}{w_{\text{rms}}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+\newcommand{\Div}{\nabla \cdot}
+\renewcommand{\div}{\nabla \cdot}
+\newcommand{\Curl}{\nabla \times}
+\newcommand{\Grad}{\nabla}
+\newcommand{\grad}{\nabla}
+\newcommand{\grads}{\nabla_s}
+\newcommand{\gradf}{\nabla_f}
+\newcommand{\xs}{x_s}
+\newcommand{\xf}{x_f}
+\newcommand{\ts}{t_s}
+\newcommand{\tf}{t_f}
+\newcommand{\pt}{\partial t}
+\newcommand{\pz}{\partial z}
+\newcommand{\uvec}{\bs{u}}
+\newcommand{\vort}{\bs{\omega}}
+\newcommand{\F}{\bs{F}}
+\newcommand{\T}{\tilde{T}}
+\newcommand{\ez}{\bs{e}_z}
+\newcommand{\ex}{\bs{e}_x}
+\newcommand{\ey}{\bs{e}_y}
+\newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
+\newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\DDt}[1]{\frac{D #1}{D t}}
+\newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
+\newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
+\newcommand{\ppz}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\ddz}[1]{\frac{d #1}{d z}}
+\newcommand{\ppzetas}[1]{\frac{\partial^2 #1}{\partial \zeta^2}}
+\newcommand{\ppzs}[1]{\frac{\partial #1}{\partial z_s}}
+\newcommand{\ppzf}[1]{\frac{\partial #1}{\partial z_f}}
+\newcommand{\ppx}[1]{\frac{\partial #1}{\partial x}}
+\newcommand{\ppxi}[1]{\frac{\partial #1}{\partial x_i}}
+\newcommand{\ppxj}[1]{\frac{\partial #1}{\partial x_j}}
+\newcommand{\ppy}[1]{\frac{\partial #1}{\partial y}}
+\newcommand{\ppzeta}[1]{\frac{\partial #1}{\partial \zeta}}
+
+
+\maketitle 
+
+\setlength{\parindent}{0pt}
+
+\section*{Lecture 2: Hydrodynamics Review}
+
+What is a fluid?
+\begin{itemize}
+    \item Its flows! 
+    \item it deforms continuously
+\end{itemize}
+
+Categorization of fluids:
+\begin{itemize}
+    \item Compressible v. incompressible
+    \item viscous v. inviscid
+    \item + many more
+\end{itemize}
+
+\vspace{20pt}
+
+\bmp{.49}
+    \centering
+    {\Large \textbf{Eularian}}
+    \vspace{5pt}
+
+    Rate of change at a given point, no bother for where the fluid goes. 
+    \begin{gather*}
+        \frac{\partial}{\partial t}\left(\cdot\right) 
+    \end{gather*}
+\emp
+\hspace{5pt}
+\bmp{.49}
+    \centering
+    {\Large \textbf{Lagrangian}}
+    \vspace{5pt}
+
+    Follows the particle, introduces the advection term
+    \begin{gather*}
+        \uvec\cdot\grad \left(\cdot\right)
+    \end{gather*}
+\emp
+
+\vspace{20pt}
+{\Large \textbf{Mass Conservation}}
+\vspace{5pt}
+
+
+In order to conserve mass we consider an arbitrary eularian volume (i.e. the
+volume doesn't move with the flow). We then find the total mass which is equal
+to the integral of the density over the volume, and then consider the flux of
+mass through the boundary (change in mass over time). Using the divergence
+theorem, we then have a conservation equation for mass. 
+
+\begin{gather*}
+    \ppt{}\int_D\rho dV = \int_{\partial D} \rho\uvec \cdot \eta dA\\
+    \ppt{\rho} + \grad\cdot \rho\uvec = 0 \\
+    \ppt{\rho} + \uvec\cdot\grad\rho + \rho\grad\cdot\uvec = 0\\
+    \frac{D\rho}{Dt} = - \rho \grad\cdot\uvec
+\end{gather*}
+
+More importantly, if we consider an incompressible fluid, i.e. $\rho = \rho_0$,
+we have very specifically,
+\begin{gather}
+    \grad \cdot \uvec = 0
+\end{gather}
+
+
+\vspace{20pt}
+{\Large \textbf{Stresses}}
+\vspace{5pt}
+
+Stresses can be divided into two catagories, body forces and surface forces.
+Body forces are forces such as gravity and the electric force, which surface forces are
+forces such as normal force and friction. 
+
+\vspace{20pt}
+{\Large \textbf{Newtons Second Law}}
+\vspace{5pt}
+Newton's second law 
+\begin{gather*}
+    \ppt{p} = \sum_i F_i
+\end{gather*}
+where $p$ here is the momentum of a fluid parcel. In actuality, the momentum can
+be written as $p = \int_D \rho\uvec dV$. So, 
+\begin{gather*}
+    \DDt{}\int_D \rho\uvec dV = \int_D \rho \bs{g} dV + (\text{other body
+    forces}) + \grad \cdot \bs{\tau}\\
+    \rho\DDt{\uvec} = \rho F + \grad\cdot\bs{\tau}
+\end{gather*}
+where $\bs{\tau}$ is the stress tensor acting on the fluid parcel. Surface
+forces are then introduced into this stress tensor. First and foremost, surface
+pressure is introduced along the stress tensor. 
+\begin{gather*}
+    \tau_{ij} = -p\delta_{ij} + \sigma_{ij}
+\end{gather*}
+where $\sigma_{ij}$ is the deviatoric stress tensor and is responsible for the
+off-diagonal components of the stress tensor. Some components are the velocity
+gradient tensors, $\ppxj{u_i}$ and $\ppxi{u_j}$. Each of these has a symmetric
+compoenent and an antisymmetric componenet. 
+\begin{gather*}
+    \ppxj{u_i} = \frac{1}{2}\left(\ppxj{u_i} + \ppxi{u_j}\right) +
+    \frac{1}{2}\left(\ppxj{u_i} - \ppxi{u_j}\right)
+\end{gather*}
+The first term is labeled symmetric and denoted $e_{ij}$ while the second
+component is the rotation componenet. 
+
+
+
+\setcounter{section}{3}
+\section*{Lecture 3: Continuing Review of the Kinematic Equations}
+
+\subsection{Obtaining the Navier-Stokes equation}
+
+Decomposition of the deviatoric stress tensor reveals a 4th order tensor with 81
+components.
+\begin{gather*}
+    \bs{\sigma}_{ij} = \bs{A}_{ijkl}\bs{e}_{kl}
+\end{gather*}
+In order to reduce the complexity of the system, we make some assumptions about
+the tensor $\bs{A}_{ijkl}$. First, we state that this tensor must be isotropic,
+i.e. that it doesn't care about the direction of the stress with respect to the
+coordinate system it is in. We have, 
+\begin{gather*}
+    \bs{A}_{ijkl} = \mu \bs{\delta}_{ij}\bs{\delta}_{kl} +
+    \mu'\bs{\delta}_{ik}\bs{\delta}_{jl} +
+    \mu''\bs{\delta}_{il}\bs{\delta}_{jk}
+\end{gather*}
+Next, we assume that this tensor must be symmetric. This reduces the complexity
+down to two coefficients, $\mu$, the viscosity, and $\mu'$ which is the bulk viscosity. 
+
+In order to obtain the Navier-Stokes equation, we require the Stokes assumption
+which postulates that the diagonal components of the deviatoric stress tensor
+are zero, i.e. $\bs{\sigma}_{ii} = 0$. 
+\begin{gather*}
+    \bs{\sigma}_{ij} = 2\mu\left(\bs{e}_{ij} -
+    \frac{1}{3}\left(\grad\cdot\uvec\right)\bs{\delta}_{ij}\right)    \\
+    \bs{\tau}_{ij} = -p\bs{\delta}_{ij} + 2\mu\left(\bs{e}_{ij} -
+    \frac{1}{3}\left(\grad \cdot \uvec\right)\bs{\delta}_{ij}\right)
+\end{gather*}
+Therefore, when we take the divergence of this stress tensor we obtain the
+Navier-Stokes equation:
+\begin{gather*}
+    \rho\DDt{\uvec} = \rho\bs{F} - \grad p + \mu\left[ \grad^2 \uvec +
+    \frac{1}{3}\grad \left(\grad \cdot \uvec\right)\right]
+\end{gather*}
+Of course, when working in an incompressible framework (i.e. $\grad\cdot\uvec =
+0$), we have that part of the diffusive term disappears from the equation,
+resulting in the commonly used equation:
+\begin{gather}
+    \DDt{\uvec} = \bs{F} - \frac{1}{\rho_0}\grad p + \nu\grad^2 \uvec
+    \label{eq:NS}
+\end{gather}
+Additional terms are included in this equation as necessary to model relevant
+physics of various fluid systems. For example, if in a rotating frame we include
+the coriolis force $2\Omega(\bs{e}_{\Omega} \times \uvec)$, if some component of
+the fluid is stratified we need some buoyancy forcing $T/N^2\bs{e}_z$. And most
+relevant, there might be magnetic forces which affect the fluid, in which case
+we obtain the MHD equations. 
+
+\subsection{Vorticity equation}
+
+Vorticity is a quantity related to the fluid field which can be very important
+to the scientific study of fluid dynamics. The vorticity is obtained by taking
+the curl of the velocity field. 
+\begin{gather*}
+    \bs{\omega} = \grad \times \uvec
+\end{gather*}
+The vorticity has an evolution-advection equation just as the velocity field
+does, and in fact the vorticity equation is obtained by taking the curl of the
+Navier-Stokes equations.
+
+\begin{gather*}
+    \grad\times\eqref{eq:NS}\\
+    \DDt{\vort} =  \left(\vort\cdot\grad\right)\uvec +
+    \vort\left(\grad\cdot\uvec\right) + \grad\times\F -
+    \frac{1}{\rho^2}\grad\rho\times\grad p + 
+    \nu\grad^2\vort 
+\end{gather*}
+
+If the flow is incompressible, one of the vortex stretching terms disappears.
+Generally, the first two right hand terms are vortex stretching/tilting/speed-up
+terms. Then the pressure and density gradient cross product is the baroclinicity
+term, the curl of $\F$ is the forcing of vorticity, and finally, we have a
+viscous diffusion of vorticity which behaves similarly to the diffusion of
+velocity. 
+
+
+Baroclinicity is perhaps the most unintuitive term in this equation, and it
+simply represents the creation of rotation in the fluid when there is a
+disalignment between the pressure and density gradients in the fluid. 
+
+Some fluid dynamicists prefer to study the vorticity equation, especially for
+rotating flows where voricites and cyclones are common phenomenon in the flow
+field. 
+
+\subsection{Rotation}
+
+In the presence of rotation, the coriolis force becomes relevant as the motion
+of a fluid particle is deflected due to the rotation of the cordinate frame.
+That is, our equations are modified such that, 
+\begin{gather*}
+    \ppt{\bs{q}}_F = \ppt{\bs{q}}_R + \bs{\Omega}\times \bs{q} -
+    \bs{\Omega}^2\bs{R}
+\end{gather*}
+
+This also introduces an additional term to the vorticity equation which looks
+like, $+\left(2\bs{\Omega}\cdot\grad\right)\uvec$. 
+
+\end{document}
