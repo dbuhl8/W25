@@ -52,6 +52,7 @@
 \newcommand{\pt}{\partial t}
 \newcommand{\pz}{\partial z}
 \newcommand{\uvec}{\bs{u}}
+\newcommand{\bvec}{\bs{B}}
 \newcommand{\vort}{\bs{\omega}}
 \newcommand{\F}{\bs{F}}
 \newcommand{\T}{\tilde{T}}
@@ -60,6 +61,7 @@
 \newcommand{\ey}{\bs{e}_y}
 \newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\ddt}[1]{\frac{d #1}{d t}}
 \newcommand{\DDt}[1]{\frac{D #1}{D t}}
 \newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
 \newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
@@ -277,11 +279,134 @@ In the presence of rotation, the coriolis force becomes relevant as the motion
 of a fluid particle is deflected due to the rotation of the cordinate frame.
 That is, our equations are modified such that, 
 \begin{gather*}
-    \ppt{\bs{q}}_F = \ppt{\bs{q}}_R + \bs{\Omega}\times \bs{q} -
+    \ppt{\bs{q}}_F = \ppt{\bs{q}}_R + 2\bs{\Omega}\times \bs{q} -
     \bs{\Omega}^2\bs{R}
 \end{gather*}
 
 This also introduces an additional term to the vorticity equation which looks
 like, $+\left(2\bs{\Omega}\cdot\grad\right)\uvec$. 
+
+
+\section*{Lecture 4: }
+\setcounter{section}{4}
+\setcounter{subsection}{0}
+
+\subsection{Conservation of Energy}
+
+The equation of state chosen for a particular problem is a source of physics
+which affects the solutions of a given PDE. The incompressible equation of
+state is used very commonly as an equation of state. Another common one is the
+ideal gas law $pV = \rho RT$. 
+
+In order to understand the origin and importance of the equation of state, the
+laws of thermodynamics are needed. 
+
+The first law of thermodynamics states, 
+
+\begin{gather*}
+    \ppt{e} = \ppt{W} + \ppt{Q}
+\end{gather*}
+, where $e$ is the internal energy, $W$ is work done on the system, and $Q$ is
+heat flux into the system. However, for a fluid flow taken from a Lagrangian
+perspective, we must modify this law of thermodynamics. It must include the
+energy given by the velocity field. 
+
+\begin{gather*}
+    \DDt{}\int_D \rho\left(e+\frac{1}{2}\uvec^2\right)dV = \int_D \rho
+    \F\cdot\uved dV + \int_{\partial D} \bs{\tau}\cdot\uvec dS - \int_{\partial
+    D} \bs{q}\cdot dS \\
+    \rho\DDt{}\left(e+\frac{1}{2}\uvec^2\right) = \rho\F\cdot\uvec +
+    \grad(\bs{\tau}\cdot\uvec) -
+    \grad\cdot\bs{q} 
+\end{gather*}
+
+Next, we obtain a mechanical energy equation by dotting $\uvec$ by the
+Navier-Stokes equation and adding $\uvec^2/2 \cdot \DDt{\rho}$
+\begin{gather*}
+    \DDt{\rho\uvec^2/2} = \rho\F\cdot\uvec -
+    \uvec\cdot\left(\grad\cdot\bs{\tau}\right) + \ldots\\
+    \uvec\cdot\left(\grad\cdot\bs{\tau}\right) = 
+    \Phi = 2\mu\left[\bs{e}_{ij} -
+    \frac{1}{3}(\grad\cdot\uvec)\bs{\delta}_{ij}\right]
+\end{gather*}
+
+Finally, we obtain an energy equation with a positive definite dissipation term
+$\Phi$ which acts purely to remove energy from the system. 
+\begin{gather*}
+    \rho\DDt{e} = -\grad \cdot \bs{q} - p\left(\grad\cdot\uvec) + \Phi
+\end{gather*}
+
+The Second law of Thermodynamics also plays an important role in the
+conservation of energy. It states that the entropy of a system $S$
+\begin{gather*}
+    dS = \frac{dq}{T}\\
+    TdS =  de + pdV\\
+    T\ddt{S} = \ddt{e} - \frac{p}{\rho^2}\ddt{\rho}\\
+    \rho \DDt{S} = - \frac{\grad \cdot \bs{q}}{T} + \frac{k}{T^2}|
+    \grad T|^2 + \mu\frac{\Phi}{T}
+\end{gather*}
+
+\subsection{Maxwell's Equations and MHD}
+
+Electricity and Magnetism are very closely related to one another and governed
+by a main set of governing equations. The main variables which we consider are a
+position vector, $\bs{x}$, a velocity field, $\uvec$, density $\rho$, pressure
+$p$, time $t$, temperature $T$, magnetic field (magnetic flux density) $\bvec$,
+magnetic field strength $\bs{H}$, electric field $\bs{E}$, electric displacement
+$\bs{D}$, electric current density $\bs{j}$, and charge density $\rho_e$. 
+
+Alongside these variables, we have constants describing components of
+electropmangetism: permitivity $\varepsilon$, permeability $\mu$, and
+conductivity $\sigma$. Permitivity describes the charge requirement for a
+specific electric field, i.e. large $\varepsilon$ implies a larger charge is
+needed for a specific electric field. Permeability describes the current
+requirement for a specific magnetic field, i.e. large $\mu$ implies a smaller
+current is needed to obtain a specific magnetic field. 
+
+Consitutive relationships describe the relationships between specific
+electromagnetic quantities. 
+\begin{gather*}
+    \bs{H} = \frac{\bvec}{\mu}, \text{ for an isotropic permeability}\\
+    \bs{D} = \varepsilon \bs{E}, \text{ for an isotropic permitivity}
+\end{gather*}
+where generally, we take $\mu = \mu_0$ and $\varepsilon = \varepsilon_0$ where
+$q_0$ is taken from a vacuum. 
+
+Now we write Maxwell's equations in their differential form:
+\begin{align*}
+    \grad\cdot\bvec =& 0 & \grad \cdot \bs{E} = \frac{\rho_e}{\varepsilon_0}\\
+    \grad \times \bvec =& \mu_0\bs{j} + \mu_0\varepsilon_0\ppt{\bs{E}}
+    &\grad \times \bs{E} = -\ppt{\bvec}\\
+\end{align*}
+
+They can be written in their integral form as well: 
+\begin{align*}
+    &\oint_{\partial D} \bvec\cdot\bs{dA} = 0 & \oint_{\partial D}
+    \bs{E}\cdot\bs{dA} = \frac{q}{\varepsilon_0}\\
+    &\oint_L \bs{E}\cdot\bs{dL} = -\ppt{\phi_{B}} & \oint_L\bvec\cdot\bs{dL} =
+    \mu_0\bs{i} + \mu_0\varepsilon_0\ppt{\phi_E}
+\end{align*}
+where $\phi_B = \int_S \bvec\cdot\bs{dA}$ is the total magnetic fluid, and
+$\phi_E = \int_S \bs{E}\cdot\bs{dA}$ is the total electric flux. 
+
+
+We cover their derivations in a brief sense also. Consider a positive point
+charge which creates an electric field. This imposes a force acting on any other
+point charge in the field. This force is called Coulomb force given by $F =
+q_1q_2/(4\pi\varepsilon r^2)$. Thus we have a given electric field of strength
+$E/q = q_1/(4\pi\varepsilon r^2)$. We obtain the total electric flux $\phi_E$ 
+
+\begin{gather*}
+    d\phi_E = \bs{E}\cdot\bs{dA}\\
+    \phi_E = \int_S\frac{q_1}{4\pi\varepsilon r^2}\cdot\bs{dA}\\
+    \phi_E = \frac{q_1}{4\pi\varepsilon r^2}\int_S\bs{dA}\\
+    \phi_E = \frac{q_e}{\varepsilon}
+\end{gather*} 
+where $q_e$ in the final equation is given by the sum of all point charges
+enclosed in the closed volume, i.e. $q_e = \sum_i q_i$. 
+
+\begin{gather*}
+    \grad\cdot\bs{E} = \frac{\rho_E}{\varepsilon}
+\end{gather*}
 
 \end{document}
