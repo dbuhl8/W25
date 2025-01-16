@@ -1,0 +1,133 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm} %proof environment
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{enumitem} %nice lists
+\usepackage{verbatim} %useful for something 
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{blindtext} % I have no idea what this is 
+\usepackage{caption}  % need this for unnumbered captions/figures
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Pre-candidacy notes: }
+\author{Dante Buhl}
+
+\newcommand{\wrms}{w_{\text{rms}}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+\newcommand{\Div}{\nabla \cdot}
+\renewcommand{\div}{\nabla \cdot}
+\newcommand{\Curl}{\nabla \times}
+\newcommand{\Grad}{\nabla}
+\newcommand{\grad}{\nabla}
+\newcommand{\grads}{\nabla_s}
+\newcommand{\gradf}{\nabla_f}
+\newcommand{\xs}{x_s}
+\newcommand{\xf}{x_f}
+\newcommand{\ts}{t_s}
+\newcommand{\tf}{t_f}
+\newcommand{\pt}{\partial t}
+\newcommand{\pz}{\partial z}
+\newcommand{\uvec}{\bs{u}}
+\newcommand{\F}{\bs{F}}
+\newcommand{\T}{\tilde{T}}
+\newcommand{\ez}{\bs{e}_z}
+\newcommand{\ex}{\bs{e}_x}
+\newcommand{\ey}{\bs{e}_y}
+\newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
+\newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\DDt}[1]{\frac{D #1}{D t}}
+\newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
+\newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
+\newcommand{\ppz}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\ddz}[1]{\frac{d #1}{d z}}
+\newcommand{\ppzetas}[1]{\frac{\partial^2 #1}{\partial \zeta^2}}
+\newcommand{\ppzs}[1]{\frac{\partial #1}{\partial z_s}}
+\newcommand{\ppzf}[1]{\frac{\partial #1}{\partial z_f}}
+\newcommand{\ppx}[1]{\frac{\partial #1}{\partial x}}
+\newcommand{\ppxi}[1]{\frac{\partial #1}{\partial x_i}}
+\newcommand{\ppxj}[1]{\frac{\partial #1}{\partial x_j}}
+\newcommand{\ppy}[1]{\frac{\partial #1}{\partial y}}
+\newcommand{\ppzeta}[1]{\frac{\partial #1}{\partial \zeta}}
+
+
+\maketitle 
+% This line removes the automatic indentation on new paragraphs
+\setlength{\parindent}{0pt}
+
+\section{Billant \& Chomaz Papers}
+
+\subsection{Self-similarity of strongly stratified inviscid flows (2001)}
+
+\begin{itemize}
+    \item Posits the scaling of an intrinsic vertical length scale of strongly
+    stratified flows, $l_z \propto U/N$. 
+    \item Third paper which describes the ``Zig-Zag'' instability. Two previous
+    papers conducted linear stability analysis of the instability. 
+    \item Zig-zag instability is self-similar with respect to $k_zU/N$ which
+    implies that the dominant vertical wavenumber of the flow is proportional to
+    $Fr$. 
+\end{itemize}
+
+
+\section{Hattori \& Hirota Papers}
+
+\subsection{Stability of two-dimensional Taylor-Green vortices in rotating
+stratified fluids (2023)}
+\begin{itemize}
+    \item Conducted a local stability analysis as well as DNS and analyzed the
+    data using modal stability analysis. 
+    \item Linear Stability analysis is conducted on a linearized and inviscid
+    version of the governing equations.
+    \item Both the DNS and LSA begin with a base flow composed of Taylor-Green
+    vortices, which are arranged in a grid lattice. 
+    \item 5 instabilities are identified from the LSA, each with a different
+    mechanism and different instability/resonance conditions. 
+    \item 
+\end{itemize}
+
+\subsection{Modal stability analysis of arrays of stably stratified vortices
+(2021)}
+\begin{itemize}
+    \item 
+\end{itemize}
+
+\section{GFD Group (Garaud, Chini, Shah, Caulfield \ldots)}
+
+\subsection{Exploiting self-organized criticality in strongly stratified
+turbulence (2021)}
+\begin{itemize}
+    \item Developed a multiscale model for strongly stratified flows wherein an
+    aspect ratio $\alpha$ is used to describe scale separation of horizontal and
+    vertical motions recovering that $l_z \propto Fr$ as posited by
+    \cite{BillantChomaz2001}. 
+\end{itemize}
+
+\subsection{Cope et al. 2020}
+
+\subsection{Shah et al. 2023}
+
+\colorbox{yellow}{Add a bibliography using natbib. Need to build a bib file for this}. 
+
+\end{document}
