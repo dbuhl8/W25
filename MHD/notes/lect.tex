@@ -20,7 +20,7 @@
 
 \title{AM 275 - Magnetohydrodynamics: Lecture Notes}
 \author{Dante Buhl}
-\date{Jan 9, 2025}
+\doublespacing
 
 
 \newcommand{\wrms}{w_{\text{rms}}}
@@ -227,8 +227,8 @@ Of course, when working in an incompressible framework (i.e. $\grad\cdot\uvec =
 0$), we have that part of the diffusive term disappears from the equation,
 resulting in the commonly used equation:
 \begin{gather}
-    \DDt{\uvec} = \bs{F} - \frac{1}{\rho_0}\grad p + \nu\grad^2 \uvec
     \label{eq:NS}
+    \DDt{\uvec} = \bs{F} - \frac{1}{\rho_0}\grad p + \nu\grad^2 \uvec
 \end{gather}
 Additional terms are included in this equation as necessary to model relevant
 physics of various fluid systems. For example, if in a rotating frame we include
@@ -306,14 +306,14 @@ The first law of thermodynamics states,
 \begin{gather*}
     \ppt{e} = \ppt{W} + \ppt{Q}
 \end{gather*}
-, where $e$ is the internal energy, $W$ is work done on the system, and $Q$ is
+where $e$ is the internal energy, $W$ is work done on the system, and $Q$ is
 heat flux into the system. However, for a fluid flow taken from a Lagrangian
 perspective, we must modify this law of thermodynamics. It must include the
 energy given by the velocity field. 
 
 \begin{gather*}
     \DDt{}\int_D \rho\left(e+\frac{1}{2}\uvec^2\right)dV = \int_D \rho
-    \F\cdot\uved dV + \int_{\partial D} \bs{\tau}\cdot\uvec dS - \int_{\partial
+    \F\cdot\uvec dV + \int_{\partial D} \bs{\tau}\cdot\uvec dS - \int_{\partial
     D} \bs{q}\cdot dS \\
     \rho\DDt{}\left(e+\frac{1}{2}\uvec^2\right) = \rho\F\cdot\uvec +
     \grad(\bs{\tau}\cdot\uvec) -
@@ -333,11 +333,12 @@ Navier-Stokes equation and adding $\uvec^2/2 \cdot \DDt{\rho}$
 Finally, we obtain an energy equation with a positive definite dissipation term
 $\Phi$ which acts purely to remove energy from the system. 
 \begin{gather*}
-    \rho\DDt{e} = -\grad \cdot \bs{q} - p\left(\grad\cdot\uvec) + \Phi
+    \rho\DDt{e} = -\grad \cdot \bs{q} - p\left(\grad\cdot\uvec\right) + \Phi
 \end{gather*}
 
 The Second law of Thermodynamics also plays an important role in the
-conservation of energy. It states that the entropy of a system $S$
+conservation of energy. The ssecond law makes statements about the entropy of a
+system, $S$.
 \begin{gather*}
     dS = \frac{dq}{T}\\
     TdS =  de + pdV\\
@@ -345,6 +346,9 @@ conservation of energy. It states that the entropy of a system $S$
     \rho \DDt{S} = - \frac{\grad \cdot \bs{q}}{T} + \frac{k}{T^2}|
     \grad T|^2 + \mu\frac{\Phi}{T}
 \end{gather*}
+Essentially, since both $|\grad T|^2$ and $\Phi$ are positive definite terms and
+their coefficients are positive definite, it must be that the entropy of a
+system can only increase ``on average'' (curse the statisticians). 
 
 \subsection{Maxwell's Equations and MHD}
 
@@ -374,19 +378,21 @@ $q_0$ is taken from a vacuum.
 
 Now we write Maxwell's equations in their differential form:
 \begin{align*}
-    \grad\cdot\bvec =& 0 & \grad \cdot \bs{E} = \frac{\rho_e}{\varepsilon_0}\\
-    \grad \times \bvec =& \mu_0\bs{j} + \mu_0\varepsilon_0\ppt{\bs{E}}
-    &\grad \times \bs{E} = -\ppt{\bvec}\\
+    &\grad\cdot\bvec = 0, \text{ Gauss' law for magnetism}
+    & \grad \cdot \bs{E} = \frac{\rho_e}{\varepsilon_0}, \text{ Gauss' law}\\
+    &\grad \times \bs{E} = -\ppt{\bvec}, \text{ Faraday's law}
+    &\grad \times \bvec = \mu_0\left(\bs{j} + \varepsilon_0\ppt{\bs{E}}\right),
+    \text{ Ampere's Law of induction}
 \end{align*}
 
 They can be written in their integral form as well: 
 \begin{align*}
-    &\oint_{\partial D} \bvec\cdot\bs{dA} = 0 & \oint_{\partial D}
-    \bs{E}\cdot\bs{dA} = \frac{q}{\varepsilon_0}\\
-    &\oint_L \bs{E}\cdot\bs{dL} = -\ppt{\phi_{B}} & \oint_L\bvec\cdot\bs{dL} =
-    \mu_0\bs{i} + \mu_0\varepsilon_0\ppt{\phi_E}
+    &\oint_{\partial D} \bvec\cdot\bs{dA} = 0 
+    & \oint_{\partial D} \bs{E}\cdot\bs{dA} = \frac{q}{\varepsilon_0}\\
+    &\oint_L \bs{E}\cdot\bs{dL} = -\ppt{\phi_{B}} 
+    & \oint_L\bvec\cdot\bs{dL} = \mu_0\bs{j} + \mu_0\varepsilon_0\ppt{\phi_E}
 \end{align*}
-where $\phi_B = \int_S \bvec\cdot\bs{dA}$ is the total magnetic fluid, and
+where $\phi_B = \int_S \bvec\cdot\bs{dA}$ is the total magnetic fluid, and 
 $\phi_E = \int_S \bs{E}\cdot\bs{dA}$ is the total electric flux. 
 
 
@@ -398,15 +404,32 @@ $E/q = q_1/(4\pi\varepsilon r^2)$. We obtain the total electric flux $\phi_E$
 
 \begin{gather*}
     d\phi_E = \bs{E}\cdot\bs{dA}\\
-    \phi_E = \int_S\frac{q_1}{4\pi\varepsilon r^2}\cdot\bs{dA}\\
-    \phi_E = \frac{q_1}{4\pi\varepsilon r^2}\int_S\bs{dA}\\
+    \phi_E = \oint_S\frac{q_1}{4\pi\varepsilon r^2}\cdot\bs{dA}\\
+    \phi_E = \frac{q_1}{4\pi\varepsilon r^2}\oint_S\bs{dA}\\
     \phi_E = \frac{q_e}{\varepsilon}
 \end{gather*} 
 where $q_e$ in the final equation is given by the sum of all point charges
-enclosed in the closed volume, i.e. $q_e = \sum_i q_i$. 
+enclosed in the closed volume, i.e. $q_e = \sum_i q_i$. Notice that $q_e$ can be
+thought of as mass for point charges, i.e. the integral of the charge density
+equals the total charge similar to how the integral of mass density equals the
+total mass. It can be represented as a sum of point charges because point
+cahrges are discrete and do not usually exist in a continuum. 
+
+Finally, using the divergence theorem, 
 
 \begin{gather*}
+    \oint_S \bs{E}\cdot\bs{dA} = \int_V \grad\cdot\bs{E} dV\\
+    q_e = \int_V \rho_{E} dV\\
     \grad\cdot\bs{E} = \frac{\rho_E}{\varepsilon}
+\end{gather*}
+
+Similarly, the same proof holds for Gauss' law of magnetism, only that monopoles
+do not exist in magnetic fields, i.e. every source must have a sink. Therefore,
+for an arbitraty volume it must be that the divergence of the magnetic field
+must be zero: 
+
+\begin{gather*}
+    \div\bvec = 0
 \end{gather*}
 
 \end{document}
