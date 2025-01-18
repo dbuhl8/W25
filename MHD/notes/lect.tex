@@ -10,11 +10,17 @@
 \usepackage{verbatim} %useful for something 
 \usepackage{xcolor}
 \usepackage{setspace}
+\usepackage{titlesec}
 \usepackage{blindtext} % I have no idea what this is 
 \usepackage{caption}  % need this for unnumbered captions/figures
 \usepackage{natbib}
 \usepackage{tikz}
 \usepackage{hyperref}
+
+\titleformat{\section}
+{\bfseries\Large}
+{Lecture \thesection:}
+{5pt}{}
 
 \begin{document}
 
@@ -80,8 +86,9 @@
 \maketitle 
 
 \setlength{\parindent}{0pt}
+\setcounter{section}{1}
 
-\section*{Lecture 2: Hydrodynamics Review}
+\section{Hydrodynamics Review}
 
 What is a fluid?
 \begin{itemize}
@@ -186,8 +193,7 @@ component is the rotation componenet.
 
 
 
-\setcounter{section}{3}
-\section*{Lecture 3: Continuing Review of the Kinematic Equations}
+\section{Continuing Review of the Kinematic Equations}
 
 \subsection{Obtaining the Navier-Stokes equation}
 
@@ -287,9 +293,7 @@ This also introduces an additional term to the vorticity equation which looks
 like, $+\left(2\bs{\Omega}\cdot\grad\right)\uvec$. 
 
 
-\section*{Lecture 4: }
-\setcounter{section}{4}
-\setcounter{subsection}{0}
+\section{Conservation of Energy and Maxwell's equations}
 
 \subsection{Conservation of Energy}
 
@@ -416,20 +420,16 @@ total mass. It can be represented as a sum of point charges because point
 cahrges are discrete and do not usually exist in a continuum. 
 
 Finally, using the divergence theorem, 
-
 \begin{gather*}
     \oint_S \bs{E}\cdot\bs{dA} = \int_V \grad\cdot\bs{E} dV\\
     q_e = \int_V \rho_{E} dV\\
     \grad\cdot\bs{E} = \frac{\rho_E}{\varepsilon}
 \end{gather*}
-
 Similarly, the same proof holds for Gauss' law of magnetism, only that monopoles
 do not exist in magnetic fields, i.e. every source must have a sink. Therefore,
 for an arbitraty volume it must be that the divergence of the magnetic field
 must be zero: 
-
 \begin{gather*}
     \div\bvec = 0
 \end{gather*}
-
 \end{document}
