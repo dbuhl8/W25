@@ -1,0 +1,152 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm} %proof environment
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{enumitem} %nice lists
+\usepackage{verbatim} %useful for something 
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{blindtext} % I have no idea what this is 
+\usepackage{caption}  % need this for unnumbered captions/figures
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+
+\titleformat{\section}{\bfseries\Large}{Problem \thesection:}{5pt}{}
+\begin{document}
+
+\title{AM 275 - Magnetohydrodynamics: Homework 1}
+\author{Dante Buhl}
+
+
+\newcommand{\wrms}{w_{\text{rms}}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+\newcommand{\Div}{\nabla \cdot}
+\renewcommand{\div}{\nabla \cdot}
+\newcommand{\Curl}{\nabla \times}
+\newcommand{\Grad}{\nabla}
+\newcommand{\grad}{\nabla}
+\newcommand{\grads}{\nabla_s}
+\newcommand{\gradf}{\nabla_f}
+\newcommand{\xs}{x_s}
+\newcommand{\xf}{x_f}
+\newcommand{\ts}{t_s}
+\newcommand{\tf}{t_f}
+\newcommand{\pt}{\partial t}
+\newcommand{\pz}{\partial z}
+\newcommand{\uvec}{\bs{u}}
+\newcommand{\F}{\bs{F}}
+\newcommand{\T}{\tilde{T}}
+\newcommand{\ez}{\bs{e}_z}
+\newcommand{\ex}{\bs{e}_x}
+\newcommand{\ey}{\bs{e}_y}
+\newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
+\newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\DDt}[1]{\frac{D #1}{D t}}
+\newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
+\newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
+\newcommand{\ppz}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\ddz}[1]{\frac{d #1}{d z}}
+\newcommand{\ppzetas}[1]{\frac{\partial^2 #1}{\partial \zeta^2}}
+\newcommand{\ppzs}[1]{\frac{\partial #1}{\partial z_s}}
+\newcommand{\ppzf}[1]{\frac{\partial #1}{\partial z_f}}
+\newcommand{\ppx}[1]{\frac{\partial #1}{\partial x}}
+\newcommand{\ppxi}[1]{\frac{\partial #1}{\partial x_i}}
+\newcommand{\ppxj}[1]{\frac{\partial #1}{\partial x_j}}
+\newcommand{\ppy}[1]{\frac{\partial #1}{\partial y}}
+\newcommand{\ppzeta}[1]{\frac{\partial #1}{\partial \zeta}}
+
+
+\maketitle 
+% This line removes the automatic indentation on new paragraphs
+\setlength{\parindent}{0pt}
+
+\section{}
+
+Show that 
+\begin{gather*}
+    u_i\ppxj{\tau_{ij}} = \ppxj{u_i\tau_{ij}} + pe_{kk} -
+    2\mu\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2. 
+\end{gather*}
+
+\begin{proof}
+    First, we begin with the derivative identity
+    \begin{gather*}
+        u_i\ppxj{\tau_{ij}} = \ppxj{u_i\tau_{ij}} - \tau_{ij}\ppxj{u_i}
+    \end{gather*}
+    and in order to simplify this statement, take $\tau_i$ to be the i-th row
+    vector of $\tau$, we have:
+    \begin{gather*}
+        \sum_i u_i\div{\tau_i} = \sum_i\div{u_i\tau_i} - \tau_i\cdot\grad u_i
+    \end{gather*}
+    Already we have shown the first RHS term originates from the derivative
+    identity, whereas the other terms must originate from
+    $-\sum_i\tau_i\cdot\grad u_i$. Thus, we investigate this term in more
+    detail. 
+    \begin{gather*}
+        -\sum_i\tau_i\cdot\grad u_i =\sum_i \left[p +
+        \frac{2}{3}\mu\grad\cdot\uvec\right]\delta_{ij}\cdot\grad u_i - 2\mu
+        e_i\cdot\grad u_i
+    \end{gather*}
+    where $e_{kk}$ is written as $\grad\cdot\uvec$ and $e_i$ is the i-th row of
+    $e$ (as in $e_{ij}$). Notice that $\sum_{i}\delta_{ij}\cdot\grad u_i =
+    \grad\cdot\uvec$, and therefore, 
+    \begin{align*}
+         -\sum_i\tau_i\cdot\grad u_i &= \left[p +
+        \frac{2}{3}\mu\grad\cdot\uvec\right](\grad\cdot\uvec) - 2\mu
+        \sum_ie_i\cdot\grad u_i\\
+        &= p(\div{\uvec}) + \frac{2}{3}\mu(\div{\uvec})^2 - 2\mu
+        \sum_ie_i\cdot\grad u_i
+    \end{align*}
+    Thus we recover the second RHS term, $pe_{kk}$. Now we must show the rest of
+    $-\sum_i\tau_i\cdot\grad u_i$ recovers the last term of the RHS. We write
+    the decomposition of $e_{i}$. 
+    \begin{align*}
+        -2\mu\sum_ie_i\cdot\grad u_i &= -\mu\sum_i \left(\grad u_i +
+        \ppxi{\uvec}\right)\cdot\grad u_i\\
+        &= -\mu \sum_i |\grad u_i|^2 + \ppxi{\uvec}\cdot\grad u_i\\
+        &= -\mu |\grad\uvec|^2 - \mu\sum_i \ppxi{\uvec}\cdot\grad u_i\\
+        &= -\mu |\grad\uvec|^2 - \mu\left((\grad\cdot\uvec)^2 + 2\left(\ppx{v}\ppy{u}
+        + \ppx{w}\ppz{u} + \ppy{w}\ppz{v}\right)\right)
+    \end{align*}
+    Now we must show by the transitive propery that,
+    \begin{align*}
+        \frac{2}{3}\mu(\div{\uvec})^2 - \mu |\grad\uvec|^2 - \mu\left((\grad\cdot\uvec)^2 + 2\left(\ppx{v}\ppy{u}
+        + \ppx{w}\ppz{u} + \ppy{w}\ppz{v}\right)\right) &= -
+        2\mu\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2\\
+        -\frac{1}{3}(\div{\uvec})^2 - |\grad\uvec|^2 - 2\left(\ppx{v}\ppy{u}
+        + \ppx{w}\ppz{u} + \ppy{w}\ppz{v}\right) &= -
+        2\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2
+    \end{align*}
+
+    \begin{gather*}
+        -2\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2=-2\left[e_{ij}^2 - \frac{2}{3}(\div{\uvec})e_{ij} -
+        \frac{1}{9}(\div{\uvec})^2\bs{I}\right]
+    \end{gather*}
+\end{proof}
+
+
+
+
+
+
+\end{document}
