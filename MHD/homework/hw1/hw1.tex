@@ -72,6 +72,7 @@
 \newcommand{\ppx}[1]{\frac{\partial #1}{\partial x}}
 \newcommand{\ppxi}[1]{\frac{\partial #1}{\partial x_i}}
 \newcommand{\ppxj}[1]{\frac{\partial #1}{\partial x_j}}
+\newcommand{\ppxm}[1]{\frac{\partial #1}{\partial x_m}}
 \newcommand{\ppy}[1]{\frac{\partial #1}{\partial y}}
 \newcommand{\ppzeta}[1]{\frac{\partial #1}{\partial \zeta}}
 
@@ -125,23 +126,50 @@ Show that
         \ppxi{\uvec}\right)\cdot\grad u_i\\
         &= -\mu \sum_i |\grad u_i|^2 + \ppxi{\uvec}\cdot\grad u_i\\
         &= -\mu |\grad\uvec|^2 - \mu\sum_i \ppxi{\uvec}\cdot\grad u_i\\
-        &= -\mu |\grad\uvec|^2 - \mu\left((\grad\cdot\uvec)^2 + 2\left(\ppx{v}\ppy{u}
-        + \ppx{w}\ppz{u} + \ppy{w}\ppz{v}\right)\right)
+        &= -\mu |\grad\uvec|^2 - \mu\ppxj{u_i}\cdot\ppxi{u_j}
+        %\left((\grad\cdot\uvec)^2 + 2\left(\ppx{v}\ppy{u}
+        %+ \ppx{w}\ppz{u} + \ppy{w}\ppz{v}\right)\right)
     \end{align*}
     Now we must show by the transitive propery that,
     \begin{align*}
-        \frac{2}{3}\mu(\div{\uvec})^2 - \mu |\grad\uvec|^2 - \mu\left((\grad\cdot\uvec)^2 + 2\left(\ppx{v}\ppy{u}
-        + \ppx{w}\ppz{u} + \ppy{w}\ppz{v}\right)\right) &= -
-        2\mu\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2\\
-        -\frac{1}{3}(\div{\uvec})^2 - |\grad\uvec|^2 - 2\left(\ppx{v}\ppy{u}
-        + \ppx{w}\ppz{u} + \ppy{w}\ppz{v}\right) &= -
-        2\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2
+        \frac{2}{3}\mu(\div{\uvec})^2 - \mu |\grad\uvec|^2 -
+        \mu\sum_{ij}\ppxj{u_i}\ppxi{u_j} &= -
+        2\mu\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2_{ll}
     \end{align*}
-
-    \begin{gather*}
-        -2\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2=-2\left[e_{ij}^2 - \frac{2}{3}(\div{\uvec})e_{ij} -
-        \frac{1}{9}(\div{\uvec})^2\bs{I}\right]
-    \end{gather*}
+    We begin by writing the inner product of these second order tensors and then
+    taking the contraction (necessary in order to obtain a scalar) (also sorry
+    about the indices, I couldn't decide which letters I wanted to stick with in
+    the long run)
+    \begin{align*}
+        -2\mu\left[e_{ij} -
+        \frac{1}{3}e_{kk}\delta_{ij}\right]^2_{ll}&=
+        -2\mu\left[(e_{ij}^2)_{ll}
+        - \frac{2}{3}(\div{\uvec})e_{ll} +
+        \frac{1}{9}(\div{\uvec})^2\delta_{ll}\right]\\
+        &=-2\mu\left[(e_{im}\cdot e_{mj})_{ll}
+        -\frac{2}{3}(\div{\uvec})^2 + \frac{1}{3}(\div{\uvec}^2)\right]\\
+        &= -\frac{\mu}{2}\left(\ppxm{u_i}\ppxj{u_m} + \ppxi{u_m}\ppxj{u_m} +
+        \ppxm{u_i}\ppxm{u_j} + \ppxi{u_m}\ppxm{u_j}\right)_{ll} +
+        \frac{2}{3}\mu(\div{\uvec})^2\\
+        &=-\frac{\mu}{2}\left(\grad u_i\cdot \ppxi{\uvec} +
+        \ppxi{\uvec}\cdot\ppxi{\uvec} + \grad u_i\cdot\grad u_i +
+        \ppxi{\uvec}\cdot\grad u_i\right) + \frac{2}{3}\mu(\div{\uvec})^2\\
+        &=-\frac{\mu}{2}\left(2|\grad\uvec|^2 +
+        2\ppxj{u_i}\ppxi{u_j}\right) + \frac{2}{3}\mu(\div{\uvec})^2\\
+        &= \frac{2}{3}\mu(\div{\uvec})^2  -\mu|\grad\uvec|^2 - \mu\ppxj{u_i}\ppxi{u_j}
+    \end{align*}
+    Therefore, we have shown that 
+    \begin{align*}
+        u_i\ppxj{\tau_{ij}} &= \ppxj{u_i\tau_{ij}} + p(\div{\uvec}) +
+        \frac{2}{3}\mu(\div{\uvec})^2 - \mu|\grad\uvec|^2 -
+        \mu\ppxj{u_i}\ppxi{u_j}\\
+        &= \ppxj{u_i\tau_{ij}} + pe_{kk} - 2\mu\left[e_{ij} -
+        \frac{1}{3}e_{kk}\delta_{ij}\right]^2
+    \end{align*}
+    where $[\cdot]^2$ implies a tensor ``double dot product'', where first a
+    (tensor) inner
+    product is taken and the resultant
+    second order tensor is contracted to become a scalar. 
 \end{proof}
 
 
