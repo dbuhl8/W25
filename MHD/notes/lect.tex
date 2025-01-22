@@ -58,7 +58,11 @@
 \newcommand{\pt}{\partial t}
 \newcommand{\pz}{\partial z}
 \newcommand{\uvec}{\bs{u}}
+\newcommand{\jvec}{\bs{j}}
 \newcommand{\bvec}{\bs{B}}
+\newcommand{\B}{\bs{B}}
+\newcommand{\evec}{\bs{E}}
+\newcommand{\E}{\bs{E}}
 \newcommand{\vort}{\bs{\omega}}
 \newcommand{\F}{\bs{F}}
 \newcommand{\T}{\tilde{T}}
@@ -354,7 +358,7 @@ Essentially, since both $|\grad T|^2$ and $\Phi$ are positive definite terms and
 their coefficients are positive definite, it must be that the entropy of a
 system can only increase ``on average'' (curse the statisticians). 
 
-\subsection{Maxwell's Equations and MHD}
+\subsection{Introducing Maxwell's Equations}
 
 Electricity and Magnetism are very closely related to one another and governed
 by a main set of governing equations. The main variables which we consider are a
@@ -432,4 +436,169 @@ must be zero:
 \begin{gather*}
     \div\bvec = 0
 \end{gather*}
+
+\section{Derivation of Maxwell's Equations: Continued}
+
+\subsection{Faraday's Law of Induction}
+    
+The laws of electrodynamics are empiracle. Faraday realized that the EMF,
+proportional to $\ppt{\bvec}$ and also the area of the coil. This led them to
+deduce that EMF should be proportional to $\ppt{\phi_B}$. Note that EMF
+represents the amount of work done per unit charge to move a charge from one
+place to another, i.e. the electric potential difference. It has the units of
+$Nm/C$ (Newton meters per Coulomb). 
+\begin{align*}
+    \text{EMF} = \oint_C\bs{E}\cdot\bs{dL} &= - \ppt{\phi_B} \\
+    &= -\ppt{}\int_S\bvec\cdot\bs{dA}
+\end{align*}
+where here the RHS integral is not necessarily over a closed surface (because
+the same integral over a closed surface must be zero). 
+
+\subsection{Ampere's Law}
+
+If there is a current moving through a wire, imagine a cross section going
+through the wire (i.e. going through the page), there is a magnetic field around
+the wire. The magnetic field can be described using the following integral form. 
+\begin{gather*}
+    \oint_L \bs{H}\cdot\bs{dL} = \bs{i}\\
+    \oint_L\frac{\bvec}{\mu_0}\cdot\bs{dL} = \bs{i}\\
+    \oint_L\bvec\cdot\bs{dL} = \mu_0\bs{i}\\
+    \int_S\grad\times\bvec\cdot\bs{dA} = \mu_0\oint_A\bs{j}\cdot\bs{dA}\\
+    \grad\times\bvec = \mu_0\bs{j}
+\end{gather*}
+Here is where Maxwell's contribution to Ampere's law is notable. Ampere assumed
+that $\div{\bs{j}} = 0$, where Maxwell noticed that in some scenarios, this
+is not necessarily true. Thus, he modified the equation to include displacement
+currents. 
+
+\begin{gather*}
+    \ppt{\bs{D}} = \bs{j}_0\\
+    \ppt{\varepsilon \bs{E}} = \bs{j}_0\\
+    \grad\times\bvec = \bs{j} + \bs{j}_0\\
+    \grad\times\bvec = \mu_0\bs{j} + \mu_0\varepsilon_0\ppt{\bs{E}}
+\end{gather*}
+This was significant because $\mu_0\varepsilon_0 \propto 1/c^2$ (where $c$ is
+the speed of light), and this
+implied connections to electromagnetic radiation (doublecheck this). More
+importantly, these equations are linear and relativistically correct (not sure
+what exactly this means). 
+
+\subsection{Units of Electrodynamics (c.f. Priest p436)}
+
+Electrostatis units are denoted ``esu''. Electromagnetic units are denoted
+``emu'': e, m respectively. The Gaussian cgs system utilizes the standard units
+of centimeters, grams, seconds, in addition to the electrostatic units
+statcoulomb, q, and electromagnetic units, "abAmp". The Gaussian cgs
+representation of the governing equations often have an extra factor of $4\pi$
+in the equations. 
+
+In general, we will use the Rationalized MKS system (standard SI system). Where
+the default length, mass, time, is given in meters, kilograms, and seconds. In
+addition, current is given in amps. The variables, $\mu_0 = 4\pi\cdot10^{-7}
+NA^{-2}$
+and $\varepsilon_0 = 8.8\cdot10^{-12} A^2s^2N^{-1}m^{-1}$ have dimension,
+charges are given in Coulombs, forces are given in Newtons. The magnetic field
+is given by Teslas $T = NA^{-1}m^{-1}$, and the electric field is given by
+$V/m$ (Volts per meter). 
+
+\subsection{From Maxwell's Equation to MHD}
+
+Generally, for MHD we will be working in a non-relativistic approximation (i.e.
+typical velocities are much less than the speed of light, $U \ll c$). Let us
+consider the equations and their typical unit scales,
+
+\begin{gather*}
+    \grad\times\bs{E} = -\ppt{\bvec}\\
+    \frac{\E}{L} ~ \frac{\B}{T}\\
+    \grad\times\B = \mu_0\bs{j} + \frac{1}{c^2} \ppt{\E}\\
+    \frac{\B}{L} ~ \frac{1}{c^2}\frac{\B L}{T^2}
+\end{gather*}
+If we manipulate the last line of this equation, we find that $L^2/T^2 ?= c^2$
+is the leading balance of Ampere's law, and therefore we neglect the
+relativistic term of Maxwell's equations. 
+
+In order to connect Maxwell's equations to fluid dynamics, we must consider the
+Lorentz force. 
+\begin{gather*}
+    \F = q\left(\E + \uvec\times\B\right)\\
+    \frac{d\F}{d V} = \frac{dq}{dV}\left(\E + \uvec\times\B\right)\\
+    \frac{d\F}{d V} = \rho_E\left(\E + \uvec\times\B\right)\\
+    \frac{d\F}{d V} = \rho_E\E + \bs{j}\times\B\\
+    \F = \int_V \rho_E\E + \bs{j}\times\B dV
+\end{gather*}
+Next we must consider Ohm's Law, which describes the current and electric field
+as movign with the conductor (Lagrangian perspective) (denoted with $'$). 
+\begin{gather*}
+    \bs{j}' = \sigma\E'
+\end{gather*}
+and thus we are able to simplify the equations to become, 
+\begin{gather*}
+    \E' = \E + \uvec\times\B\\
+    \bs{j}' = \jvec\\
+    \jvec = \sigma(\E + \uvec\times\B)\\
+    \grad\times\B = \mu_0\jvec\\
+    \grad\times\B = \mu_0\sigma(\E + \uvec\times\B)
+\end{gather*}
+Taking the curl of this equation leads to the following,
+\begin{gather*}
+    \grad\times\left(\frac{\grad\times\B}{\mu_0\sigma}\right) = \grad\times\E +
+    \grad\times\left(\uvec\times\B\right)\\
+    \grad\times\eta\grad\times\B = -\ppt{\B} + \grad\times(\uvec\times\B)\\
+    \ppt{\B} = -\grad\times(\eta\grad\times\B) + \grad\times(\uvec\times\B)
+\end{gather*}
+which is the induction equation. If we take $\eta$ to be constant, we can write
+with the derivative identity, $\grad\times\grad\times\B = \grad(\div{\B}) -
+\grad^2\B$:
+\begin{gather*}
+    \ppt{\B} = \grad\times(\uvec\times\B) + \eta\grad^2\B
+\end{gather*}
+Notice that we obtain an equation solely for $\B$ which has taken into account
+all of Maxwell's equations. This tells us that we really only have to care about
+the magnetic field, and can obtain the electric field as a consequence of our
+solution. For example, $\jvec = \grad\times\B/\mu_0$, $\E=\jvec/\sigma -
+\uvec\times\B$, and $\rho_E = \varepsilon_0(\div{\E})$. 
+
+We can interpret the terms in this equation as well. On the LHS we have a
+typical rate of change of the magnetic field. On the RHS we have first the
+induction term, and the diffusion of the magnetic field $\B$. 
+
+We also notice that the linearity of this equation depends primarily on the
+relationship between $\uvec$ and $\B$. If, for example, $\uvec$ is a function of
+$\B$ then the induction equation is not linear. If the induction equation is
+linear, then the equation is generally regarded as the kinematic induction
+equation. If the equation is nonlinear, then it is generally regarded as a
+dynamic equation of induction. 
+
+In general, the Lorentz force is vital to determining which dynamical regime we
+are in for the velocity and magnetic fields. Consider again the Lorentz force, 
+\begin{gather*}
+    \F = \rho_E \E + \jvec\times\B
+\end{gather*}
+where the first RHS term is the electrostatic component and the second RHS term
+is the magnetic component. Generally, we compare the order of each term in the
+equation. 
+\begin{gather*}
+    \frac{|\rho_E\E|}{|\jvec\times\B|} \propto
+    \frac{|\varepsilon_0\div{\E}\E|}{|(\grad\times\B)\B/\mu_0|}\\
+    \propto \frac{\varepsilon_0\mu_0\E^2/L}{\B^2/L} \\
+    \propto \varepsilon_0\mu_0\left(\frac{L}{T}\right)^2 = \frac{U^2}{c^2}
+\end{gather*}
+Therefore we are able to deduce that the Lorentz force in a non-relativistic
+regime, can be approximated as:
+\begin{gather*}
+    \F \propto \jvec\times\B\\
+    \propto \frac{1}{\mu_0}(\grad\times\B)\B
+\end{gather*}
+
+With this Lorentz force as a body force, we write the Navier Stokes Equation
+\begin{align*}
+    \rho\DDt{\uvec} &= -\grad p + \mu\left[\grad^2\uvec +
+    \frac{1}{3}\grad(\div{\uvec})\right] + \rho\F +
+    \rho\left(\jvec\times\B\right)\\
+    \DDt{\rho} + \rho(\grad\cdot\uvec) &= 0\\
+    \DDt{e} &= \ldots\\
+    &\text{An equation of state}\\
+    \ppt{\B} &= \grad\times(\uvec\times\B) + \eta\grad^2\B
+\end{align*}
+
 \end{document}

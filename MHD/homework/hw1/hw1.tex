@@ -21,6 +21,8 @@
 \titleformat{\section}{\bfseries\Large}{Problem \thesection:}{5pt}{}
 \begin{document}
 
+\doublespacing
+
 \title{AM 275 - Magnetohydrodynamics: Homework 1}
 \author{Dante Buhl}
 
@@ -54,7 +56,11 @@
 \newcommand{\pt}{\partial t}
 \newcommand{\pz}{\partial z}
 \newcommand{\uvec}{\bs{u}}
+\newcommand{\bvec}{\bs{B}}
+\newcommand{\jvec}{\bs{j}}
 \newcommand{\F}{\bs{F}}
+\newcommand{\B}{\bs{B}}
+\newcommand{\E}{\bs{E}}
 \newcommand{\T}{\tilde{T}}
 \newcommand{\ez}{\bs{e}_z}
 \newcommand{\ex}{\bs{e}_x}
@@ -172,8 +178,141 @@ Show that
     second order tensor is contracted to become a scalar. 
 \end{proof}
 
+\section{Compressible v.s. Imcompressible Induction Equation}
 
+\subsection{Show that the imcompressible induction equation is}
+\begin{gather*}
+    \ppt{\B} + (\uvec\cdot\grad)\B = (\B\cdot\grad)\uvec
+\end{gather*}
 
+\begin{proof}
+    We begin by writing the (non-diffusive) induction equation and the corresponding derivative
+    identity. 
+    \begin{gather*}
+        \ppt{\B} = \grad\times(\uvec\times\B)\\
+        \grad\times(\uvec\times\B) = \uvec(\div{\B})-\B(\div{\uvec}) +
+        (\B\cdot\grad)\uvec - (\uvec\cdot\grad)\B
+    \end{gather*}
+    Using this substitution and keeping in mind that $\div{\B} = 0$ and
+    $\div{\uvec} = 0$ we obtain, 
+    \begin{gather*}
+        \ppt{\B} + (\uvec\cdot\grad)\B = (\B\cdot\grad)\uvec
+    \end{gather*}
+\end{proof}
+
+\subsection{Show that the compressible induction equation can be written as}
+\begin{gather*}
+    \ppt{}\left(\frac{\B}{\rho}\right) +
+    (\uvec\cdot\grad)\left(\frac{\B}{\rho}\right) =
+    \left(\frac{\B}{\rho}\cdot\grad\right)\uvec
+\end{gather*}
+
+\begin{proof}
+    We begin by taking the compressible induction equation and multiplying by
+    $1/\rho$. 
+    \begin{gather*}
+        \frac{1}{\rho}\ppt{\B} + \frac{1}{\rho}(\uvec\cdot\grad)\B =
+        \frac{1}{\rho}(\B\cdot\grad)\uvec - \frac{1}{\rho}\B(\div{\uvec})
+    \end{gather*}
+    Then, we use the product rule derivative identity to change some of the
+    derivatives. We have,
+    \begin{gather*}
+        \ppt{}\left(\frac{\B}{\rho}\right) + \frac{\B}{\rho^2}\ppt{\rho} + 
+        (\uvec\cdot\grad)\frac{\B}{\rho} + 
+        \frac{\B}{\rho^2}(\uvec\cdot\grad)\rho =
+        \left(\frac{\B}{\rho}\cdot\grad\right)\uvec -
+        \frac{\B}{\rho}(\div{\uvec})
+    \end{gather*}
+    Here we consider the conservation of mass equation which for compressible
+    fluids is written as,
+    \begin{gather*}
+        \ppt{\rho} + \div{\rho\uvec} = 0\\
+        \frac{1}{\rho^2}\ppt{\rho} + \frac{1}{\rho^2}(\div{\rho\uvec}) = 0\\
+        \frac{1}{\rho^2}\ppt{\rho} + \frac{1}{\rho^2}\left(\rho(\div{\uvec}) +
+        (\uvec\cdot\grad)\rho\right) = 0\\
+        \frac{1}{\rho^2}\ppt{\rho} + \frac{1}{\rho^2}
+        (\uvec\cdot\grad)\rho = -\frac{1}{\rho}(\div{\uvec}).
+    \end{gather*}
+    BNotice that we can take this equation, multiply it by $\B$ and subtract it
+    from the induction equation. This leaves us with, 
+    \begin{gather*}
+        \ppt{}\left(\frac{\B}{\rho}\right) + 
+        (\uvec\cdot\grad)\frac{\B}{\rho} =
+        \left(\frac{\B}{\rho}\cdot\grad\right)\uvec
+    \end{gather*}
+
+\end{proof}
+
+\section{Derive the induction equation }
+\begin{proof}
+    Let us begin with Ohm's law as we have written in lecture. 
+    \begin{gather*}
+        \jvec = \jvec' = \sigma\E'\\
+        \E' = \E + \uvec\times\B\\
+        \grad\times\B = \mu_0\sigma(\E + \uvec\times\B)\\
+        \grad\times\left(\frac{1}{\mu_0\sigma}\grad\times\B\right) =
+        \grad\times\E + \grad\times(\uvec\times\B)\\
+        \frac{1}{\mu_0\sigma}(\grad\times\grad\times\B) - 
+        \frac{1}{\mu_0\sigma^2}\grad\sigma\times\left(\grad\times\B\right) = 
+        -\ppt{\B} + \grad\times(\uvec\times\B)\\
+        \ppt{\B} = 
+        \frac{1}{\mu_0\sigma}\grad^2\B + 
+        \frac{1}{\mu_0\sigma^2}((\grad\B)^T\cdot\grad\sigma -
+        (\grad\sigma\cdot\grad)\B)
+         + \grad\times(\uvec\times\B)
+    \end{gather*}
+    This can then be simplified keeping in mind that $\div{\B} = 0$, and
+    especially if the flow is incompresible, to the following:
+    \begin{gather*}
+        \ppt{\B} + (\uvec\cdot\grad)\B +
+        \frac{1}{\mu_0\sigma^2}(\grad\sigma\cdot\grad)\B = 
+        (\B\cdot\grad)\uvec + 
+        \frac{1}{\mu_0\sigma^2}((\grad\B)^T\cdot\grad\sigma) + 
+        \frac{1}{\mu_0\sigma}\grad^2\B 
+    \end{gather*}
+    Essentially we see the appearence of two new terms if the conductivity is
+    not constant. First, the advection of
+    $\B$ by the gradient of conductivity, and then some weird term related to
+    $\grad\B^T$ on the RHS. 
+\end{proof}
+
+\section{}
+
+\subsection{Show that initial conditions of the divergence of the magnetic field are preserved for Maxwell's equations}
+\begin{proof}
+    In order to show this, we must first assume that the temporal and spatial
+    derivatives can be taken in any order, i.e. $\ppt{}\left(\ppx{u}\right) =
+    \ppx{}\left(\ppt{u}\right)$. 
+    We proceed by taking the dot product of Faraday's law, 
+    \begin{gather*}
+        \grad\cdot\ppt{\B} = \grad\cdot(-\grad\times\E)\\
+        \ppt{}(\grad\cdot\B) = 0
+    \end{gather*}
+    where the RHS is zero because the divergence of a curl is always zero. Thus
+    if we have that $\div{\B} = 0$ at $t = 0$, it will always be zero. 
+\end{proof}
+
+\subsection{Show that initial conditions of the divergence of the magnetic field are preserved for the induction equation}
+
+\begin{proof}
+    A similar proof can be written from the perspective of the induction
+    equation. Let us write a form of the induction equation, 
+    \begin{gather*}
+        \ppt{\B} = - \grad\times\left(\frac{1}{\mu_0\sigma}\grad\times\B\right) + \grad\times(\uvec\times\B)
+    \end{gather*}
+    where $\sigma$ is not necessarily a constant and the fluid is not
+    necessarily incompressible. Similarly, we take the divergence of this
+    equation and obtain,
+    \begin{gather*}
+        \ppt{}(\div{\B})  = \grad\cdot\left(
+        \grad\times\left(\frac{1}{\mu_0\sigma}\grad\times\B\right) +
+        \grad\times(\uvec\times\B)\right)\\
+        \ppt{}(\div{\B})  = 0
+    \end{gather*}
+    since again, the divergence of a curl is always zero. Therefore, from the
+    perspective of the induction equation, we have that $\div{\B} = 0$ will be
+    maintained for all $t>0$ if $\div{\B} = 0$ at $t=0$. 
+\end{proof}
 
 
 
