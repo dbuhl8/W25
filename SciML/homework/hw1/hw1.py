@@ -2,6 +2,8 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.rcParams['text.usetex'] = True
+
 device = (
     "cuda"
     if torch.cuda.is_available()
@@ -24,8 +26,8 @@ iterate = True
 if iterate:
 
     pst = 5
-    pen = 200
-    pstep = 5
+    pen = 500
+    pstep = 1
 
     P = np.arange(pst, pen, pstep)
     err = np.zeros_like(P)
@@ -42,7 +44,7 @@ if iterate:
         if P[i] < n: # do a least squares solution
             TH = np.linalg.lstsq(phi,y)[0]
         else: # do a psuedoinverse solution (can switch to np.pinv)
-            TH = np.matmul(np.linalg.pinv(phi, 1E-4),y)
+            TH = np.matmul(np.linalg.pinv(phi),y)
             #U, S, Vh = np.linalg.svd(phi, True, True)
             #TH = np.dot(Vh[0:n,:].conj().T,
             #np.multiply(np.divide(1,S,where=S>0),np.matmul(U.conj().T,y)))
@@ -52,18 +54,30 @@ if iterate:
         terr[i] = np.linalg.norm(ty-np.matmul(tphi, TH),2)
 
     fig, (ax1, ax2, ax3) = plt.subplots(3,1)
+    #fig, ax = plt.subplots()
+    #ax.semilogy(P,err, '-', color='orange', linewidth=0.5)
+    #ax.semilogy(P, terr, 'b--', linewidth=0.5)
+    #ax.title.set_text("Error")
+    #ax.set_ylabel(r'$||y - A\Theta^*||_2$')
+    #ax.set_xlabel('Number of Features')
 
-    ax1.plot(x,y,'bx',x,np.matmul(phi, TH),'g--')
+    ax1.plot(x,y,'bx',x,np.matmul(phi, TH),'g--',linewidth=1,markersize=3)
     ax1.title.set_text("Training Data")
     ax1.set_ylim([0,20])
-    ax2.plot(tx,ty,'bx',tx,np.matmul(tphi, TH),'g--')
+    ax2.plot(tx,ty,'bx',tx,np.matmul(tphi, TH),'g--',linewidth=1,markersize=3)
     ax2.title.set_text("Testing Data")
     ax2.set_ylim([0,20])
-    ax3.semilogy(P,err, '-', color='orange')
-    ax3.semilogy(P, terr, 'b--')
+    ax3.semilogy(P,err, '-',color='orange',linewidth=0.5,label="Train")
+    ax3.semilogy(P, terr, 'b--', linewidth=0.5, label="Test")
+    ax3.legend(loc="upper right")
     ax3.title.set_text("Error")
+    ax3.set_ylabel(r'$||y - A\Theta^*||_2$')
+    ax3.set_xlabel('Number of Features')
     #plt.axis([5,100,1E-7,1000])
-    plt.show()
+
+    fig.tight_layout()
+
+    plt.savefig('hw1s2.pdf') 
 
 else:
     p = 50
@@ -76,7 +90,7 @@ else:
     if p < n: # do a least squares solution
         TH = np.linalg.lstsq(phi,y)[0]
     else: # do a psuedoinverse solution (can switch to np.pinv)
-        TH = np.matmul(np.linalg.pinv(phi,1E-4),y)
+        TH = np.matmul(np.linalg.pinv(phi,1E-8),y)
         #U, S, Vh = np.linalg.svd(phi, True, True)
         #TH = np.dot(Vh[0:n,:].conj().T,
         #np.multiply(np.divide(1,S,where=S>0),np.matmul(U.conj().T,y)))
@@ -95,3 +109,5 @@ else:
     ax2.plot(tx,ty,'bx',tx,np.matmul(tphi, TH),'g--')
     plt.axis([0,10,0,20])
     plt.show()
+
+

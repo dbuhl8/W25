@@ -89,6 +89,7 @@ Show that $\Theta = A^{\dagger}y$ is the solution such that $||\Theta||_2$ is
 the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
 \R^{n\times p}$ where $p\gg n$. 
 
+
 \begin{proof}
     We begin by writing the SVD of $A$ which is part of the construction of the
     psuedoinverse $A^{\dagger}$. 
@@ -189,8 +190,52 @@ the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
 
 \subsection{}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=\textwidth]{hw1s2.pdf}
+    \caption{Training, Test, and Error data from the linear regression posed in
+    subproblem 2. The training and test data plots show how well the linear
+    regression fits to the data given in both the training and testing cases for
+    $p=500$. The error plot shows both the training and testing error as a
+    function of the number of features $p$, in order to demonstrate double
+    descent.}
+    \label{fig:s2}
+\end{figure}
 
+In order to demonstrate double descent using a random Fourier feature matrix
+$A$, and build a regression for the function, 
+\begin{gather}
+    y = 2x + \cos(25x) + r
+    \label{eq:s2}
+\end{gather}
+where $r$ is sampled from the standard normal distribution $\mathcal{N}(0,1)$.
+Since the purpose of the linear regression 
+\begin{gather*}
+    y = A\Theta
+\end{gather*}
+is to build a fourier cosine series which interpolates \eqref{eq:s2}, where the
+vector $\Theta$ is the coefficient vector for each random fourier mode
+$\phi_i(x) = \cos(2\pi w_ix)$, where $w_i \sim \mathcal{N}(0,1)$. For my work
+specifically, I have chosen to use 50 data points for each of the training and
+the test set on the domain $x \in [1,10]$. It is necesary for both data sets to
+be taken from the same domain, as fourier series usually only interpolate
+functions in a finite domain. 
 
-
+As a result, the number of features used in this regression problem will be
+start at 5 features ($p \ll n$), and end at 500 features ($p \gg n$) with
+increments of 1. Notice
+that depending on the type of system being solved (overdetermined v.s.
+underdetermined) the method of obtaining $\Theta$ will change from a least
+squares solution to a psuedoinverse solution, i.e.
+\begin{gather*}
+    \Theta = \text{argmin}_{y = A\Theta} ||y - A\Theta||_2, \quad p < n\\
+    \Theta = A^{\dagger}y, \quad p \ge n
+\end{gather*}
+Thus, we obtain the error v.s. feature plot that is seen in figure \ref{fig:s2},
+where there appears to be a double descent which settles to the minimum test
+error near $p \approx 400$. Note that the minimum test error seems to settle at
+$10^1$ which seems natural due to the noise in the data sets which is of $O(10^0)$,
+and then scaled by the number of test points which is of order $O(10^1)$, hence
+obtaining an average error for the whole data set of $O(10^1)$. 
 
 \end{document}
