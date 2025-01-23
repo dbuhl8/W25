@@ -18,6 +18,7 @@
 \usepackage{hyperref}
 
 \titleformat{\section}{\bfseries\Large}{Problem \thesection:}{5pt}{}
+\titleformat{\subsection}{\bfseries\large}{Subproblem \thesubsection:}{5pt}{}
 
 \begin{document}
 
@@ -81,8 +82,9 @@
 \setlength{\parindent}{0pt}
 \doublespacing
 
-\section{Subproblem A}
+\section{}
 
+\subsection{}
 Show that $\Theta = A^{\dagger}y$ is the solution such that $||\Theta||_2$ is
 the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
 \R^{n\times p}$ where $p\gg n$. 
@@ -179,9 +181,15 @@ the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
         \left<\Theta^*, \Theta^*\right>\\
         &= \left<\Theta',\Theta'\right> + \left<\Theta^*,\Theta^*\right> > \left<\Theta^*,\Theta^*\right>
     \end{align*}
-    and we have that $\Theta* = \text{argmin}_{y=A\Theta}||\Theta||_2$. 
+    where both $\left<\Theta', \Theta'\right>$ and $\left<\Theta',
+    \Theta'\right>$ are positive definite terms. Therefore, we have that
+    $\Theta^* = \text{argmin}_{y=A\Theta}||\Theta||_2$. 
 
 \end{proof}
+
+\subsection{}
+
+
 
 
 

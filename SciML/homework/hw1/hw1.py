@@ -10,11 +10,13 @@ device = (
     else "cpu"
 )
 n = 50
-x = np.linspace(1,10,n,True)
+xstart = 1
+xend = 10
+x = np.linspace(xstart,xend,n,True)
 y = 2*x + np.cos(25*x) + np.random.normal(0,1,n )
 
 tn = 50
-tx = np.sort(np.random.uniform(1,10,tn))
+tx = np.sort(np.random.uniform(xstart,xend,tn))
 ty = 2*tx + np.cos(25*tx) + np.random.normal(0,1,tn )
 
 iterate = True
