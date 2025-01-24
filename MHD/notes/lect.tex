@@ -29,6 +29,7 @@
 \doublespacing
 
 
+
 \newcommand{\wrms}{w_{\text{rms}}}
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 \newcommand{\tb}[1]{\textbf{#1}}
@@ -88,6 +89,10 @@
 
 
 \maketitle 
+\pagebreak
+
+\tableofcontents
+\pagebreak
 
 \setlength{\parindent}{0pt}
 \setcounter{section}{1}
@@ -600,5 +605,130 @@ With this Lorentz force as a body force, we write the Navier Stokes Equation
     &\text{An equation of state}\\
     \ppt{\B} &= \grad\times(\uvec\times\B) + \eta\grad^2\B
 \end{align*}
+
+
+\section{}
+
+\subsection{Validity of MHD equations and assumptions}
+
+\begin{enumerate}
+\item
+In MHD, we are attempting to treat a plasma as a fluid (a continuum), which is
+not necessarily always valid. Length scales of interest for MHD problems are
+much larger than lengthscales for plasma physics, i.e. ion gyroradius. If we
+look at a small scale problem, this assumption becomes much less valid. (NOTE:
+how does this resolve high Reynolds number flows, where the kolmogorov length
+scale approaches typical plasma physics length scales? Ask Nic next class). 
+
+\item The next consideration is how we represent plasma in the thermodynamic
+equilibrium. For example, we require typical timescales and lengthscales to be
+much larger than particle collision times and mean free path lengths. 
+
+\item The constants $\eta$, $\mu$, $k$ are uniform, and isotropic, which is an
+assumption we will take for granted, but there exist fluids who don't satisfy
+these properties. 
+
+\item The equations are in an inertial frame
+
+\item Non-relativistic flows (because we disregarded Maxwell's addition to Ampere's
+law). This requires that the flow speed is much less than the speed of light,
+$c$. 
+
+\item This derivation relies on a very simple version of Ohm's law, more
+complicated forms of this physical law will not necessarily recover the
+induction equation we have derived earlier. 
+
+\item Plasma is a single fluid, i.e. plasmas can have Consitutive parts which
+contribute to its total mass, and all of them don't necessarily behave the same.
+Ideally, we would have some statisitical framework for the composition and
+behavior of a plasma and incorporate that into our model. 
+
+
+\end{enumerate}
+
+To summarize what we have obtained so far, let us write the incompressible MHD
+equations,
+\begin{gather}
+    \div{\uvec} = 0\\
+    \rho\DDt{\uvec} = -\grad p + \F + \jvec\times\B + \mu\grad^2\uvec\\
+    \DDt{\B} = (\B\cdot\grad)\uvec + \eta\grad^2\B
+\end{gather}
+
+
+\subsection{Consequences of $\div{\B} = 0$}
+
+We have (and this can be shown easily) that if the property that the magnetic
+field is divergence free as an initial condition, we have that this property is
+maintained for all $t>0$. As a consequence, we can write that $\B$ as a
+potential function, i.e. $\B = \grad\times\bs{A}$, where $\bs{A}$ is a vector
+potential, 
+\begin{gather*}
+    \bs{A} = \grad\phi + A
+\end{gather*}
+
+An example of finding vector potentials in a spherical coordinate frame, is the
+decomposition of a poloidal and toroidal magnetic field:
+\begin{gather*}
+    \B = \B_P + \B_T =\grad\times\left(\grad\times(P\bs{r}) +
+    \grad\times(T\bs{r})\right)
+\end{gather*}
+where $P$ and $T$ are scalar functions which represent the poloidal and toroidal
+components of the magnetic field respectively. In a physical sense, we can think
+of the toroidal field being the axis-symmetric, azmuthal component, and the
+poloidal field being the meridional component. 
+
+\subsection{Common Boundary Conditions for the MHD equations}
+
+Consider an interface between two mediums $M_1$ and $M_2$. Let us denote the
+normal vector to that interface $\hat{\bs{n}}$. We can imagine a cylindrical
+volume through the interface, which we will refer to as the ``pill-box''
+(otherwise known as a Gaussian Box), and
+this is often used for considering fluxes through the boundary. We can imagine
+a contour line along the interface which is very thin and envelops a section of
+the interface, particularly with a direction along the contour. This could be a
+line integral or a surface integral condition for example. This is called "along
+the contour" (also known as an Amperion Loop). 
+
+The integral form of these boundary conditions can be written as,
+
+\begin{gather*}
+    \int_V \div{\B} dV = 0\\
+    \int_S \B\cdot\bs{dS} = 0
+\end{gather*}
+AS this applies to the gaussian pill-box scenario, which is composed of three
+surfaces, top and bottom $S_1$ and $S_3$, and the side $S_2$, eich of which has
+their own unit normal vectors. 
+We consider, 
+\begin{gather*}
+    \int_S \B\cdot\bs{dS} = \int_{S_1}\B\cdot\hat{\bs{n}}_1dS_1 +
+    \int_{S_1}\B\cdot\hat{\bs{n}}_2dS_2 + \int_{S_3}\B\cdot\hat{\bs{n}}_3dS_3 =
+    0
+\end{gather*}
+Next we consider the limit, where the height of the cylinder tends to zero (note
+that the cylinder is centered along the interface). Therefore, the cylinder is
+compressed to a circle on the surface of the interface, and specifically the
+integral becomes,
+\begin{gather*}
+    \int_S \B\cdot\bs{dS} = 
+    \int_{S_1}\B\cdot\hat{\bs{n}}_2dS_2  = 0
+\end{gather*}
+In essence, this allows us to formulate a ``jump condution'' that there must be
+no discontinuity in the normal components of $\B$ or $\jvec$ through the surface of the interface. These
+boundary conditions are often expressed as, 
+\begin{gather*}
+    \left[\B\cdot\hat{\bs{n}}\right] = 0,
+    \quad\left[\jvec\cdot\hat{\bs{n}}\right] = 0
+\end{gather*}
+
+Next we must consider the tangential components, and this requires that we
+revisit Faraday's law, 
+\begin{gather*}
+    -\ppt{}\int_S\B\cdot\bs{dS} = \oint_L \E\cdot\bs{dL} 
+\end{gather*}
+If we consider the surface to be an Amperion loop and take the height of that
+loop to tend to zero, we have that the LHS of the given equation is zero, i.e. 
+\begin{gather*}
+    \oint_L \E\cdot\bs{dL} = \int_{\text{TOP}} \E_{T1}\cdot\bs{dL_1} + 
+\end{gather*}
 
 \end{document}

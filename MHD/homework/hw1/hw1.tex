@@ -139,11 +139,10 @@ Show that
     Now we must show by the transitive propery that,
     \begin{align*}
         \frac{2}{3}\mu(\div{\uvec})^2 - \mu |\grad\uvec|^2 -
-        \mu\sum_{ij}\ppxj{u_i}\ppxi{u_j} &= -
+        \mu\ppxj{u_i}\ppxi{u_j} &= -
         2\mu\left[e_{ij} - \frac{1}{3}e_{kk}\delta_{ij}\right]^2_{ll}
     \end{align*}
-    We begin by writing the inner product of these second order tensors and then
-    taking the contraction (necessary in order to obtain a scalar) (also sorry
+    We begin by writing the double inner product of these second order tensors (necessary in order to obtain a scalar) (also sorry
     about the indices, I couldn't decide which letters I wanted to stick with in
     the long run)
     \begin{align*}
@@ -172,7 +171,8 @@ Show that
         &= \ppxj{u_i\tau_{ij}} + pe_{kk} - 2\mu\left[e_{ij} -
         \frac{1}{3}e_{kk}\delta_{ij}\right]^2
     \end{align*}
-    where $[\cdot]^2$ implies a tensor ``double dot product'', where first a
+    where $[\cdot]^2$ implies a tensor double inner product (c.f. \S 3.5, ``Tensor
+    Calculus Made Simple,'' Sochi 2016) where first a
     (tensor) inner
     product is taken and the resultant
     second order tensor is contracted to become a scalar. 
