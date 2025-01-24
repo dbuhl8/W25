@@ -100,10 +100,11 @@ the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
     where $U$ and $V$ are unitary matrices, and $\Sigma^{-1}$ is the transpose of $\Sigma$ containing the reciprocal
     of each singular value (in order) along the diagonal, i.e. 
     \begin{gather*}
-        \Sigma^{-1} = \left[\begin{array}{c c c | c}
-                            1/\sigma_1 & & \bs{0} & \\
-                             &\ddots & & \bs{0}\\
-                            \bs{0} & & 1/\sigma_n &
+        \Sigma^{-1} = \left[\begin{array}{c c c}
+                            1/\sigma_1 & & \bs{0}  \\
+                             &\ddots &  \\
+                            \bs{0} & & 1/\sigma_n \\
+                            \hline &\bs{0}&
                             \end{array}\right]
     \end{gather*}
     Next we need to understand why $\Theta$ in this context has infinitely many
@@ -148,7 +149,7 @@ the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
          &= |c_1|||v_1||_2 + \ldots + |c_n|||v_n||_2\\
          &= |c_1| + \ldots + |c_n|
     \end{align*}
-    where we can decompose the 2-norm in this way because each basis vector
+    where we can decompose the 2-norm in this way because the basis vectors
     $v_i$ are orthogonal to each other in the 2-norm. Notice that the addition
     of any additional $\R^{p}$ basis vectors will only increase the 2-norm of
     $\Theta$. We conclude then that solving for $\Theta$ using the psuedoinverse
@@ -162,7 +163,7 @@ the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
         \Theta = \Theta' + \Theta^*
     \end{gather*}
     and proceeds to show that $\left<\Theta', \Theta^*\right> = 0$, i.e. that
-    $\Theta'$ is orthogonal to $\Theta$. As I have shown earlier, the infinite
+    $\Theta'$ is orthogonal to $\Theta^*$. As I have shown earlier, the infinite
     solutions for $\Theta$ arise by introducing a linear combination of the
     vectors in the Null space of $A$, i.e.
     \begin{gather*}
@@ -182,8 +183,8 @@ the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
         \left<\Theta^*, \Theta^*\right>\\
         &= \left<\Theta',\Theta'\right> + \left<\Theta^*,\Theta^*\right> > \left<\Theta^*,\Theta^*\right>
     \end{align*}
-    where both $\left<\Theta', \Theta'\right>$ and $\left<\Theta',
-    \Theta'\right>$ are positive definite terms. Therefore, we have that
+    where both $\left<\Theta', \Theta'\right>$ and $\left<\Theta^*,
+    \Theta^*\right>$ are semi-positive definite terms. Therefore, we have that
     $\Theta^* = \text{argmin}_{y=A\Theta}||\Theta||_2$. 
 
 \end{proof}
@@ -203,12 +204,12 @@ the minimum out of all the infinite solutions to $y = A\Theta$. Consider $A \in
 \end{figure}
 
 In order to demonstrate double descent using a random Fourier feature matrix
-$A$, and build a regression for the function, 
+$A$, we perform a linera regression for the function, 
 \begin{gather}
     y = 2x + \cos(25x) + r
     \label{eq:s2}
 \end{gather}
-where $r$ is sampled from the standard normal distribution $\mathcal{N}(0,1)$.
+where $r$ is gaussian noise sampled from the standard normal distribution $\mathcal{N}(0,1)$.
 Since the purpose of the linear regression 
 \begin{gather*}
     y = A\Theta
