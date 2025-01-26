@@ -54,6 +54,7 @@
 \newcommand{\gradf}{\nabla_f}
 \newcommand{\xs}{x_s}
 \newcommand{\xf}{x_f}
+\newcommand{\x}{\bs{x}}
 \newcommand{\ts}{t_s}
 \newcommand{\tf}{t_f}
 \newcommand{\pt}{\partial t}
@@ -607,7 +608,7 @@ With this Lorentz force as a body force, we write the Navier Stokes Equation
 \end{align*}
 
 
-\section{}
+\section{Boundary Conditions and Kinematics for MHD}
 
 \subsection{Validity of MHD equations and assumptions}
 
@@ -728,7 +729,74 @@ revisit Faraday's law,
 If we consider the surface to be an Amperion loop and take the height of that
 loop to tend to zero, we have that the LHS of the given equation is zero, i.e. 
 \begin{gather*}
-    \oint_L \E\cdot\bs{dL} = \int_{\text{TOP}} \E_{T1}\cdot\bs{dL_1} + 
+    \oint_L \E\cdot\bs{dL} = -\int_{\text{top}} \E_{T1}\cdot\bs{dL_1} - 
+    \int_{\text{left}} \E_{N1}\cdot\bs{dL_2} +\int_{\text{bottom}} \E_{T2}\cdot\bs{dL_3}
+    +\int_{\text{right}} \E_{N2}\cdot\bs{dL_4} = 0\\
+    \E_{T1} = \E_{T2}\\
+    \left[\E \times \hat{\bs{n}}\right] = 0
 \end{gather*}
+we can then rewrite this using Ohm's law $\jvec = \sigma(\E + \uvec\times\B)$,
+\begin{gather*}
+    \left[\left(\frac{\jvec}{\sigma} - \uvec\times\B\right) \times \hat{\bs{n}}\right]
+    = 0\\
+    \left[\frac{\jvec}{\sigma} \times \hat{\bs{n}}\right] = 0
+\end{gather*}
+where the last line is obtained assuming that $\uvec = 0$ or that $\uvec$ is
+purely tangential to the boundary. This is indicating in essence, that the jump
+considion for $\jvec/\sigma$ must be satisfied across the interface, i.e.
+$\jvec_1/\sigma_1 = \jvec_2/\sigma_2$. 
 
+Another source of boundary conditions can come from Ampere's Law. We have, 
+\begin{gather*}
+    \int_S \frac{\grad\times\B}{\mu_0} \cdot\bs{dS} = \int_S \jvec\cdot\bs{dS} =
+    I
+\end{gather*}
+where $I$ is the total enclosed current. 
+\begin{gather*}
+    \oint_L \frac{\B}{\mu_0} \cdot\bs{dL} = I
+\end{gather*}
+Taking the ``along the contour'' integral approach, we have,
+\begin{gather*}
+    \left[\frac{\B}{\mu_0} \times \hat{bs{n}}\right] = \jvec_S
+\end{gather*}
+where $\jvec_S$ is the surface current density ($\approx I/dL$). If there is no
+surface current, the RHS of this jump condition goes to zero and we have
+similarly, $\B_1/\mu_1 = \B_2/\mu_2$. 
+
+\subsection{Kinematics}
+
+In orde to have a kinematic understanding of the MHD equations, we must have an
+induitive understanding of the effects that magnetic field and field lines have
+on the flows they generate. 
+
+One can imagine, magnetic field lines which exist around a live wire. These
+field lines have the same property as streamlines in hydrodynamics, i.e. they
+give contours of constant field strength along the field line. These field lines
+must be parallel to one another. We can imagine a small change in distance along
+a field line $ds$ (which is essentially an infinitesimal arc length). We can
+say then, 
+\begin{gather*}
+   \frac{d\bs{x}}{ds} = \B(\x,t_0)
+\end{gather*}
+where $\B(\x,t_0)$ is a snapshot of the magnetic field at $t = t_0$. 
+We define $\B$ then as follows, 
+\begin{gather*}
+    \B = \left< \frac{dx}{ds}, \frac{dy}{ds},\frac{dz}{ds}\right>
+\end{gather*}
+Consider for example, a magnetic field given by $\B = \left<y, x, 0\right>$. We
+would have then, 
+\begin{gather*}
+    \frac{dx}{\B_x} = \frac{dy}{\B_y} = ds\\
+    \frac{dx}{y} = \frac{dy}{x} = ds\\
+    \int xdx = \int ydy \\
+    \frac{x^2}{2} = \frac{y^2}{2} + C\\
+    x^2 - y^2 = C_1
+\end{gather*}
+where $C_1$ is given by the initial conditions for $x$ and $y$. We can imagine
+what the field lines might look for this magnetic field, and they happen to look
+like a saddle node in the $x-y$ plane. 
+
+\section{Kinematics for MHD (Continued)}
+
+\subsection{}
 \end{document}
