@@ -36,8 +36,10 @@ program netcdfextract
 
   real, dimension(:,:,:), allocatable :: ux,uy,uz,wz,temp,tdisp,tot_energy,mdisp
   real, dimension(:,:), allocatable :: ux_bar,uy_bar,uz_bar,uz_rms,mdisp_bar
-  real, dimension(:,:), allocatable :: shear, strain
+  real, dimension(:,:), allocatable :: growth_rate
   real, dimension(:,:), allocatable :: tdisp_bar, barotropic_ER,lz_bar,vortz_bar
+  real :: invRo=10 ! this needs to be changed for each simulation it is ran on
+  complex :: c1 = (1.0, 0.0), ci = (0.0, 1.0)
   integer :: i1,j1,k1,ncount, num_files
 
   open(55,file='vort_plot.dat')
@@ -118,8 +120,7 @@ program netcdfextract
       allocate(mdisp_bar(0:Nx-1,0:Ny-1))
       allocate(lz_bar(0:Nx-1,0:Ny-1))
       allocate(barotropic_ER(0:Nx-1,0:Ny-1))
-      allocate(strain(0:Nx-1,0:Ny-1))
-      allocate(shear(0:Nx-1,0:Ny-1))
+      allocate(growth_rate(0:Nx-1,0:Ny-1))
 
       starts = (/ 1, 1, 1, 1 /)
       counts = (/ Nx, Ny, Nz, 1 /)
@@ -166,8 +167,7 @@ program netcdfextract
         mdisp_bar = 0.
         lz_bar = 0.
         barotropic_ER = 0.
-        strain = 0.
-        shear = 0.
+        growth_rate = 0.
       
         do k1=1,Nz-2
            do j1=1,Ny-2
@@ -218,22 +218,30 @@ program netcdfextract
 
         lz_bar = acf3D(uz, Nz, dz, Nx, Ny)
         
-        !compute strain and shear rates
+        !compute real part of the largest eigenvalue (Hattori & Hirota 2023)
         do j1 = 1, Ny-2
           do i1 = 1, Nx-2
-            strain(i1,j1) = sqrt(((ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx))**2 +&
-                            ((uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy))**2)
-            shear(i1,j1) = sqrt(((ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy))**2 +&
-                            ((uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx))**2)
+            growth_rate(i1,j1) = -(ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(4*dx) - &
+              (uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(4*dy) + real(c1*sqrt(&
+              ((ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
+              +(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy))**2 - 4*(&
+              -(invRo**2) + invRo*((ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy)&
+                +(uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx)) + &
+              (ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
+              *(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy) + &
+              -(uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx)*&
+              (ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy))))/2.
           end do 
         end do 
 
+        write(55,"(3E16.7)") dx, dy, dz
+
         do j1 = 1, Ny-2
           do i1 = 1, Nx-2
-            write(55,"(2I16, 12E16.7)") i1, j1, t, ux_bar(i1,j1),&
+            write(55,"(2I16, 11E16.7)") i1, j1, t, ux_bar(i1,j1),&
               uy_bar(i1,j1), uz_bar(i1,j1), vortz_bar(i1,j1), tdisp_bar(i1,j1),&
               uz_rms(i1,j1), lz_bar(i1,j1), barotropic_ER(i1,j1),&
-              mdisp_bar(i1,j1), strain(i1,j1), shear(i1,j1)
+              mdisp_bar(i1,j1), growth_rate(i1,j1)
           end do 
         end do 
         write(55,*)
@@ -241,7 +249,7 @@ program netcdfextract
       enddo
       deallocate(ux,uy,uz)
       deallocate(wz,tdisp,temp,tot_energy,mdisp)
-      deallocate(ux_bar,uy_bar,uz_bar,tdisp_bar,uz_rms,mdisp_bar,strain,shear)
+      deallocate(ux_bar,uy_bar,uz_bar,tdisp_bar,uz_rms,mdisp_bar,growth_rate)
       deallocate(vortz_bar,lz_bar,barotropic_ER)
     end do
   else ! if only one simdat file is given
@@ -310,13 +318,12 @@ program netcdfextract
     allocate(uz_bar(0:Nx-1,0:Ny-1))
     allocate(ux_bar(0:Nx-1,0:Ny-1))
     allocate(uy_bar(0:Nx-1,0:Ny-1))
-    allocate(strain(0:Nx-1,0:Ny-1))
-    allocate(shear(0:Nx-1,0:Ny-1))
     allocate(uz_rms(0:Nx-1,0:Ny-1))
     allocate(tdisp_bar(0:Nx-1,0:Ny-1))
     allocate(mdisp_bar(0:Nx-1,0:Ny-1))
     allocate(lz_bar(0:Nx-1,0:Ny-1))
     allocate(barotropic_ER(0:Nx-1,0:Ny-1))
+    allocate(growth_rate(0:Nx-1,0:Ny-1))
 
     starts = (/ 1, 1, 1, 1 /)
     counts = (/ Nx, Ny, Nz, 1 /)
@@ -415,10 +422,16 @@ program netcdfextract
       !compute strain and shear rates (ask pascale about this)
       do j1 = 1, Ny-2
         do i1 = 1, Nx-2
-          strain(i1,j1) = sqrt(((ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx))**2 +&
-                          ((uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy))**2)
-          shear(i1,j1) = sqrt(((ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy))**2 +&
-                          ((uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx))**2)
+          growth_rate(i1,j1) = -(ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(4*dx) - &
+              (uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(4*dy) + real(c1*sqrt(&
+              ((ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
+              +(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy))**2 - 4*(&
+              -(invRo**2) + invRo*((ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy)&
+                +(uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx)) + &
+              (ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
+              *(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy) + &
+              -(uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx)*&
+              (ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy))))/2.
         end do 
       end do 
 
@@ -427,7 +440,7 @@ program netcdfextract
           write(55,"(2I16, 12E16.7)") i1, j1, t, ux_bar(i1,j1),&
             uy_bar(i1,j1), uz_bar(i1,j1), vortz_bar(i1,j1), tdisp_bar(i1,j1),&
             uz_rms(i1,j1), lz_bar(i1,j1), barotropic_ER(i1,j1),&
-            mdisp_bar(i1,j1), strain(i1,j1), shear(i1,j1)
+            mdisp_bar(i1,j1), growth_rate(i1,j1)
         end do 
       end do 
       write(55,*)
@@ -436,7 +449,7 @@ program netcdfextract
     deallocate(ux,uy,uz)
     deallocate(wz,tdisp,temp,tot_energy,mdisp)
     deallocate(ux_bar,uy_bar,uz_bar,tdisp_bar,uz_rms,mdisp_bar)
-    deallocate(vortz_bar,lz_bar,barotropic_ER,strain,shear)
+    deallocate(vortz_bar,lz_bar,barotropic_ER,growth_rate)
   end if
   
   close(55)
