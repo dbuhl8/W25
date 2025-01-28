@@ -222,7 +222,7 @@ program netcdfextract
         do j1 = 1, Ny-2
           do i1 = 1, Nx-2
             growth_rate(i1,j1) = -(ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(4*dx) - &
-              (uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(4*dy) + real(c1*sqrt(&
+              (uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(4*dy) + real(sqrt(c1*(&
               ((ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
               +(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy))**2 - 4*(&
               -(invRo**2) + invRo*((ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy)&
@@ -230,7 +230,8 @@ program netcdfextract
               (ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
               *(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy) + &
               -(uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx)*&
-              (ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy))))/2.
+              (ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy))&
+              )))/2.
           end do 
         end do 
 
@@ -419,11 +420,10 @@ program netcdfextract
 
       lz_bar = acf3D(uz, Nz, dz, Nx, Ny)
 
-      !compute strain and shear rates (ask pascale about this)
       do j1 = 1, Ny-2
         do i1 = 1, Nx-2
           growth_rate(i1,j1) = -(ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(4*dx) - &
-              (uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(4*dy) + real(c1*sqrt(&
+              (uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(4*dy) + real(sqrt(c1*(&
               ((ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
               +(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy))**2 - 4*(&
               -(invRo**2) + invRo*((ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy)&
@@ -431,7 +431,7 @@ program netcdfextract
               (ux_bar(i1+1,j1)-ux_bar(i1-1,j1))/(2*dx)&
               *(uy_bar(i1,j1+1)-uy_bar(i1,j1-1))/(2*dy) + &
               -(uy_bar(i1+1,j1)-uy_bar(i1-1,j1))/(2*dx)*&
-              (ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy))))/2.
+              (ux_bar(i1,j1+1)-ux_bar(i1,j1-1))/(2*dy)))))/2.
         end do 
       end do 
 

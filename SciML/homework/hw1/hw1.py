@@ -45,21 +45,11 @@ if iterate:
             TH = np.linalg.lstsq(phi,y)[0]
         else: # do a psuedoinverse solution (can switch to np.pinv)
             TH = np.matmul(np.linalg.pinv(phi),y)
-            #U, S, Vh = np.linalg.svd(phi, True, True)
-            #TH = np.dot(Vh[0:n,:].conj().T,
-            #np.multiply(np.divide(1,S,where=S>0),np.matmul(U.conj().T,y)))
-
         # compute the error 
         err[i] = np.linalg.norm(y-np.matmul(phi, TH),2)
         terr[i] = np.linalg.norm(ty-np.matmul(tphi, TH),2)
 
     fig, (ax1, ax2, ax3) = plt.subplots(3,1)
-    #fig, ax = plt.subplots()
-    #ax.semilogy(P,err, '-', color='orange', linewidth=0.5)
-    #ax.semilogy(P, terr, 'b--', linewidth=0.5)
-    #ax.title.set_text("Error")
-    #ax.set_ylabel(r'$||y - A\Theta^*||_2$')
-    #ax.set_xlabel('Number of Features')
 
     ax1.plot(x,y,'bx',x,np.matmul(phi, TH),'g--',linewidth=1,markersize=3)
     ax1.title.set_text("Training Data")
