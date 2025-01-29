@@ -17,4 +17,7 @@
 \contentsline {subsection}{\numberline {6.3}Common Boundary Conditions for the MHD equations}{15}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Kinematics}{17}{subsection.6.4}%
 \contentsline {section}{\numberline {7}Kinematics for MHD (Continued)}{18}{section.7}%
-\contentsline {subsection}{\numberline {7.1}}{18}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.1}Magnetic Fieldlines}{18}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Magnetic Flux}{18}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Magnetic Flux Tubes}{19}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Nondimensionalization}{19}{subsection.7.4}%

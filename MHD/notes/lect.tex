@@ -73,8 +73,10 @@
 \newcommand{\ey}{\bs{e}_y}
 \newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\ddt}[1]{\frac{d #1}{d t}}
 \newcommand{\DDt}[1]{\frac{D #1}{D t}}
+\newcommand{\DD}[2]{\frac{D #1}{D #2}}
 \newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
 \newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
 \newcommand{\ppz}[1]{\frac{\partial #1}{\partial z}}
@@ -798,5 +800,92 @@ like a saddle node in the $x-y$ plane.
 
 \section{Kinematics for MHD (Continued)}
 
-\subsection{}
+\subsection{Magnetic Fieldlines}
+
+\begin{gather*}
+    \pp{\bs{x}}{s}(s) = \B(\x,t_0), \quad \x(s=0,t_0) = \x_0(t_0)
+\end{gather*}
+
+\subsection{Magnetic Flux}
+
+\begin{gather*}
+    d\bs{S} = \hat{\bs{n}}dS
+\end{gather*}
+We can define the Magnetic flux as the integral of $\B$ through the
+surface/interface. 
+\begin{gather*}
+    \int_S\B\hat{\bs{n}}dS
+\end{gather*}
+
+\subsection{Magnetic Flux Tubes}
+
+We have streamtubes for velocity, vortex tubes for vorticity, and magnetic flux tubes
+for magnetic fields. Consequently, we must have that the flux through a surface
+must be constant when that surface is advected some $\delta t$ away from its
+original position, i.e.
+\begin{gather*}
+    \div{\B} = 0\\
+    \int_{S1} \B\cdot\hat{\bs{n}}_1dS + \int_{S2} \B\cdot\hat{\bs{n}}_2dS +
+    \int_{S3} \B\cdot\hat{\bs{n}}_3dS = 0\\
+     \int_{S1} \B\cdot\hat{\bs{n}}_1dS = - \int_{S2} \B\cdot\hat{\bs{n}}_2dS
+\end{gather*}
+where $S1$ and $S2$ are the two surfaces at the end of the tube, and $S3$ is the
+surface connecting the perimeters of $S1$ and $S2$. We can think of the LHS of
+this equation as the flux coming in from the left, and the RHS as the flux
+leaving from the right (or vice versa as I have written the signs here). 
+
+\subsection{Nondimensionalization}
+
+We remember first how to nondimensionalize the kinematic equations, first with
+the navier stokes equation. 
+\begin{gather*}
+    \rho_0\DDt{\uvec} = -\grad p + \jvec\times\B +  \mu\grad^2\uvec\\
+    \rho_0\frac{U^2}{L}\DD{\uvec'}{t'} = -\frac{P}{L}\grad' p' +
+    \frac{B^2}{\mu_0L}(\jvec'\times\B') + 
+    \mu\frac{U}{L^2}\grad'^2\uvec'\\
+    \DD{\uvec'}{t'} = -\frac{P}{\rho_0U^2}\grad' p' +
+    \frac{B^2}{\mu_0\rho_0U^2}(\jvec'\times\B') + 
+    \frac{\mu}{\rho_0LU}\grad'^2\uvec'
+\end{gather*}
+where here we chose $P$ such that the fraction $PL/\rho_0U^2$ is equal to 1, and
+define the Reynolds number $Re = U/\nu$, where $\nu = \mu/\rho_0$ and the
+Chandrasehkar number $Q = B^2/\mu_0\rho_0U^2$ which describes the signficance of
+the Lorentz force onto the dynamics of the system. 
+\begin{gather*}
+    \DD{\uvec'}{t'} = - \grad' p' + \frac{1}{Re}\grad'^2\uvec'
+\end{gather*}
+Next we nondimensionalize the induction equation,
+\begin{gather*}
+    \DDt{\B} = (\B\cdot\grad)\uvec + \eta\grad^2\B\\
+    \frac{BU}{L} \DD{\B'}{t'} = \frac{BU}{L}(\B'\cdot\grad')\uvec' + \frac{\eta
+    B}{L^2}\grad'^2\B'\\
+    \DD{\B'}{t'} = (\B'\cdot\grad')\uvec' + \frac{\eta}{LU}\grad'^2\B'
+\end{gather*}
+where we define the Magnetic Renyolds number, $Rm = UL/\eta$. Thus we obtain
+the nondimensionalized induction equation, 
+\begin{gather*}
+    \DD{\B'}{t'} = (\B'\cdot\grad')\uvec' + \frac{1}{Rm}\grad'^2\B'
+\end{gather*}
+Similar to the navier stokes equation, the Magnetic Reynolds number can be taken
+to have two extreme limits in which the dynamics of the Magnetic field is
+affected drastically. Most importantly, we have the limit where $Rm \gg 1$ in
+which magnetic diffusivity is negligable and the induction equation can be
+written as, 
+\begin{gather*}
+    \DDt{\B} = (\B\cdot\grad)\uvec
+\end{gather*}
+and conversely the opposite limit ($Rm \ll 1$) in which magnetic diffusivity is
+dominant, i.e.
+\begin{gather*}
+    \ppt{\B} = \frac{1}{Rm}\grad^2\B.
+\end{gather*}
+In the diffusive case, the induction equation reduces to a heat-like
+differential equation in which we have periodic spatial modes which decay on a
+time scale dependent on the wavenumber of the spatial modes and the diffusion
+coefficient $1/Rm \sim L^2/\eta$. 
+
+
+\begin{gather*}
+\end{gather*}
+
 \end{document}
