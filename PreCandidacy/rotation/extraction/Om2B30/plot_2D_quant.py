@@ -33,7 +33,6 @@ k = -1
 counter = 0
 for line in file:
     line_elements = [float(x) for x in line.split()]
-    print(line_elements)
     if len(line_elements) > 0 :
         i = int(line_elements[0] - 1)
         j = int(line_elements[1] - 1)
