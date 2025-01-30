@@ -38,7 +38,7 @@ program netcdfextract
   real, dimension(:,:), allocatable :: ux_bar,uy_bar,uz_bar,uz_rms,mdisp_bar
   real, dimension(:,:), allocatable :: growth_rate
   real, dimension(:,:), allocatable :: tdisp_bar, barotropic_ER,lz_bar,vortz_bar
-  real :: invRo=10 ! this needs to be changed for each simulation it is ran on
+  real :: invRo=2 ! this needs to be changed for each simulation it is ran on
   complex :: c1 = (1.0, 0.0), ci = (0.0, 1.0)
   integer :: i1,j1,k1,ncount, num_files
 
@@ -127,6 +127,7 @@ program netcdfextract
       ! Read the netcdf file, find the correct timestep.
       n = 0
       timestep = 0 
+      write(55, "(3I16, 2F16.7)") Nx, Ny, nsteps, dx, dy
       do while (n.le.nsteps-1)
          n=n+1
          call check(nf90_get_var(ncid,timestep_varid,timestep,(/ n /)))
@@ -235,8 +236,6 @@ program netcdfextract
           end do 
         end do 
 
-        write(55,"(3E16.7)") dx, dy, dz
-
         do j1 = 1, Ny-2
           do i1 = 1, Nx-2
             write(55,"(2I16, 11E16.7)") i1, j1, t, ux_bar(i1,j1),&
@@ -331,6 +330,7 @@ program netcdfextract
     ! Read the netcdf file, find the correct timestep.
     n = 0
     timestep = 0 
+    write(55, "(3I16, 2F16.7)") Nx, Ny, nsteps, dx, dy
     do while (n.le.nsteps-1)
        n=n+1
        call check(nf90_get_var(ncid,timestep_varid,timestep,(/ n /)))

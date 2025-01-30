@@ -81,7 +81,7 @@ growth_rate = reshape(vort(row,13),[766, 766]);
 %Quantity:       i   j   t   ux  uy  uz  wz  tdisp   uz_rms  lz  baro_ER     mdisp   gr
 
 
-
+subplot(2,2,1);
 surf(x1, y1, wz+invRo)
 xlim([0,766])
 ylim([0,766])
@@ -92,10 +92,11 @@ colormap(redwhiteblue(min(wz+invRo,[],'all'),max(wz+invRo,[],'all')))
 colorbar
 title("$\widehat{\omega_z} + 2\Omega$", 'Interpreter','latex','FontSize',22)
 %clim([-35,35])
-saveas(gcf,strcat(file,'_vortz_bar.pdf'))
+%saveas(gcf,strcat(file,'_vortz_bar.pdf'))
 
-figure('color','white')
+%figure('color','white')
 
+subplot(2,2,2);
 surf(x1, y1, RC)
 xlim([0,766])
 ylim([0,766])
@@ -106,10 +107,11 @@ colormap parula
 clim([0 1])
 colorbar
 title("$\frac{Ro_L}{Fr}$",'Interpreter','latex','FontSize',22)
-saveas(gcf,strcat(file,'_RC.pdf'))
+%saveas(gcf,strcat(file,'_RC.pdf'))
 
-figure('color','white')
+%figure('color','white')
 
+subplot(2,2,3);
 surf(x1, y1, tdisp)
 xlim([0,766])
 ylim([0,766])
@@ -120,10 +122,11 @@ colormap parula
 colorbar
 %clim([0,3.5])
 title("$\frac{\widehat{|\nabla T|^2}}{Fr^2Pe}$",'Interpreter','latex','FontSize',22)
-saveas(gcf,strcat(file,'_tdisp_bar.pdf'))
+%saveas(gcf,strcat(file,'_tdisp_bar.pdf'))
 
-figure('color','white')
+%figure('color','white')
 
+subplot(2,2,4);
 surf(x1, y1, growth_rate)
 xlim([0,766])
 ylim([0,766])
@@ -134,8 +137,8 @@ colormap parula
 colorbar
 %clim([0,1.2])
 title("$Re(\lambda)$",'Interpreter','latex','FontSize',22)
-saveas(gcf,strcat(file,'_growth_rate.pdf'))
 
-figure('color','white')
+saveas(gcf,strcat(file,'_vert_avg.pdf'))
+
 
 
