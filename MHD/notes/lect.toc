@@ -21,3 +21,6 @@
 \contentsline {subsection}{\numberline {7.2}Magnetic Flux}{18}{subsection.7.2}%
 \contentsline {subsection}{\numberline {7.3}Magnetic Flux Tubes}{19}{subsection.7.3}%
 \contentsline {subsection}{\numberline {7.4}Nondimensionalization}{19}{subsection.7.4}%
+\contentsline {section}{\numberline {8}}{20}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Charged Plate example}{20}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Perfectly Conducting Limit}{22}{subsection.8.2}%

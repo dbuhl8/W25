@@ -60,6 +60,7 @@
 \newcommand{\pt}{\partial t}
 \newcommand{\pz}{\partial z}
 \newcommand{\uvec}{\bs{u}}
+\newcommand{\nvec}{\hat{\bs{n}}}
 \newcommand{\jvec}{\bs{j}}
 \newcommand{\bvec}{\bs{B}}
 \newcommand{\B}{\bs{B}}
@@ -883,6 +884,119 @@ In the diffusive case, the induction equation reduces to a heat-like
 differential equation in which we have periodic spatial modes which decay on a
 time scale dependent on the wavenumber of the spatial modes and the diffusion
 coefficient $1/Rm \sim L^2/\eta$. 
+
+
+\section{}
+
+\subsection{Charged Plate example}
+
+Let us imagine a magnetic field with initial conditions that looks like a step
+function 
+\begin{gather*}
+    B_y(x, t=0) = \begin{cases} B_0 & x >0\\
+                                -B_0 & x < 0\end{cases}
+\end{gather*}
+    This implies there is a jump discontinuity in the problem, and let us solve
+    for the time evolution of this problem in the diffusive limit, i.e. $Rm \ll
+    1$. We begin with the diffusive limit of the dimensional induction equation.
+    We attempt to solve using a similarity solution since we have no useful time
+    or length scales in the problem (i.e. infinite domain and no velocity field
+    (advection/induction) leads us to not have a well defined non-dimensional
+    equation). 
+\begin{gather*}
+    \ppt{B_y} = \eta\grad^2B_y\\
+    B_y = B_0f(\xi), \xi = \frac{x}{2\sqrt{\eta t}}\\
+    \pp{\xi}{t}\pp{B_y}{\xi} = \eta\left(\pp{x}{\xi}\right)^2\pp{^2B_y}{\xi^2}\\
+    B_0\pp{\xi}{t}\pp{f}{\xi} = \frac{B_0}{4t}\pp{^2f}{\xi^2}\\
+    -\frac{B_0x\eta}{4\sqrt{\eta^3t^3}}\pp{f}{\xi} =
+    \frac{B_0}{4t}\pp{^2f}{\xi^2}\\
+    -\pp{f}{\xi}\frac{\xi}{2} = \pp{^2f}{\xi}
+\end{gather*}
+Integrating this equation twice reveals the following function, 
+\begin{gather*}
+    f(\xi) = c_1\int_0^{\xi} e^{-s^2}ds + c_2
+\end{gather*}
+We can then fit this function to the boundary conditions relevant to the
+problem. The conditions we consider are the following, 
+\begin{gather*}
+    B_y(x\to\infty) = B_+, \quad B_y(x\to-\infty) = B_-, \quad B_y(x=0) = 0\\
+    f(0) = 0 \implies c_2 = 0\\
+    f(\xi\to\infty) = c_1\int_0^{\infty} e^{-s^2}ds = 1\\
+    c_1\frac{\sqrt{\pi}}{2} = 1\\
+    B_y(\xi) = \frac{2B_0}{\sqrt{\pi}}\int_0^{\xi} e^{-s^2}ds
+\end{gather*}
+
+We can use the fact that the incompressible vorticity equation is analogous to
+the induction equation. This prompts us to use solutions for the vorticity field
+as solutions to the induction equation. Solutions are not guaranteed to work, as
+the vorticity equation is guaranteed to be nonlinear, where as the induction
+equation can be defined to the linear or non-linear depending on the relevant
+scaling of the lorenz force and other factors. 
+
+\subsection{Perfectly Conducting Limit}
+
+Let us make some assumptions about the fluid and conductivity related to the
+magnetic field. In a perfectly conducting limit, we have $Rm \ll 1$. 
+\begin{gather*}
+    \ppt{\B} = \grad\times(\uvec\time\B) + \eta\grad^2\B\\
+    \DDt{\B} = (\B\cdot\grad)\uvec + \eta\grad^2\B\\
+\end{gather*}
+According to Alfven's theorem, in an ideal (non-resistive; $\eta = 0$) fluid,
+magnetic field lines move as if they are frozen-in to the flow. 
+\begin{gather*}
+    \DDt{\delta x} = \uvec(x + \delta x) - \uvec(x) \\
+    \DDt{\delta x} = \delta x \cdot \grad \uvec + O(\delta x^2)
+\end{gather*}
+More specifically, magnetic flux through any loop moving with the fluid is constant.
+That is, $\ppt{\phi_B} = 0$. This makes the intuitive idea that magnetic flux
+through a surface is conserved in time, but it relies on arguments which are not
+immediately obvious. Generally, $\phi_B$ can change position and the magnetic
+field is not constant. 
+\begin{gather*}
+    \int_V \div{\B} = 0 = \oint_{S_V} \B\cdot\hat{\bs{n}}dS_V\\
+    = -\int_S \B\cdot\nvec dS + \int_{S'}\B\cdot\nvec dS' + \int_{S''}
+    \B\cdot\nvec dS'' = 0
+\end{gather*}
+Note that the surface $S''$ is represented by the cross product between the line
+vector on the perimeter of $S$ and the flow field $\uvec$. 
+\begin{gather*}
+    \B \cdot\bs{dS''} = \B \cdot (\bs{dL} \times \uvec) dt\\
+    = (\uvec\times\B) \cdot \bs{dL}dt
+\end{gather*}
+and we can now write the following integral equation,
+\begin{gather*}
+    \int_{S'} \B\cdot\nvec dS' = \int_{S}\B\cdot\nvec dS - dt\oint_{C}
+    \uvec\times\B \cdot \bs{dL}
+\end{gather*}
+We can then denote the rate of change of the magnetic flux, we have
+\begin{gather*}
+    \ppt{\phi_B} = \int_S \left[\B(t+dt)-\B(t)\right]\cdot\bs{dS}-
+    dt\oint_{C}\uvec\times\B\cdot\bs{dL}\\
+    \ppt{\phi_B} = \int_S \ppt{\B} - \grad\times(\uvec\times\B)\cdot\bs{dL} = 0\\
+\end{gather*}
+This is an equivalent statement to the Reynolds transport theorem or the Leibniz
+theorem. We can also show something similar with Faraday's law in integral form. 
+Pick a curve $C$ moving at a speed $\uvec$. 
+\begin{gather*}
+    \grad\times\E = -\ppt{\B}\\
+    \grad\times(\E + \uvec\times\B) = -\ppt{\B} + \grad\times(\uvec\times\B)\\
+    \oint_C (\E + \uvec\times\B)\cdot\bs{dL} = \int_Si\left[-\ppt{\B} +
+    \grad\times(\uvec\times\B)\right] \cdot\bs{dS}\\
+    \oint_C \E_r\cdot\bs{dL} = -\ppt{}\left(\int_S\B\cdot\nvec dS \right)
+\end{gather*}
+We obtain a differential equation for the electric field in relative motion
+(EMF) which as two components which are a transformer EMF which is due to
+changes in $P(t)$ (static changes), and a motional EMF which is resultant from the motion of the
+curve. 
+\begin{gather*}
+    \oint_C \E_r\cdot\bs{dL} = -\ppt{}\left(\int_S \B\cdot\nvec dS\right), \quad
+    \jvec = \sigma \E_r\\
+    \frac{1}{\sigma}\oint_C\jvec\cdot\bs{dL} = -\ppt{}\left(\int_S\B\cdot\nvec
+    dS\right)\\
+    \ppt{}\left(\int_S\B\cdot\nvec dS\right) = 0, \quad \sigma \to \infty
+\end{gather*}
+
+
 
 
 \begin{gather*}
