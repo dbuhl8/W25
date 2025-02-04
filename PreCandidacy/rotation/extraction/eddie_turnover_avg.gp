@@ -32,7 +32,6 @@ array B[num_data]
 array Pe[num_data]
 array Re[num_data]
 array invRo[num_data]
-array eff_invRo[num_data]
 array files[num_data]
 array lwb[num_data]
 array upb[num_data]
@@ -42,6 +41,9 @@ array UHrms[num_data]
 array UHerr[num_data]
 array vortratio[num_data]
 array vortratioerr[num_data]
+array loop_per_file[num_data]
+array dt[num_data]
+
 # B30 simulations
 
 files[1] = "<cat B30Re600Pe60/OUT*"
@@ -163,23 +165,27 @@ do for [i=1:num_data] {
     fit [lwb[i]:upb[i]] f(x) files[i] u 2:(sqrt(($41**2)/($39**2 + $40**2 + $41**2))) via a
     vortratio[i] = a
     vortratioerr[i] = FIT_STDFIT
-
-    array turn_avg_tflux[loop_per_file[i]]
-    array turn_avg_tflux_err[loop_per_file[i]]
-    array eff_invRo[loop_per_file[i]]
-    array eff_invRo_err[loop_per_file[i]]
-
-    do for [j=1:loop_per_file[i]] {
-        fit [lwb[i]:lwb[i]+j*dt] f(x) files[i] u 2:9 via a
-        turn_avg_tflux[j] = a
-        turn_avg_tflux_err[j] = FIT_STDFIT
-        fit [lwb[i]:lwb[i]+j*dt] f(x) files[i] u 2:4 via a
-        eff_invRo[j] = a*invRo
-        eff_invRo_err[j] = FIT_STDFIT*invRo
-   }
-
    
 }
+
+stats loop_per_file
+num_loops = STATS_max
+
+array turn_avg_tflux[num_data, num_loops]
+array turn_avg_tflux_err[num_data, num_loops]
+array eff_invRo[num_data, num_loops]
+array eff_invRo_err[num_data, num_loops]
+do for [i=1:num_data] {
+    do for [j=1:loop_per_file[i]] {
+        fit [lwb[i]:lwb[i]+j*dt] f(x) files[i] u 2:9 via a
+        turn_avg_tflux[i][j] = a
+        turn_avg_tflux_err[i][j] = FIT_STDFIT
+        fit [lwb[i]:lwb[i]+j*dt] f(x) files[i] u 2:4 via a
+        eff_invRo[i][j] = a*invRo
+        eff_invRo_err[i][j] = FIT_STDFIT*invRo
+    }
+}
+
 
 # another for loop to fin[i] u 2:9 wia a
 #print B
