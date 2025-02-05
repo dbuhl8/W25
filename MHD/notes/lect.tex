@@ -659,7 +659,7 @@ equations,
 \end{gather}
 
 
-\subsection{Consequences of $\div{\B} = 0$}
+\subsection{Consequences of Gauss's law for Magnetism}
 
 We have (and this can be shown easily) that if the property that the magnetic
 field is divergence free as an initial condition, we have that this property is
@@ -938,8 +938,8 @@ scaling of the lorenz force and other factors.
 Let us make some assumptions about the fluid and conductivity related to the
 magnetic field. In a perfectly conducting limit, we have $Rm \ll 1$. 
 \begin{gather*}
-    \ppt{\B} = \grad\times(\uvec\time\B) + \eta\grad^2\B\\
-    \DDt{\B} = (\B\cdot\grad)\uvec + \eta\grad^2\B\\
+    \ppt{\B} = \grad\times(\uvec\times\B) + \eta\grad^2\B\\
+    \DDt{\B} = (\B\cdot\grad)\uvec + \eta\grad^2\B
 \end{gather*}
 According to Alfven's theorem, in an ideal (non-resistive; $\eta = 0$) fluid,
 magnetic field lines move as if they are frozen-in to the flow. 
@@ -997,7 +997,134 @@ curve.
 \end{gather*}
 
 
+\section{}
 
+\subsection{Additional Vorticity Analogies}
+The perfectly conducting limit of the induction equation, resembles the
+vorticity equation as discussed earlier. More statements can be made comparing
+the nature of vorticity and magnetism. Let us write the lagrangian form of the
+induction equation, 
+\begin{gather*}
+    \DDt{\B} = (\B\cdot\grad)\uvec
+\end{gather*}
+where the RHS is generally thought of as a magnetic field stretching term. We
+can imagine a scenario in which the magnetic field on ly has a z-component, and
+the flow field has a verticla velocity which increases with $z$. We would have
+the, 
+\begin{gather*}
+    \DDt{B_z} = B_z\ppz{w}
+\end{gather*}
+And in this case, the field stretching would produce a stronger magnetic field,
+i.e. stretching and compression of magnetic fields can produce changes to the
+magnetic field strength. 
+
+\subsection{Helicity}
+The Helicity of a fluid flow is given by the scalar quantity, 
+\begin{gather*}
+H_{\text{fluid}} = \int_V \uvec\cdot\bs{\omega} dV
+\end{gather*}
+The Helicity quantity has three topological components that it accounts for.
+First is the notion of ``twist'' for example following the edge surface of a
+cylinder which doesn't move parllel to the edge of the surface. Another is
+``writhe'' which is if a vortex tube twists about itself, creating a sort of
+kink in the center of the tube. The last notion is ``linkage'' in which field
+lines or streamlines are linked together much like links in a chain are bound
+together. 
+
+The magnetic helicity can be defined using two methods, 
+\begin{gather*}
+    H_m = \int_V \bs{A}\cdot\B dV
+\end{gather*}
+where $A$ is the vector potential for $\B$, i.e. $\B = \grad\times\bs{A}$. 
+We also have the current helicity which is given as, 
+\begin{gather*}
+    H_c = \int_V \B \cdot \jvec dV. 
+\end{gather*}
+These quantities represent different things and have different properties. We
+could consider an ideal fluid, and then we would find that the magnetic helicity
+is a constant quantity. ``Cross helicity'' is also conserved $\int_V \B \cdot\uvec dV$. 
+
+\subsection{Additional Theorems for MHD}
+
+The Bondi-Gold theorem is a theorem states that in the perfectly conducting
+limit, we consider a material surface in which the magentic flux is constant,
+$\phi_B = C$ and since we are on a closed surface, it is equal to zero. 
+We can define a closed null line going around this closed surface which divides
+the surface into two bits, $S_1$ and $S_2$ in which in turns allows us to write
+the total flux as the sum of two fluxes $\phi_1$ and $\phi_2$. We must have that
+$\phi_1 = - \phi_2$. We can consider the unsigned fllux, given by $|\phi_B| =
+\int_S |\B\cdot\nvec| dS$. We must have that this unsigned flux is non-zero, but
+is still constant. This led MHD scholars to postulate the existence of invisible
+dynamos, in which the magnetic field can grow in magnetude and yet from the
+outside, we cannot see any change in the field strength. 
+
+
+Another popular theorem is known as Ferraro's Law (of Isorotation). This theorem
+was published in 1937 and is accepted as a subset of Alfven's theorem (though it
+was published before Alfven's theorem in 1942). Let us consider and
+axissymmetric rotating star, with a steady flow field and no diffusion. In
+cylindrical polar coordinates, we have, 
+\begin{gather*}
+    \uvec = r\Omega(r, z)\hat{\bs{\phi}}
+\end{gather*}
+where $\Omega$ is the rotation rate of the star dependent on height and radius.
+We can consider the magnetic field, 
+\begin{gather*}
+    \B = \B_P (r, z, t) \cdot \left<\hat{\bs{r}}, \hat{\bs{\theta}}\right> +
+    \B_{\phi} (r, z, t) \hat{bs{\phi}}\\
+    \ppt{\B} = \grad\times(\uvec\times\B)\\
+    \ppt{\B_p} = -(\uvec\cdot\grad)\B_p + (\B\cdot\grad)\uvec_p + \B_p(\div{\uvec})\\
+    \ppt{\B_p} = -(\uvec_p\cdot\grad_p + \uvec_{\phi} \cdot\grad_{\phi})\B_p +
+    (\B_p\cdot\grad_p + \B_{\phi}\cdot\grad_{phi})\uvec_p +
+    \B_p(\grad_p\cdot\uvec_p + \grad_{\phi}\cdot\uvec_{\phi})\\
+    \ppt{\B_{\phi}} = (\B\cdot\grad)\uvec_{\phi} =
+    (\B_p\cdot\grad_p)\uvec_{\phi}\\
+    (\B\cdot\grad)\uvec_{\phi} = 0 \implies (\B\cdot\grad)\Omega = 0
+\end{gather*}
+This theorem essentially states that the stretching of field lines by
+differential rotation is not allowed in the scenario in which you are looking
+for a steady state solution. 
+
+\subsection{Cauchy Solutions}
+\begin{gather*}
+    \uvec(\x(\bs{a},t))\\
+    \delta \x = \x(\bs{a} + \delta \bs{a}, t) - \x(\bs{a},t)\\
+    = \pp{\x}{\bs{a}} \cdot \delta \bs{a} + O(+)\\
+    \delta \x = \bs{J}\cdot\delta\bs{a}
+\end{gather*}
+We obtain, \
+\begin{gather*}
+    \B(\x(\bs{a},t),t) = \bs{J}(\bs{a},t)\cdot \B(\bs{a},0)
+\end{gather*}
+This is the cauchy solution to our original equation. 
+Let us consider an example. Take $\B(\x,t)$ to be in a perfectly conducting
+fluid, where hte velocity field is defined to be $\uvec = \left< \sin(z),
+\cos(z), 0\right>$ and the field evolves from initial condition of $\B(\x, 0) =
+\left<0, 0, 1\right>$. 
+First we solve with the Cauchy method, i.e. following the particle paths. 
+\begin{gather*}
+   \ppt{\x} = \uvec(\x,t), \quad \x(\bs{a}, 0) = \bs{a}\\
+   \x(t) = \left< t\sin(c_3) + c_1,\, t\cos(c_3) + c_2,\, c_3\right>\\
+   \x(0) = \bs{a} \implies c_1 = a_1,\, c_2 = a_2,\, c_3 = a_3\\
+   \x(t) = \left< t\sin(a_3) + a_1,\, t\cos(a_3) + a_2,\, a_3\right>
+\end{gather*}
+Furthermore, we can find the jacobian,
+\begin{gather*}
+    \bs{J} = \left[\begin{array}{c c c}
+        1 & 0 & t\cos(a_3)\\
+        0 & 1 & -t\sin(a_3)\\
+        0 & 0 & 1
+    \end{array}\right]
+\end{gather*}
+and finally, $\bs{J}\cdot\B$ 
+\begin{gather*}
+    \bs{J}\cdot\B = \left< t\cos(a_3),\, -t\sin(a_3),\, 1\right>
+\end{gather*}
+Now in order to put this back into an eularian form we have to write $\B =
+\B(\x,t)$ and to do this we write $z = a_3$ and find, 
+\begin{gather*}
+    \B(\x,t) = \left< t\cos(z),\, t\sin(z),\, 1\right>
+\end{gather*}
 
 \begin{gather*}
 \end{gather*}

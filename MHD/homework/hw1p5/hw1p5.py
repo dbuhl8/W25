@@ -5,7 +5,7 @@ import matplotlib as mpl
 
 # Field Parameters
 B_0 = 1
-om = 1
+om = 0.5
 eta = 100
 alpha = np.sqrt(0.5*om/eta)
 print("Wavelength = ", 2*np.pi/alpha, ", Scale Height = ",
