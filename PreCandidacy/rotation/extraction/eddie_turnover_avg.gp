@@ -171,10 +171,10 @@ do for [i=1:num_data] {
 stats loop_per_file
 num_loops = STATS_max
 
-array turn_avg_tflux[num_data, num_loops]
-array turn_avg_tflux_err[num_data, num_loops]
-array eff_invRo[num_data, num_loops]
-array eff_invRo_err[num_data, num_loops]
+array Om0.5B30_avg_tflux[num_data, num_loops]
+array Om0.5B30_avg_tflux_err[num_data, num_loops]
+array Om0.5eff_invRo[num_data, num_loops]
+array Om0.5eff_invRo_err[num_data, num_loops]
 do for [i=1:num_data] {
     do for [j=1:loop_per_file[i]] {
         fit [lwb[i]:lwb[i]+j*dt] f(x) files[i] u 2:9 via a
