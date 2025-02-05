@@ -22,9 +22,6 @@ for fn in files:
     urms = np.array([])
     t = np.array([])
     wT = np.array([])
-    j = 0
-    k = 0
-
     # load data from text file to np arrays
     for line in file:
         if not line.startswith('#'): #skips headers
@@ -33,18 +30,19 @@ for fn in files:
             np.append(t,line_elements[1])
             np.append(urms,line_elements[3])
             np.append(wT,line_elements[9])
-            k += 1
     # perform averaging over eddie turnover times (roughly)
     dt = 2*(np.pi**2)/urms[0]
+    idx = np.array([0])
     for j in range(10):
-        idx = np.where(t[0] <= t <= t[0]+dt)
-        eInvRo[i,j] += np.sum(urms[idx])*invRo/len(idx)
+        idx = np.where(t[idx[-1]] <= t <= t[idx[-1]]+dt)
+        eInvRo[i,j] = np.sum(urms[idx])*invRo[i]/len(idx)
         eInvRo_err[i,j] = np.std(urms[idx])
-        avg_wT[i,j] += np.sum(wT[idx])/len(idx)
+        avg_wT[i,j] = np.sum(wT[idx])/len(idx)
         avg_wT_err[i,j] = np.std(wT[idx])
+        dt = 2*(np.pi**2)/urms[idx[-1]]
     i += 1
 
 fig, ax = plt.subplots(7)
 
 for i in range(num_files):
-    ax[i].plot() #finish this later
+    ax[i].errorbar(eInvRo[i,:], avg_wT[i,:], avg_wT_err[i,:], eInvRo_err[i,:]) #finish this later
