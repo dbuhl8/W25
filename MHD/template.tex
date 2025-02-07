@@ -17,7 +17,7 @@
 \usepackage{tikz}
 \usepackage{hyperref}
 
-\titleformat{\section}{\bfseries\Large}{Problem \thesection}{5pt}{}
+\titleformat{\section}{\bfseries\Large}{Problem \thesection:}{5pt}{}
 
 \begin{document}
 
@@ -54,6 +54,9 @@
 \newcommand{\pt}{\partial t}
 \newcommand{\pz}{\partial z}
 \newcommand{\uvec}{\bs{u}}
+\newcommand{\bvec}{\bs{B}}
+\newcommand{\B}{\bs{B}}
+\newcommand{\jvec}{\bs{j}}
 \newcommand{\F}{\bs{F}}
 \newcommand{\T}{\tilde{T}}
 \newcommand{\ez}{\bs{e}_z}
@@ -61,6 +64,8 @@
 \newcommand{\ey}{\bs{e}_y}
 \newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pptwo}[2]{\frac{\partial^2 #1}{\partial #2^2}}
 \newcommand{\DDt}[1]{\frac{D #1}{D t}}
 \newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
 \newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}

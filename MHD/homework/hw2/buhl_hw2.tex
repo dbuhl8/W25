@@ -1,8 +1,7 @@
 \documentclass{article}
 
 \usepackage{graphicx} % Required for inserting images
-\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
-\usepackage{amsmath}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry} \usepackage{amsmath}
 \usepackage{amsthm} %proof environment
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -17,7 +16,7 @@
 \usepackage{tikz}
 \usepackage{hyperref}
 
-\titleformat{\section}{\bfseries\Large}{Problem \thesection}{5pt}{}
+\titleformat{\section}{\bfseries\Large}{Problem \thesection:}{5pt}{}
 
 \begin{document}
 
@@ -54,6 +53,11 @@
 \newcommand{\pt}{\partial t}
 \newcommand{\pz}{\partial z}
 \newcommand{\uvec}{\bs{u}}
+\newcommand{\bvec}{\bs{B}}
+\newcommand{\nvec}{\hat{\bs{n}}}
+\newcommand{\B}{\bs{B}}
+\newcommand{\A}{\bs{A}}
+\newcommand{\jvec}{\bs{j}}
 \newcommand{\F}{\bs{F}}
 \newcommand{\T}{\tilde{T}}
 \newcommand{\ez}{\bs{e}_z}
@@ -61,6 +65,8 @@
 \newcommand{\ey}{\bs{e}_y}
 \newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pptwo}[2]{\frac{\partial^2 #1}{\partial #2^2}}
 \newcommand{\DDt}[1]{\frac{D #1}{D t}}
 \newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
 \newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
@@ -80,10 +86,47 @@
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
 
-\section{}
+\section{Show that magnetic helicity if conserved}
+
+\begin{proof}
+    Show that the following quantity is conserved with time. 
+    \begin{gather*}
+        h_m = \int_V \A\cdot\B dV, \quad \B = \grad\times\A\\
+        \ppt{h_m} = \ppt{}\left(\int_V \A\cdot\B dV\right)\\
+        \ppt{h_m} = \int_V \ppt{}\left(\A\cdot\B\right) dV + \int_{\partial V}
+        (\A\cdot\B)(\uvec\cdot\nvec) dS
+    \end{gather*}
+    where $V$ is a closed volume in the domain of the fluid and $\partial V$ is
+    the boundary surface of that closed volume. According to the Reynolds
+    transport theorem we have the following time derivative of the magnetic
+    helicity. 
+    We can follow up by taking the time derivatives of $\A\cdot\B$. 
+    \begin{align*}
+        \ppt{h_m} &= \int_V \ppt{}\left(\A\cdot\B\right) dV + \int_{\partial V}
+        (\A\cdot\B)(\uvec\cdot\nvec) dS\\
+        &= \int_V \ppt{\A}\cdot\B + \A\cdot\ppt{\B} dV + \int_{\partial V}
+        (\A\cdot\B)(\uvec\cdot\nvec) dS\\
+        &= \int_V \B\cdot\grad\phi + \A\cdot\left(-(\uvec\cdot\grad)\B +
+        (\B\cdot\grad)\uvec + \B(\div{\uvec})\right) + \int_{\partial V}
+        (\A\cdot\B)(\uvec\cdot\nvec) dS\\
+        &= \int_V \B\cdot\grad\phi + \A\cdot\left(-(\uvec\cdot\grad)\B +
+        (\B\cdot\grad)\uvec + \B(\div{\uvec})\right) + (\grad\cdot
+        (\A\cdot\B)\uvec) dV\\
+        &= \int_V \B\cdot\grad\phi -\A\cdot(\uvec\cdot\grad)\B +
+        \A\cdot(\B\cdot\grad)\uvec + (\A\cdot\B)(\div{\uvec})\right) + (\grad\cdot
+        (\A\cdot\B)\uvec) dV\\
+        &= \int_V \B\cdot\grad\phi -\A\cdot(\uvec\cdot\grad)\B +
+        \A\cdot(\B\cdot\grad)\uvec - \uvec\cdot\grad(\A\cdot\B) dV\\
+        &= \int_V \B\cdot\grad\phi -\B\cdot(\uvec\cdot\grad)\A +
+        \A\cdot(\B\cdot\grad)\uvec  dV\\
+    \end{align*}
+    where we use $\ppt{\A} = \uvec\times\B + \grad\phi$ from the lecture note
+    and the Davidson text. 
 
 
-\section{}
+\end{proof}
+
+\section{Solve using Cauchy solutions}
 
 
 \end{document}
