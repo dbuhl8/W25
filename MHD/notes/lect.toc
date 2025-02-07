@@ -16,16 +16,22 @@
 \contentsline {subsection}{\numberline {6.2}Consequences of Gauss's law for Magnetism}{16}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Common Boundary Conditions for the MHD equations}{16}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Kinematics}{18}{subsection.6.4}%
-\contentsline {section}{\numberline {7}Kinematics for MHD (Continued)}{19}{section.7}%
+\contentsline {section}{\numberline {7}Kinematics for MHD: Continued}{19}{section.7}%
 \contentsline {subsection}{\numberline {7.1}Magnetic Fieldlines}{19}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Magnetic Flux}{19}{subsection.7.2}%
 \contentsline {subsection}{\numberline {7.3}Magnetic Flux Tubes}{20}{subsection.7.3}%
 \contentsline {subsection}{\numberline {7.4}Nondimensionalization}{20}{subsection.7.4}%
-\contentsline {section}{\numberline {8}}{21}{section.8}%
+\contentsline {section}{\numberline {8}Kinematics for MHD: Continued}{21}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Charged Plate example}{21}{subsection.8.1}%
 \contentsline {subsection}{\numberline {8.2}Perfectly Conducting Limit}{23}{subsection.8.2}%
-\contentsline {section}{\numberline {9}}{24}{section.9}%
+\contentsline {section}{\numberline {9}Kinematics for MHD: Continued}{24}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Additional Vorticity Analogies}{24}{subsection.9.1}%
 \contentsline {subsection}{\numberline {9.2}Helicity}{25}{subsection.9.2}%
 \contentsline {subsection}{\numberline {9.3}Additional Theorems for MHD}{25}{subsection.9.3}%
 \contentsline {subsection}{\numberline {9.4}Cauchy Solutions}{26}{subsection.9.4}%
+\contentsline {section}{\numberline {10}Kinematics for MHD: Continued}{28}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Comparing Cauchy solutions v.s. solving directly}{28}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}}{28}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Magnetic Potential Solutions}{29}{subsection.10.3}%
+\contentsline {section}{\numberline {11}}{29}{section.11}%
+\contentsline {subsection}{\numberline {11.1}Prandtl-Bachelor Theorem}{29}{subsection.11.1}%

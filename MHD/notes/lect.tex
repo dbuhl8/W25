@@ -799,7 +799,7 @@ where $C_1$ is given by the initial conditions for $x$ and $y$. We can imagine
 what the field lines might look for this magnetic field, and they happen to look
 like a saddle node in the $x-y$ plane. 
 
-\section{Kinematics for MHD (Continued)}
+\section{Kinematics for MHD: Continued}
 
 \subsection{Magnetic Fieldlines}
 
@@ -886,7 +886,7 @@ time scale dependent on the wavenumber of the spatial modes and the diffusion
 coefficient $1/Rm \sim L^2/\eta$. 
 
 
-\section{}
+\section{Kinematics for MHD: Continued}
 
 \subsection{Charged Plate example}
 
@@ -997,7 +997,7 @@ curve.
 \end{gather*}
 
 
-\section{}
+\section{Kinematics for MHD: Continued}
 
 \subsection{Additional Vorticity Analogies}
 The perfectly conducting limit of the induction equation, resembles the
@@ -1108,7 +1108,7 @@ First we solve with the Cauchy method, i.e. following the particle paths.
    \x(0) = \bs{a} \implies c_1 = a_1,\, c_2 = a_2,\, c_3 = a_3\\
    \x(t) = \left< t\sin(a_3) + a_1,\, t\cos(a_3) + a_2,\, a_3\right>
 \end{gather*}
-Furthermore, we can find the jacobian,
+Furthermore, we can find the jacobian ($\pp{x_i}{a_j}$),
 \begin{gather*}
     \bs{J} = \left[\begin{array}{c c c}
         1 & 0 & t\cos(a_3)\\
@@ -1125,6 +1125,87 @@ Now in order to put this back into an eularian form we have to write $\B =
 \begin{gather*}
     \B(\x,t) = \left< t\cos(z),\, t\sin(z),\, 1\right>
 \end{gather*}
+
+\section{Kinematics for MHD: Continued}
+
+\subsection{Comparing Cauchy solutions v.s. solving directly}
+Let us consider anothe example, with the same flow field $\uvec = \left<\sin(z),
+\cos(z), 0\right>$, and with initial magnetic field given by $\B_0 = \left<0, y,
+-z\right>$. Let us consider the Cauchy solution, 
+\begin{gather*}
+    \x(\bs{a}, t) = \left<a_1 + t\cos(a_3), a_2 + t\sin(a_3), a_3\right>\\
+    \B(\bs{a}, t=0) = \left<0, a_2, -a_3\right>\\
+    \B(\bs{a}, t) = \left[\begin{array}{c c c}
+        1 & 0 & t\cos(a_3)\\
+        0 & 1 & -t\sin(a_3)\\
+        0 & 0 & 1
+        \end{array}\right]\B(\bs{a}, 0)\\
+    \B(\bs{a},t) = \left< -a_3t\cos(a_3), a_2 + a_3t\sin(a_3), -a_3\right>
+\end{gather*}
+Then we need to invert the form of our spatial solution, i.e. $\x(\bs{a},t) \to
+\bs{a}(\x, t)$. 
+\begin{gather*}
+    x = a_1 +t\sin(a_3) \implies a_1 = x - t\sin(z)\\
+    y = a_2 + t\cos(a_3) \implies a_2 = y - t\cos(z)\\
+    z = a_3  \implies a_3 = z
+\end{gather*}
+compared to solving this problem directly, the Cauchy solution can offer a much
+more simplified approach. 
+
+
+\subsection{}
+Let us consider an example with a sinusoidal shear flow acting in my flow, i.e.
+$\uvec = \left<\sin(z), 0, 0\right>$, and an initial magnetic field $\B_0 =
+\left<0, 0, 1\right>$. 
+\begin{gather*}
+    \x(\bs{a},0) = \left<a_1, a_2, a_3\right>
+    \ddt{\x} = \uvec \implies \x(\bs{a},t) = \left<a_1 + t\sin(a_3), a_2,
+    a_3\right>\\
+    \B(\bs{a},t) = \left[\begin{array}{c c c}
+        1 & 0 & t\cos(a_3)\\
+        0 & 1 & 0\\
+        0 & 0 & 1
+        \end{array}\right]\B(\bs{a},0) = \left<t\cos(z), 0, 1\right>
+\end{gather*}
+We can solve this including diffusion. The exact equations including diffusion
+are, 
+\begin{gather*}
+    \ppt{\B} + \sin(z)\ppx{\B} = B_z\cos(z)\ex + \frac{1}{Rm}\grad^2\B\\
+    \B = \left<Rm\left( 1 - e^{-t/Rm}\right)\cos(z), 0, 1\right>
+\end{gather*}
+This recovers the cauchy solution if you take the limit as $Rm \to \infty$ and
+using L'Hopital's rule once. 
+\begin{gather*}
+    \lim_{Rm \to \infty} Rm\left(1 - e^{-t/Rm}\right) = \frac{1 -
+    e^{-t/Rm}}{Rm^{-1}}\\
+     = \lim_{Rm \to \infty} \frac{-\frac{t}{Rm^2}e^{-t/Rm}}{-\frac{1}{Rm^2}} =
+     \lim_{Rm \to \infty} te^{-t/Rm}\\
+     = t
+\end{gather*}
+
+\subsection{Magnetic Potential Solutions}
+
+Let us consider a solution to the induction equation using a potential function
+to generate a magnetic field, i.e. consider $\B = \left< \ppy{A},
+-\ppx{A}, 0\right> = \grad\times A\ez$. Let us consider this field around a
+wire, which is going in the z-direction. 
+\begin{gather*}
+    \ppt{}(\grad\times A\ez) = \grad\times(\uvec\times A\ez) + \eta\grad^2
+    (\grad\times A\ez)\\
+    \ppt{A} = \left[\uvec\times\grad\times A\ez\right]_z + \eta \grad^2 A\\
+    \DDt{A} = \eta\grad^2A
+\end{gather*}
+Notice that we obtain a scalar advection diffusion equation for the magnetic
+potential function, $A$. This advection problem doesn't consider three
+dimensional phenomenon such as stretching and tilting. If we are in search of a
+steady state solution to this PDE, we can set $\ppt{}$ to zero, and consider a
+magnetic reynolds number defined using a length scale given by the radius from
+the wire. 
+
+\section{}
+
+\subsection{Prandtl-Bachelor Theorem}
+
 
 \begin{gather*}
 \end{gather*}
