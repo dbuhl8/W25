@@ -1202,9 +1202,111 @@ steady state solution to this PDE, we can set $\ppt{}$ to zero, and consider a
 magnetic reynolds number defined using a length scale given by the radius from
 the wire. 
 
-\section{}
 
 \subsection{Prandtl-Bachelor Theorem}
+In two dimensions, if we have circular (or at least closed loop) streamlines, we
+can consider different differential regimes for a 2D magnetic field $\B =
+\B(x,y) = \grad\times A\ez$. In the scalar equation obtained for $A$, we can
+make a claim that in an ideal and steady scenario, $A$ must be constant along
+streamlines, i.e. $A = A(\psi)$. 
+
+
+\section{Dynamics for MHD}
+
+\subsection{The Lorentz Force}
+The dynamic regimes for MHD involve the Navier-Stokes equation, specifically the
+Lorentz force. 
+\begin{gather*}
+    \rho\left(\DDt{\uvec}\right) = -\grad p + \rho \bs{g} + \jvec\times\B +
+    \mu\left(\grad^2\uvec + \frac{1}{3}\grad(\div{\uvec})\right)
+\end{gather*}
+We must remember that the lorentz force is defined as $\jvec\times\B =
+(\grad\times\B) \times \B$. which is perpendicular to both $\B$ and the curl of
+$\B$. We can attempt to simplify the lorentz force using a vector identity. Let
+us remember, 
+\begin{gather*}
+    (\uvec\cdot\grad)\uvec = \grad\left(\frac{\uvec^2}{2}\right) -
+    \uvec\times\bs{\omega}
+\end{gather*}
+Similarly we can write with the magnetic field, 
+\begin{align*}
+    \jvec \times \B &= \frac{1}{\mu_0}(\B\cdot\grad)\B -
+    \grad\left(\frac{\B^2}{2\mu_0}\right)\\
+    &= \frac{1}{\mu_0}\grad\cdot\B\B -\grad\left(\frac{\B^2}{2\mu_0}\right)\\
+    &= \frac{1}{\mu_0}\ppxj{B_iB_j} - \grad\left(\frac{\B^2}{2\mu_0}\right)\\
+    &= \grad \cdot m_{ij}
+\end{align*}
+where $m_{ij}$ is denoted as maxwell stresses. This yields two perspectives on
+the lorentz force. We can either think of it as a typical body force, i.e. the
+field acts on the fluid similar to gravity, or we can think of it as a stress
+which acts on the fluid. Either way, it is important to identify two components
+of the lorentz force which can be described as magnetic pressure
+$\grad\left(\frac{\B^2}{2\mu_0}\right)$, and magnetic tension
+$\frac{1}{\mu_0}(\B\cdot\grad)\B$. The tension component relies on some
+projection of $\grad\B$ onto $\B$. The pressure component relies on some
+magnetic energy being non-constant. We can consider the tension component to be
+simplified as the following
+\begin{gather*}
+    \B = B\hat{\bs{s}}\\
+    \frac{1}{\mu_0}(\B\cdot\grad)\B = \frac{B}{\mu_0}\pp{B\hat{\bs{s}}}{s}\\
+    =\frac{B}{\mu_0}\pp{B}{s}\hat{\bs{s}} +
+    \frac{B^2}{\mu_0}\pp{\hat{\bs{s}}}{s}\\
+     = \pp{}{s} \left(\frac{B^2}{\mu_0}\right) \hat{\bs{s}} +
+     \frac{B^2}{\mu_0}\frac{\nvec}{R_c}
+\end{gather*}
+where $R_c^{-1}$ is defined by the quantity $\left|d\hat{\bs{s}}/ds\right|$
+Notice the appearance of what looks similar to the magnetic pressure term in the
+tension component. Because typically, pressures are isotropic we can make the
+claim that the tension component will annihilate all pressure components in the
+fluid.
+
+With this result, we can imagine some simplified dynamics which can arise
+between the velocity field $\uvec$ and the magnetic field $\B$. Consider a flow
+which perturbs a field line at a given point, we would expect there to be some
+magnetic tension acting back on the flow field against the direction of
+perturbation. 
+
+Another common scenario, is one which a bundle of field lines are close
+together. This creates an increase of magnetic pressure in that area, causing
+fluid to move away from that congregation of field lines. 
+
+Other quantities we can consider are the total pressure, i.e.
+\begin{gather*}
+    p = p_{\text{gas}} + p_{\text{mag}} \\
+    = p + \frac{1}{2\mu_0}\B^2
+\end{gather*}
+a plasma $\beta$:
+\begin{gather*}
+    \frac{p_{\text{gas}}}{p_{\text{mag}}} = \begin{cases}
+    \gg 1 & \text{solar interior}\\
+    \ll 1 & \text{solar atmosphere}\end{cases}
+\end{gather*}
+
+Furthermore, magnetic pressure leads to the concept of magnetic buoyancy, i.e. a
+flux tube might have an internal gas density less than that of the gas density
+outside of the flux tube, inducing a buoyancy force on that flux tube. We also
+have the concept of magnetic tension causing Alfven waves, 
+\begin{gather*}
+    \rho\DDt{\uvec} = -\grad\left(p + \frac{\B^2}{2\mu_0}\right) +
+    \frac{1}{\mu_0}(\B\cdot\grad)\B + \rho\bs{g} +
+    \mu\left(\text{Diffusion}\right)\\
+    \ppt{\rho\uvec} + \div\left(\rho\uvec\uvec - \frac{1}{\mu_0}\B\B\right) = \text{RHS}
+\end{gather*}
+
+Let us consider some exampe problems with this equation. First, a uniform field
+$\B = \left< B_0, 0, 0\right>$. We can decide there is neither magnetic pressure
+or tension acting on the fluid primarily because the field is constant and the
+specing between field lines is constant. 
+
+Second, we consider a unidirectional field $\B = \left< 0, B_0e^x, 0\right>$. We
+deduce that there would be magnetic pressure, of order $B_0^2e^{2x}/\mu_0\ex$, but no
+magnetic tension since the gradients of $\B$ are orthogonal to $\B$. We confirm
+this by taking the curl of $\B$ which is a vector with only a $z$ component, and
+then taking the cross product with $\B$ ($\jvec \times \B$) is a vector with
+only an $x$ component and we find it is exactly equal to the term obtained by
+the magnetic pressure. Finally, a third scenario is the field $\B = B_0\left<
+-y, 1, 0\right>$ which produces both magnetic tension and pressure which
+contribute to the lorentz force. 
 
 
 \begin{gather*}

@@ -33,5 +33,6 @@
 \contentsline {subsection}{\numberline {10.1}Comparing Cauchy solutions v.s. solving directly}{28}{subsection.10.1}%
 \contentsline {subsection}{\numberline {10.2}}{28}{subsection.10.2}%
 \contentsline {subsection}{\numberline {10.3}Magnetic Potential Solutions}{29}{subsection.10.3}%
-\contentsline {section}{\numberline {11}}{29}{section.11}%
-\contentsline {subsection}{\numberline {11.1}Prandtl-Bachelor Theorem}{29}{subsection.11.1}%
+\contentsline {subsection}{\numberline {10.4}Prandtl-Bachelor Theorem}{29}{subsection.10.4}%
+\contentsline {section}{\numberline {11}Dynamics for MHD}{30}{section.11}%
+\contentsline {subsection}{\numberline {11.1}The Lorentz Force}{30}{subsection.11.1}%
