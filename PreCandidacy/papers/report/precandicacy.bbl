@@ -1,0 +1,9 @@
+\providecommand{\noopsort}[1]{}\providecommand{\singleletter}[1]{#1}%
+\begin{thebibliography}{1}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\def\au#1{#1} \def\ed#1{#1} \def\yr#1{#1}\def\at#1{#1}\def\jt#1{\textit{#1}} \def\bt#1{#1}\def\bvol#1{\textbf{#1}} \def\vol#1{#1} \def\pg#1{#1} \def\publ#1{#1}\def\arxiv#1{#1}\def\org#1{#1}\def\st#1{\textit{#1}}
+
+\bibitem[{Chini} {\em et~al.\/}(2022){Chini}, {Michel}, {Julien}, {Rocha} \& {Caulfield}]{Chinial2022}
+{\sc \au{{Chini}, Gregory~P.}, \au{{Michel}, Guillaume}, \au{{Julien}, Keith}, \au{{Rocha}, Cesar~B.} \& \au{{Caulfield}, Colm-cille~P.}} \yr{2022}  \at{{Exploiting self-organized criticality in strongly stratified turbulence}}.  \jt{Journal of Fluid Mechanics}  \bvol{933},  \pg{A22},  \arxiv{arXiv: 2111.08806}.
+
+\end{thebibliography}

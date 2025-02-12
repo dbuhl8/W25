@@ -1,0 +1,47 @@
+This is BibTeX, Version 0.99d (TeX Live 2024/Arch Linux)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: precandicacy.aux
+The style file: jfm.bst
+Database file #1: BuhlThesis.bib
+Reallocated wiz_functions (elt_size=8) to 6000 items from 3000.
+You've used 1 entry,
+            3068 wiz_defined-function locations,
+            836 strings with 6846 characters,
+and the built_in function-call counts, 653 in all, are:
+= -- 48
+> -- 42
+< -- 0
++ -- 16
+- -- 15
+* -- 80
+:= -- 115
+add.period$ -- 2
+call.type$ -- 1
+change.case$ -- 10
+chr.to.int$ -- 1
+cite$ -- 1
+duplicate$ -- 32
+empty$ -- 45
+format.name$ -- 16
+if$ -- 118
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 9
+num.names$ -- 4
+pop$ -- 9
+preamble$ -- 2
+purify$ -- 9
+quote$ -- 0
+skip$ -- 12
+stack$ -- 0
+substring$ -- 20
+swap$ -- 14
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 9
+warning$ -- 0
+while$ -- 4
+width$ -- 0
+write$ -- 16
