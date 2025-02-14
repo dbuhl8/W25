@@ -33,31 +33,25 @@ def FDY(field,dy):
         dy_field[:,:,i+1,:] = (field[:,:,i+2,:]-field[:,:,i,:])/(2*dy)
     return dy_field
 
-cdf_file = xr.open_dataset('simdat4.cdf')
+cdf_file = xr.open_dataset('XYSLICE1.cdf')
 
-print(cdf_file.variables)
+#print(cdf_file.variables)
 
-x = cdf_file.x.as_numpy()
-y = cdf_file.y.as_numpy()
-z = cdf_file.z.as_numpy()
+#dX = np.zeros(3)
+#dX[0] = cdf_file.dx
+#dX[1] = cdf_file.dy
+#dX[2] = cdf_file.dz
 
-gx = cdf_file.Gammax
-gy = cdf_file.Gammay
-gz = cdf_file.Gammaz
+#ux = cdf_file.ux.as_numpy()
+#uy = cdf_file.uy.as_numpy()
+#uz = cdf_file.uz.as_numpy()
 
-dX = np.zeros(3)
-dX[0] = len(x)/gx
-dX[1] = len(y)/gy
-dX[2] = len(z)/gz
+#x = cdf_file.x.as_numpy()
+#y = cdf_file.y.as_numpy()
+#z = cdf_file.z.as_numpy()
 
-# these matrices are oriented with index [t, z, y, x] (dont ask me why)
-ux = cdf_file.ux.as_numpy()
-uy = cdf_file.uy.as_numpy()
-uz = cdf_file.uz.as_numpy()
+#wz = FDX(uy, dX[0]) - FDY(ux, dX[1])
 
-wz = FDX(uy, dX[0]) - FDY(ux, dX[1])
 
-fig, ax = plt.subplots()
 
-# make a movie over timesteps
-ax.pcolor(XX, ZZ, wz[-1,:,0,:],
+
