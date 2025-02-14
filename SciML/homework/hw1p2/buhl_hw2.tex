@@ -1,8 +1,7 @@
 \documentclass{article}
 
 \usepackage{graphicx} % Required for inserting images
-\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
-\usepackage{amsmath}
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry} \usepackage{amsmath}
 \usepackage{amsthm} %proof environment
 \usepackage{amssymb}
 \usepackage{amsfonts}
@@ -82,9 +81,39 @@
 \setlength{\parindent}{0pt}
 \doublespacing
 
+\setcounter{section}{1}
 \section{}
 
-\subsection{}
+\begin{enumerate}
+    \item \textbf{\Large Perform SINDy for the noisy Lorenz 63 system.}
 
+    I performed the SINDy algorithm for the lorenz system. I added noise to the
+    derivative at each point according to the gaussian normal distribution with
+    mean 0 and variance given by the problem set. In order to learn these
+    coefficients, I merely used an rk4 integrator to find a trajectory and then
+    computed the derivatives are each point along that trajectory. Then using
+    a least squares solver, an solution for the coefficients is found. Finally,
+    we iterate the least squares solution in order to neglect terms whose found
+    coefficients are low (this algorithm doesn't take into account the relative
+    weight of each column vector in the feature matrix which would be a vast
+    improvement to the algorithm). Testing for the number of iterations used in
+    the sindy algorithm can be seen by the plot shown in Figure
+    \ref{fig:noisy_sindy}. 
 
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=.8\textwidth]{noisy_coeff_err.pdf}
+        \caption{Plot of the MSE error for the learned coefficients
+        ($\sqrt{(\theta_{\text{act}} - \theta_{\text{sindy}})^2}$) for the SINDy
+        algorithm with a cutoff tolerance of $10^{-4}$. A different
+        number of iterations was used and this is depicted in color. There seems
+        to be no distinction between the learned coefficients after about 2
+        iterations as $N = 4, 8, 16$ overlap exactly.}
+        \label{fig:noisy_sindy}
+    \end{figure}
+
+    \item \textbf{\Large Perform SINDy on the Lorenz 63 system using derivative
+    schemes}
+   
+    \end{enumerate}
 \end{document}

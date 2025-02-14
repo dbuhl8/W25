@@ -1308,8 +1308,122 @@ the magnetic pressure. Finally, a third scenario is the field $\B = B_0\left<
 -y, 1, 0\right>$ which produces both magnetic tension and pressure which
 contribute to the lorentz force. 
 
+\section{Dynamics for MHD: Continued}
+\subsection{Computing the Lorentz force}
+The following magnetic field produces field lines which generate a good deal of
+magnetic pressure and tension. 
+\begin{gather*}
+    \B = \left<y, x, 0\right> \\
+    \jvec \times \B = \bs{0} \times \B = 0
+\end{gather*}
+Notice however, that the lorentz force is zero, and thus this is a force free
+field, namely a potential field. In order to understand why this happens we must
+look at the components of the lorentz force, individually. We have, 
+\begin{gather*}
+    \frac{1}{\mu_0}(\B\cdot\grad)\B = \frac{1}{\mu_0}\left[\begin{array}{c}
+    x\\y\\0\end{array}\right]\\
+    \grad\left(\frac{\B^2}{2\mu_0}\right) =
+    \frac{1}{2\mu_0}\left[\begin{array}{c} 2x\\2y\\0\end{array}\right]
+\end{gather*}
+and therefore the magnetic tension and pressure cancel each other out. Thus,
+there is no net force acting on the fluid in this particular state. 
 
+We can consider a very similar field given by, 
+\begin{gather*}
+    \B = \left<y, \alpha^2x, 0\right> \\
+    \jvec \times \B = \left< -\alpha^2(1 - \alpha^2)x, (1-\alpha^2)y,
+    0\right>\\
+    \frac{1}{\mu_0}(\B\cdot\grad)\B = \frac{1}{\mu_0}\left[\begin{array}{c}
+    \alpha^2x\\\alpha^2y\\0\end{array}\right]\\
+    \grad\left(\frac{\B^2}{2\mu_0}\right) =
+    \frac{1}{2\mu_0}\left[\begin{array}{c} \alpha^42x\\2y\\0\end{array}\right]
+\end{gather*}
+in which the nullclines of the field are adjusted and therefore we do have
+a net lorentz force. 
+\begin{figure}
+    \centering
+    \includegraphics[width=.7\textwidth]{plots/ex5_fieldlines.pdf}
+    \caption{Plot of the magnetic field lines ($\B = \left<y, \alpha^2x,
+    0\right>$) using streamplot from python. We
+    can see that that nullclines are at a different angle due to the parameter
+    $\alpha$ ($> 1$), which according to the lorentz force will cause a net force acting
+    on the fluid (i.e. magnetic pressure and tension are no longer aligned).}
+\end{figure}
+This phenomenon is very interesting and often referred to as Magnetic
+Reconnection which is the complex phenomenon of how the nullclines of magnetic
+fields are moved around by outside circumstances. 
+
+\subsection{Magnetic Energy (Density)}
+We can obtain an equation for the magnetic energy density similar to how a
+kinetic energy equation is obtained for the velocity field.
+\begin{gather*}
+    E_M = \int_V\frac{|\B^2|}{2\mu_0}dV \\
+    \frac{\B}{\mu_0} \cdot \left( \ppt{\B} = -\grad\times\E\right)\\
+    \ppt{}\left(\frac{|\B|^2}{2\mu_0}\right) =
+    -\frac{\B}{\mu_0}\cdot\grad\times\E\\
+    \ppt{}\left(\frac{|\B|^2}{2\mu_0}\right) =
+    -\frac{1}{\mu_0}\left(\grad\cdot(\E\times\B) +
+    \E\cdot(\grad\times\B)\right)\\
+    \ppt{M} =
+    -\frac{1}{\mu_0}\int_S(\E\times\B)\cdot\nvec dS - \int_V
+    \uvec\cdot(\jvec\times\B) - \frac{\jvec^2}{\sigma} dV
+\end{gather*}
+Here we can analyze each component of this magnetic energy density equation. We
+have the ``Poynting vector`` $\E\times\B$ which represents the flux of magnetic
+energy into the domain. We have the rate of magnetic energy loss by the
+mechanical work against the lorentz force $\uvec\cdot(\jvec\times\B)$, and
+finally ``Ohmic dissipation'' $\jvec^2/\sigma$. 
+
+
+\subsection{Magnetohydrostatics}
+We reintroduce the concept of balanced equations for hydrostatic balances, but
+in the specific context for MHD. We look at the zero-velocity steady state flow
+field. We must have some dominant balance in the navier stokes equation, 
+\begin{gather*}
+    0 = -\grad p + \rho \bs{g} + \jvec\times\B
+\end{gather*}
+This balance is denoted magnetohydrostatic balance and it relies on a very
+important assumption that the timescales of interest for this problem are much
+shorter than a diffusion timescale for the magnetic field. Note that the
+velocity field doesn't necessarily have to be zero, but it must satisfy some
+basic properies which make its relative magnitude negligable in the navier
+stokes equation. 
+
+Some common speeds used in physics scenarios are the following,
+\begin{gather*}
+    \left(\frac{\gamma p_0}{\rho_0}\right)^{1/2}, \quad \text{speed of sound}\\
+    \left(\frac{B_0}{\mu_0\rho_0}\right)^{1/2}, \quad \text{Alfven speed}\\
+    \left(2g_0l_0\right)^{1/2}, \quad \text{gravity free fall speed}
+\end{gather*}
+where we must have $u$ is much less than these quantities in order to preserve
+magentohydrostatic balance. Furhtermore there are several ways to obtain
+hydrostatic balance from the magnetohydrostatic balance. Namely, we could have
+$\B = 0$, $\jvec\times\B = $, or $\jvec = 0$ (in this case $\B$ can be written by
+a potential function $\B = \grad A$). 
+
+Some examples of force free fields are Beltrami fields, where $\grad\times\B =
+\alpha(x) \B$ which is of course perpendicular to $\B$ at all points in space.
+We find, 
+\begin{gather*}
+    \grad\cdot(\grad\times\B) = 0 = \div{\alpha\B} \\
+    = \alpha(\div{\B}) + \B\cdot\grad\alpha \implies \B\cdot\grad\alpha = 0
+\end{gather*}
+let us assume for now that $\alpha$ is some constant. We have the following, 
+\begin{gather*}
+    \grad\times(\grad\times\B) = \alpha^2\B\\
+    \grad(\grad\cdot\B) - \grad^2\B = \alpha^2\B\\
+    \grad^2\B + \alpha^2\B = 0
+\end{gather*}
+which is a linear helmholtz equation for the magnetic field. Where as, solving
+for a force free field by $\jvec\times\B = 0$ is much more difficult due to
+nonlinearity. 
+
+\section{}
+\subsection{}
 \begin{gather*}
 \end{gather*}
 
+
+\begin{gather*}
+\end{gather*}
 \end{document}

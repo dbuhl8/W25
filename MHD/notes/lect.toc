@@ -36,3 +36,9 @@
 \contentsline {subsection}{\numberline {10.4}Prandtl-Bachelor Theorem}{29}{subsection.10.4}%
 \contentsline {section}{\numberline {11}Dynamics for MHD}{30}{section.11}%
 \contentsline {subsection}{\numberline {11.1}The Lorentz Force}{30}{subsection.11.1}%
+\contentsline {section}{\numberline {12}Dynamics for MHD: Continued}{32}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Computing the Lorentz force}{32}{subsection.12.1}%
+\contentsline {subsection}{\numberline {12.2}Magnetic Energy (Density)}{34}{subsection.12.2}%
+\contentsline {subsection}{\numberline {12.3}Magnetohydrostatics}{34}{subsection.12.3}%
+\contentsline {section}{\numberline {13}}{35}{section.13}%
+\contentsline {subsection}{\numberline {13.1}}{35}{subsection.13.1}%

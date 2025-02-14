@@ -63,12 +63,21 @@ def gen_feature_matrix(y, num):
                     y[i,0]*y[i,2], y[i,1]**2, y[i,1]*y[i,2], y[i,2]**2])
     return mat
 
+act_theta = torch.from_numpy(np.zeros([10,3]))
+act_theta[1,0] = -10
+act_theta[2,0] = 10
+act_theta[1,1] = 28
+act_theta[2,1] = -1
+act_theta[6,1] = -1
+act_theta[3,2] = -8/3
+act_theta[5,2] = 1
+
+
 num_points = 10001
 
 t = np.linspace(0, 50, num_points, True)
 y = np.zeros([num_points, 3])
 y0 = np.array([1, 1, 1])
-error = torch.from_numpy(np.zeros_like(y))
 y[0, :] = y0
 tstep = t[1]-t[0]
 
@@ -78,8 +87,11 @@ for i in range(num_points-1):
 
 yt = torch.from_numpy(y)
 noise = np.array([0.01, 0.1, 0.5])
-num_iter = 1
 tol = 1e-4
+
+num_iter = [1, 2, 4, 8, 16]
+iter_size = len(num_iter)
+error = np.zeros([3,iter_size])
 
 print()
 print('-----------------------------------------------')
@@ -93,33 +105,43 @@ for i in range(3):
     # perform SINDy algorithm
     # define feature matrix and feature coefficients
     phi = torch.from_numpy(gen_feature_matrix(y,num_points))
-    theta = torch.linalg.lstsq(phi, dy)[0]
-    for j in range(num_iter):
-        for k in range(3):
-            big_indices = torch.abs(theta[:,k]) >= tol
-            small_indices = torch.abs(theta[:,k]) < tol
-            theta[small_indices,k] = 0
-            theta[big_indices,k] = torch.linalg.lstsq(phi[:,big_indices],dy[:,k])[0]
-
-    print(theta)
-    print()
-    print('-----------------------------------------------')
-    print()
+    for l in range(iter_size):
+        theta = torch.linalg.lstsq(phi, dy)[0]
+        for j in range(num_iter[l]):
+            for k in range(3):
+                big_indices = torch.abs(theta[:,k]) >= tol
+                small_indices = torch.abs(theta[:,k]) < tol
+                theta[small_indices,k] = 0
+                theta[big_indices,k] = torch.linalg.lstsq(phi[:,big_indices],dy[:,k])[0]
+        print(num_iter[l])
+        print(theta)
+        error[i,l] = torch.sqrt(torch.sum((act_theta - theta)**2))
+        print()
+        print('-----------------------------------------------')
+        print()
     # perform finite difference method and compare to learned derivatives
-    fd = torch.from_numpy(fd1(num_points,tstep))
-    thing = torch.matmul(fd,yt) - torch.matmul(phi, theta)
-    error[:,i] = torch.sum(torch.abs(thing),1)
+    #fd = torch.from_numpy(fd1(num_points,tstep))
+    #thing = torch.matmul(fd,yt) - torch.matmul(phi, theta)
 
 fig, ax = plt.subplots()
-#colors = cm.rainbow(np.linspace(.5,.7,3))
-colors = cm.rainbow([.1, .3, .9])
+colors = cm.rainbow(np.linspace(0,1,iter_size))
 
-label = ['Var = 0.01', 'Var = 0.1', 'Var = 0.5']
+label = ['N = 1', ' N = 2', 'N = 4', 'N = 8', 'N = 16']
 
-for i in range(3):
+#for i in range(3):
     # plot the error for each solution
-    ax.plot(error[:,i], color=colors[i],label=label[i])
+    #ax.plot(error[:,i], color=colors[i],label=label[i])
+for i in range(iter_size):
+    ax.plot(noise,error[:,i],color=colors[i],label=label[i])
 
 ax.set_yscale('log')
-ax.legend()
-plt.show()
+ax.set_xscale('log') #ax.legend()
+ax.set_xlabel('Variance of Noise')
+ax.set_ylabel('MSE error of learned coefficients')
+ax.set_title('SINDy Error (tol = 1e-4)')
+ax.legend(title='N Iterations')
+
+
+fig.tight_layout()
+plt.savefig('noisy_coeff_err.pdf')
+
