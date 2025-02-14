@@ -156,28 +156,31 @@
     \begin{gather*}
         \x(\bs{a}, 0) = \left(a_1, a_2, a_3\right)\\
         \ppt{\x} = \left(\sin(z), \cos(z), 1\right)\\
-        \x(\bs{a},t) = \left(a_1 + t\sin(a_3 + t), a_2 + t\cos(a_3 + t), a_3 + t\right)\\
+        \x(\bs{a},t) = \left(a_1 + \cos(a_3) - \cos(a_3 + t), a_2 - \sin(a_3) + \sin(a_3 +
+        t), a_3 + t\right)\\
         \B(\bs{a},t) = \pp{\x}{\bs{a}}\B(\bs{a},0)
         = \left[\begin{array}{c c c}
-        1 & 0 & t\cos(a_3)\\
-        0 & 1 & -t\sin(s_3)\\
+        1 & 0 &\sin(a_3 + t) - \sin(a_3) \\
+        0 & 1 & -\cos(a_3) + \cos(a_3+t) \\
         0 & 0 & 1\end{array}\right] \left[\begin{array}{c}
-        1\\1\\1\end{array}\right] = \left(1 + t\cos(a_3+t), 1 -
-        t\sin(a_3+t), 1\right)
+        1\\1\\1\end{array}\right] \\= \left(1 + \sin(a_3+t)-\sin(a_3), 1 +
+        \cos(a_3+t) - \cos(a_3), 1\right)
     \end{gather*}
     \item $\uvec = \left< \sin(z), \cos(z), 1\right>, \quad \B(\x,0) = \left< x,
     y, -2z\right>$
     \begin{gather*}
         \x(\bs{a}, 0) = \left(a_1, a_2, a_3\right)\\
         \ppt{\x} = \left(\sin(z), \cos(z), 1\right)\\
-        \x(\bs{a},t) = \left(a_1 + t\sin(a_3 + t), a_2 + t\cos(a_3 + t), a_3 + t\right)\\
+        \x(\bs{a},t) = \left(a_1 + \cos(a_3) - \cos(a_3 + t), a_2 - \sin(a_3) + \sin(a_3 +
+        t), a_3 + t\right)\\
         \B(\bs{a},t) = \pp{\x}{\bs{a}}\B(\bs{a},0)
         = \left[\begin{array}{c c c}
-        1 & 0 & t\cos(a_3)\\
-        0 & 1 & -t\sin(s_3)\\
-        0 & 0 & 1\end{array}\right] \left[\begin{array}{c}
-        a_1\\a_2\\-2a_3\end{array}\right] = \left(a_1 - 2a_3t\cos(a_3+t), a_2 +
-        2a_3t\sin(a_3+t), -2a_3\right)
+        1 & 0 &\sin(a_3 + t) - \sin(a_3) \\
+        0 & 1 & -\cos(a_3) + \cos(a_3+t) \\
+        0 & 0 & 1\end{array}\right]\left[\begin{array}{c}
+        a_1\\a_2\\-2a_3\end{array}\right]\\ = \left(a_1 -
+        2a_3(\sin(a_3+t)-\sin(a_3)), a_2 -2a_3(
+        \cos(a_3+t) - \cos(a_3)), -2a_3\right)
     \end{gather*}
     \item $\uvec = \left< y, -x, 0\right>, \quad \B(\x,0) = \left< x,
     -y, 0\right>$
