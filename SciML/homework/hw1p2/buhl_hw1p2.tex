@@ -114,6 +114,33 @@
 
     \item \textbf{\Large Perform SINDy on the Lorenz 63 system using derivative
     schemes}
+
+    We can see from Figure \ref{fig:numerical_sindy} that more accurate
+    derivative schemes enable SINDy to learn the coefficients better. Derivative
+    schemes intrinsically contain errors bounded by the grid size and
+    discretization. Notice that the higher order derivative scheme BDF3 allows
+    the SINDy algorithm to better approximate the coefficients for the lorentz
+    system compared to the first order centered finite difference scheme. I
+    presume that with higher order derivative schemes and smaller grid sizes
+    would decrease the error in the computed derivatives that SINDy learns from
+    (which follows from any standard numerical methods course). 
+    The choice in numerical method to prepare data for SINDy is, therefore, very
+    important for bounding the error of the learned coefficients. We notice that
+    the number of iterations doesn't appear to have a large effect on the
+    learned coefficients either. For each derivative scheme, five iteration
+    counts are used and show no visible change in the error on the plot as a
+    function of number of iterations. 
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=.8\textwidth]{numerical_coeff_err.pdf}
+        \caption{Plot of the MSE error for the learned coefficients
+        ($\sqrt{(\theta_{\text{act}} - \theta_{\text{sindy}})^2}$) for the SINDy
+        algorithm with the same number and cutoff tolerance as in Figure
+        \ref{fig:noisy_sindy}, but this time instead of sets of noisy data, we
+        perform sindy on numerically computed derivative schemes and compare the
+        error}
+        \label{fig:numerical_sindy}
+    \end{figure}    
    
     \end{enumerate}
 \end{document}

@@ -3,6 +3,7 @@
 \usepackage{graphicx} % Required for inserting images
 \usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry} \usepackage{amsmath}
 \usepackage{amsthm} %proof environment
+\usepackage{amsthm} %proof environment
 \usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{enumitem} %nice lists
@@ -47,6 +48,7 @@
 \newcommand{\grads}{\nabla_s}
 \newcommand{\gradf}{\nabla_f}
 \newcommand{\xs}{x_s}
+\newcommand{\x}{\bs{x}}
 \newcommand{\xf}{x_f}
 \newcommand{\ts}{t_s}
 \newcommand{\tf}{t_f}
@@ -86,47 +88,117 @@
 % This line removes the automatic indentation on new paragraphs
 \setlength{\parindent}{0pt}
 
-\section{Show that magnetic helicity if conserved}
-
+\section{Show that magnetic helicity is conserved}
 \begin{proof}
-    Show that the following quantity is conserved with time. 
-    \begin{gather*}
-        h_m = \int_V \A\cdot\B dV, \quad \B = \grad\times\A\\
-        \ppt{h_m} = \ppt{}\left(\int_V \A\cdot\B dV\right)\\
-        \ppt{h_m} = \int_V \ppt{}\left(\A\cdot\B\right) dV + \int_{\partial V}
-        (\A\cdot\B)(\uvec\cdot\nvec) dS
-    \end{gather*}
-    where $V$ is a closed volume in the domain of the fluid and $\partial V$ is
-    the boundary surface of that closed volume. According to the Reynolds
-    transport theorem we have the following time derivative of the magnetic
-    helicity. 
-    We can follow up by taking the time derivatives of $\A\cdot\B$. 
+    In order to show that the magnetic helicity is preserved over a material
+    volume with a bounding surface with $\B\cdot\nvec = 0$ everywhere on the
+    surface. We assume that the field lines (as well as the material volume) are
+    frozen into the flow. This proof will follow the proof in the Davidson text. 
+    Let us consider the time evolution of the magnetic helicity,
     \begin{align*}
-        \ppt{h_m} &= \int_V \ppt{}\left(\A\cdot\B\right) dV + \int_{\partial V}
-        (\A\cdot\B)(\uvec\cdot\nvec) dS\\
-        &= \int_V \ppt{\A}\cdot\B + \A\cdot\ppt{\B} dV + \int_{\partial V}
-        (\A\cdot\B)(\uvec\cdot\nvec) dS\\
-        &= \int_V \B\cdot\grad\phi + \A\cdot\left(-(\uvec\cdot\grad)\B +
-        (\B\cdot\grad)\uvec + \B(\div{\uvec})\right) + \int_{\partial V}
-        (\A\cdot\B)(\uvec\cdot\nvec) dS\\
-        &= \int_V \B\cdot\grad\phi + \A\cdot\left(-(\uvec\cdot\grad)\B +
-        (\B\cdot\grad)\uvec + \B(\div{\uvec})\right) + (\grad\cdot
-        (\A\cdot\B)\uvec) dV\\
-        &= \int_V \B\cdot\grad\phi -\A\cdot(\uvec\cdot\grad)\B +
-        \A\cdot(\B\cdot\grad)\uvec + (\A\cdot\B)(\div{\uvec})\right) + (\grad\cdot
-        (\A\cdot\B)\uvec) dV\\
-        &= \int_V \B\cdot\grad\phi -\A\cdot(\uvec\cdot\grad)\B +
-        \A\cdot(\B\cdot\grad)\uvec - \uvec\cdot\grad(\A\cdot\B) dV\\
-        &= \int_V \B\cdot\grad\phi -\B\cdot(\uvec\cdot\grad)\A +
-        \A\cdot(\B\cdot\grad)\uvec  dV
+        \ppt{h_m} &= \ppt{}\int_V \A\cdot\B dV\\
+        &= \int_V \ppt{}(\A\cdot\B) + \grad\cdot(\A\cdot\B)\uvec dV\\
+        &= \int_V \A\cdot\ppt{\B} + \B\cdot\ppt{A} + \grad\cdot(\A\cdot\B)\uvec
+        dV\\
+        &= \int_V \A\cdot\grad\times(\uvec\times\B) + \B\cdot\grad\phi +
+        \grad\cdot(\A\cdot\B)\uvec dV
     \end{align*}
-    where we use $\ppt{\A} = \uvec\times\B + \grad\phi$ from the lecture note
-    and the Davidson text. 
-
-
+    Here the Davidson text very quickly rewrites what remains from the induction
+    equation. I will show this derivation in a little more detail. 
+    \begin{align*}
+        \A\cdot(\grad\times(\uvec\times\B)) =  \A\cdot(\grad\times\bs{F}) &=
+        \bs{F}\cdot\grad\times\A - \grad\cdot(\A\times\bs{F}) \\
+        &= (\uvec\times\B)\times\B - \grad\cdot(\A\times\uvec\times\B)\\
+        &=  -\grad\cdot(\A\times(\uvec\times\B))\\
+        &=  -\grad\cdot((\A\cdot\B)\uvec - (\A\cdot\uvec)\B)\\
+        &= -\grad \cdot (\A\cdot\B)\uvec + \grad\cdot(\A\cdot\uvec)\B
+    \end{align*}
+    In addition to the following identity, $\B\cdot\grad\phi =
+    \grad\cdot(\phi\B) - \phi(\div{\B})$, 
+    we find that this now reduces our original integral to the following , 
+    \begin{align*}
+        \ppt{h_m} &= \int_V \left(-\grad \cdot (\A\cdot\B)\uvec +
+        \grad\cdot(\A\cdot\uvec)\B\right)
+        + \grad\cdot(\phi\B) +
+        \grad\cdot(\A\cdot\B)\uvec dV\\
+        &= \int_V \grad\cdot(\phi + \A\cdot\uvec)\B dV
+    \end{align*}
+    The final step is to use the divergence theorem to write this as a surface
+    integral. We then use fact that we have chosen a frozen into the flow
+    field preserves the fact that $\B\cdot\nvec = 0$ everywhere along the
+    boundary in time to state that the surface integral must be zero. That is,
+    magnetic helicity is preserved in these conditions: over a material volume
+    whose bounding surface is composed entirely of magnetic field lines and both
+    the material volume and field lines are frozen into the flow. 
 \end{proof}
 
 \section{Solve using Cauchy solutions}
+\begin{enumerate}
+    \item $\uvec = \left< \sin(z), \cos(z), 0\right> , \quad \B(\x,0) = \left< y,
+    z, x\right>$
+    
+    We begin with the Cauchy solution. 
+    \begin{gather*}
+        \x(\bs{a}, 0) = \left(a_1, a_2, a_3\right)\\
+        \ppt{\x} = \left(\sin(z), \cos(z), 0\right)\\
+        \x(\bs{a},t) = \left(a_1 + t\sin(a_3), a_2 + t\cos(a_3), a_3\right)\\
+        \B(\bs{a},t) = \pp{\x}{\bs{a}}\B(\bs{a},0)
+        = \left[\begin{array}{c c c}
+        1 & 0 & t\cos(a_3)\\
+        0 & 1 & -t\sin(s_3)\\
+        0 & 0 & 1\end{array}\right] \left[\begin{array}{c}
+        a_2\\a_3\\a_1\end{array}\right] = \left(a_2 + a_1t\cos(a_3), a_3 -
+        a_1t\sin(a_3), a_1\right)
+    \end{gather*}
 
+    \item $\uvec = \left< \sin(z), \cos(z), 1\right>, \quad \B(\x,0) = \left< 1,
+    1, 1\right>$
+    \begin{gather*}
+        \x(\bs{a}, 0) = \left(a_1, a_2, a_3\right)\\
+        \ppt{\x} = \left(\sin(z), \cos(z), 1\right)\\
+        \x(\bs{a},t) = \left(a_1 + t\sin(a_3 + t), a_2 + t\cos(a_3 + t), a_3 + t\right)\\
+        \B(\bs{a},t) = \pp{\x}{\bs{a}}\B(\bs{a},0)
+        = \left[\begin{array}{c c c}
+        1 & 0 & t\cos(a_3)\\
+        0 & 1 & -t\sin(s_3)\\
+        0 & 0 & 1\end{array}\right] \left[\begin{array}{c}
+        1\\1\\1\end{array}\right] = \left(1 + t\cos(a_3+t), 1 -
+        t\sin(a_3+t), 1\right)
+    \end{gather*}
+    \item $\uvec = \left< \sin(z), \cos(z), 1\right>, \quad \B(\x,0) = \left< x,
+    y, -2z\right>$
+    \begin{gather*}
+        \x(\bs{a}, 0) = \left(a_1, a_2, a_3\right)\\
+        \ppt{\x} = \left(\sin(z), \cos(z), 1\right)\\
+        \x(\bs{a},t) = \left(a_1 + t\sin(a_3 + t), a_2 + t\cos(a_3 + t), a_3 + t\right)\\
+        \B(\bs{a},t) = \pp{\x}{\bs{a}}\B(\bs{a},0)
+        = \left[\begin{array}{c c c}
+        1 & 0 & t\cos(a_3)\\
+        0 & 1 & -t\sin(s_3)\\
+        0 & 0 & 1\end{array}\right] \left[\begin{array}{c}
+        a_1\\a_2\\-2a_3\end{array}\right] = \left(a_1 - 2a_3t\cos(a_3+t), a_2 +
+        2a_3t\sin(a_3+t), -2a_3\right)
+    \end{gather*}
+    \item $\uvec = \left< y, -x, 0\right>, \quad \B(\x,0) = \left< x,
+    -y, 0\right>$
+    \begin{gather*}
+        \x(\bs{a}, 0) = \left(a_1, a_2, a_3\right)\\
+        \ppt{\x} = \left(y, -x, 0\right)\\
+        x' = -y, \quad y' = x\\
+        \frac{d^2x}{dt} = -x, \quad \frac{d^2y}{dt} = -y\\
+        x(t) = x_1\cos(t) + x_2\sin(t), \quad y(t) = y_1\cos(t) + y_2\sin(t)\\
+        x(0) = a_1, \quad x'(0) = -a_2, \quad y(0) = a_2, \quad y'(0) = a_1\\
+        x_1 = a_1, \quad x_2 = -a_2, \quad y_1 = a_2, \quad y_2 = a_1\\
+        \x(\bs{a},t) = \left(a_1\cos(t) - a_2\sin(t), a_2\cos(t) + a_1\sin(t),
+        a_3\right)\\
+        \B(\bs{a},t) = \pp{\x}{\bs{a}}\B(\bs{a},0)
+        = \left[\begin{array}{c c c}
+        \cos(t) & -\sin(t) & 0\\
+        \sin(t) & \cos(t) & 0\\
+        0 & 0 & 1\end{array}\right] \left[\begin{array}{c}
+        a_1\\-a_2\\0\end{array}\right] = \left(a_1\cos(t) + a_2\sin(t),
+        a_1\sin(t) - a_2\cos(t), 0\right)
+    \end{gather*}
+\end{enumerate}
 
 \end{document}
