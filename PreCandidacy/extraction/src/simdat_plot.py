@@ -120,12 +120,17 @@ pc4 = ax[1,1].imshow(uz[-1,0,:,:].T,
 fig.colorbar(pc4, ax=ax[1,1])
 ax[1,1].set_title(r'$u_z$')
 
-fig.subplots_adjust(0.1, .1, .9, .9,
-.1,.1)
+fig.subplots_adjust(0.05, .1, .95, .9,
+.2,.2)
 
-zaxis = plt.axes([0.1, 0.02, 0.9, 0.03], facecolor='blue')
+zaxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
 szaxis = Slider(zaxis, 'Height', 0, np.pi,
 valinit=0, valstep=dz)
+
+for axis_set in ax:
+    for axis in axis_set:
+        axis.set_xticks([])
+        axis.set_yticks([])
 
 #fig.tight_layout()
 
