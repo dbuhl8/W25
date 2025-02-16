@@ -156,7 +156,6 @@ def slide_update(val):
     return update_frame(np.argmax(t == val))
 
 ani = animation.FuncAnimation(fig=fig,
-func=update_frame,frames=Nt,interval=500,blit=True)
-#ani.save('XZ_evolution.gif')
-plt.show()
+func=update_frame,frames=Nt,interval=100,blit=True)
+ani.save('XZ_evolution.gif')
 
