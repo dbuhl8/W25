@@ -350,7 +350,7 @@ def update_frame(frame):
         temp_top, temp_xzside, temp_yzside, uz_top, uz_xzside, uz_yzside)
 
 ani = animation.FuncAnimation(fig=fig,
-    func=update_frame,frames=20,interval=100,blit=True)
+    func=update_frame,frames=Nt,interval=100,blit=True)
 ani.save('psuedoplot.gif')
 #plt.show()
 
