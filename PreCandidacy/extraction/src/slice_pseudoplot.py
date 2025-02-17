@@ -23,8 +23,7 @@ def FDX(field,nx,dx):
 
 def FDY(field,ny,dy):
     # takes in a field dataset with 4 dimensions (3 spatial, 1 time)
-    # returns dataset (numpy) of same shape but computing the 1st derivative
-    # with respect to x_comp
+    # returns dataset (numpy) of same shape but computing the 1st derivative # with respect to x_comp
     dy_field = np.zeros_like(field)
     # foward / backwards finite difference formula (boundary)
     dy_field[:,0,:] = (field[:,1,:]-field[:,0,:])/dy
@@ -34,6 +33,13 @@ def FDY(field,ny,dy):
         dy_field[:,i+1,:] = (0.5/dy)*(field[:,i+2,:]-field[:,i,:])
     return dy_field
 
+def make_norm(maxnum):
+    return colors.Normalize(vmin=-maxnum,vmax=maxnum)
+
+def sclmap(cmap, maxnum):
+    return mpl.cm.ScalarMappable(cmap=cmap,norm=make_norm(maxnum))
+
+# opening slice data files
 fnxy = 'XYSLICE1.cdf'
 fnxz = 'XZSLICE1.cdf'
 fnyz = 'YZSLICE1.cdf'
@@ -42,9 +48,9 @@ cdf_filexz = xr.open_dataset(fnxz)
 cdf_fileyz = xr.open_dataset(fnyz)
 dtype = np.float32
 cmap = 'RdYlBu_r'
-num_contours = 100
+num_contours = 100 # enforces smoothness
 
-#obtaining discretization data
+# obtaining discretization data
 x = cdf_filexy.x.to_numpy().astype(dtype)
 y = cdf_filexy.y.to_numpy().astype(dtype)
 z = cdf_filexz.z.to_numpy().astype(dtype)
@@ -70,46 +76,48 @@ uy_xy = cdf_filexy.uy.to_numpy().astype(dtype) # [t, y, x]
 uy_xz = cdf_filexz.uy.to_numpy().astype(dtype) # [t, z, x]
 uy_yz = cdf_fileyz.uy.to_numpy().astype(dtype) # [t, z, y]
 
-
 temp_xy = cdf_filexy.Temp.to_numpy().astype(dtype) # [t, y, x]
 temp_xz = cdf_filexz.Temp.to_numpy().astype(dtype) # [t, z, x]
 temp_yz = cdf_fileyz.Temp.to_numpy().astype(dtype) # [t, z, y]
-
 
 uz_xy = cdf_filexy.uz.to_numpy().astype(dtype) # [t, y, x]
 uz_xz = cdf_filexz.uz.to_numpy().astype(dtype) # [t, z, x]
 uz_yz = cdf_fileyz.uz.to_numpy().astype(dtype) # [t, z, y]
 
+# Finding max values for the colorbar
 uxmax = np.max([ux_xz.max(), ux_yz.max(), ux_xy.max()])
 uymax = np.max([uy_xz.max(), uy_yz.max(), ux_xy.max()])
 uzmax = np.max([uz_xz.max(), uz_yz.max(), uz_xy.max()])
 tempmax = np.max([temp_xz.max(), temp_yz.max(), temp_xy.max()])
 
+#print('Maximum; ux: ', uxmax, ', uy: ',\
+    #uymax, ', uz: ', uzmax, ', temp: ',tempmax)
+
 kwux = {
     'vmin': -uxmax,
     'vmax': uxmax,
-    #'norm': colors.Normalize(vmin=-uxmax,vmax=uxmax), 
+    #'norm': make_norm(uxmax),
     'cmap': cmap
 }
 
 kwuy = {
     'vmin': -uymax,
     'vmax': uymax,
-    #'norm': colors.Normalize(vmin=-uymax,vmax=uymax), 
+    #'norm': make_norm(uymax),
     'cmap': cmap
 }
 
 kwuz = {
     'vmin': -uzmax,
     'vmax': uzmax,
-    #'norm': colors.Normalize(vmin=-uzmax,vmax=uzmax), 
+    #'norm': make_norm(tempmax),
     'cmap': cmap
 }
 
 kwtemp = {
     'vmin': -tempmax,
     'vmax': tempmax,
-    #'norm': colors.Normalize(vmin=-tempmax,vmax=tempmax), 
+    #'norm': make_norm(uzmax),
     'cmap': cmap
 }
 
@@ -141,9 +149,7 @@ XX, YY, ZZ = np.meshgrid(x,y, -z)
         norm=colors.Normalize(vmin=-uzmax,vmax=uzmax), cmap='seismic')
     fig.colorbar(pc4, ax=ax[1,1])
     ax[1,1].set_title(r'$u_z$')
-"""
-
-"""
+    ------------------------------------------------------------------------------  
     # plot using imshow (much faster than pcolor for evenly spaced discretization)
     # axis style is worse however
     pc1 = ax[0,0].imshow(ux[0,:,:].T,
@@ -169,9 +175,8 @@ XX, YY, ZZ = np.meshgrid(x,y, -z)
         origin='lower')
     fig.colorbar(pc4, ax=ax[1,1])
     ax[1,1].set_title(r'$u_z$')
-"""
-
-""" need to implement this for each subplot
+    -----------------------------------------------------------------------------
+    need to implement this for each subplot
     import matplotlib.pyplot as plt
     import numpy as np
 
@@ -242,143 +247,110 @@ XX, YY, ZZ = np.meshgrid(x,y, -z)
 # makes a box plot for each subplot
 fig, ax = plt.subplots(2, 2,subplot_kw=dict(projection='3d'))
 
-# ux plot
-# top of box (XY SLICE)
+# ux box plot
 ux_top = ax[0,0].contourf(XX[:,:,0],YY[:,:,0],ux_xy[0,:,:], levels=num_contours,
-zdir='z', offset=0, **kwux)
-# x side of box (XZ SLICE)
+    zdir='z', offset=0, **kwux)
 ux_xzside = ax[0,0].contourf(XX[0,:,:],ux_xz[0,:,:].T,
-ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwux)
-# y-side of box (YZ SLICE)
+    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwux)
 ux_yzside = ax[0,0].contourf(ux_yz[0,:,:].T,YY[:,-1,:],
-ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwux)
-
+    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwux)
 ax[0,0].set(xlim=[XX.min(),XX.max()],ylim=[YY.min(), YY.max()], zlim=[ZZ.min(), ZZ.max()])
-#ax[0,0].set_xlabel('X')
-#ax[0,0].set_ylabel('Y')
-#ax[0,0].set_zlabel('Z')
 ax[0,0].set_title(r"$u_x$")
 ax[0,0].view_init(40, 240, 0)
 ax[0,0].set_box_aspect((4, 4, 1), zoom=0.9)
-fig.colorbar(ux_top, ax=ax[0,0], fraction=0.02, pad=0.1)
+fig.colorbar(sclmap(cmap,uxmax), ax=ax[0,0])
 
-
+# uy box plot
 uy_top = ax[0,1].contourf(XX[:,:,0],YY[:,:,0],uy_xy[0,:,:], levels=num_contours,
-zdir='z', offset=0, **kwuy)
-# x side of box (XZ SLICE)
+    zdir='z', offset=0, **kwuy)
 uy_xzside = ax[0,1].contourf(XX[0,:,:],uy_xz[0,:,:].T,
-ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuy)
-# y-side of box (YZ SLICE)
+    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuy)
 uy_yzside = ax[0,1].contourf(uy_yz[0,:,:].T,YY[:,-1,:],
-ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuy)
-
+    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuy)
 ax[0,1].set(xlim=[XX.min(),XX.max()],ylim=[YY.min(), YY.max()], zlim=[ZZ.min(), ZZ.max()])
-#ax[0,1].set_xlabel('X')
-#ax[0,1].set_ylabel('Y')
-#ax[0,1].set_zlabel('Z')
 ax[0,1].set_title(r"$u_y$")
 ax[0,1].view_init(40, 240, 0)
 ax[0,1].set_box_aspect((4, 4, 1), zoom=0.9)
-fig.colorbar(uy_top, ax=ax[0,1], fraction=0.02, pad=0.1)
+#fig.colorbar(uy_top, ax=ax[0,1], norm=make_norm(uymax), fraction=0.02, pad=0.1)
+fig.colorbar(sclmap(cmap,uymax), ax=ax[0,1])
 
 
+# temp box plot
 temp_top = ax[1,0].contourf(XX[:,:,0],YY[:,:,0],temp_xy[0,:,:],
-levels=num_contours, zdir='z', offset=0, **kwtemp)
-# x side of box (XZ SLICE)
+    levels=num_contours, zdir='z', offset=0, **kwtemp)
 temp_xzside = ax[1,0].contourf(XX[0,:,:],temp_xz[0,:,:].T,
-ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwtemp)
-# y-side of box (YZ SLICE)
+    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwtemp)
 temp_yzside = ax[1,0].contourf(temp_yz[0,:,:].T,YY[:,-1,:],
-ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwtemp)
-
+    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwtemp)
 ax[1,0].set(xlim=[XX.min(),XX.max()],ylim=[YY.min(), YY.max()], zlim=[ZZ.min(), ZZ.max()])
-#ax[1,0].set_xlabel('X')
-#ax[1,0].set_ylabel('Y')
-#ax[1,0].set_zlabel('Z')
 ax[1,0].set_title(r"$T'$")
 ax[1,0].view_init(40, 240, 0)
 ax[1,0].set_box_aspect((4, 4, 1), zoom=0.9)
-fig.colorbar(temp_top, ax=ax[1,0], fraction=0.02, pad=0.1)
+#fig.colorbar(temp_top, ax=ax[1,0], norm=make_norm(tempmax), fraction=0.02, pad=0.1)
+fig.colorbar(sclmap(cmap,tempmax), ax=ax[1,0])
 
 
+# uz box plot
 uz_top = ax[1,1].contourf(XX[:,:,0],YY[:,:,0],uz_xy[0,:,:], levels=num_contours,
-zdir='z', offset=0, **kwuz)
-# x side of box (XZ SLICE)
+    zdir='z', offset=0, **kwuz)
 uz_xzside = ax[1,1].contourf(XX[0,:,:],uz_xz[0,:,:].T,
-ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuz)
-# y-side of box (YZ SLICE)
+    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuz)
 uz_yzside = ax[1,1].contourf(uz_yz[0,:,:].T,YY[:,-1,:],
-ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuz)
-
-
+    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuz)
 ax[1,1].set(xlim=[XX.min(),XX.max()],ylim=[YY.min(), YY.max()], zlim=[ZZ.min(), ZZ.max()])
-#ax[1,1].set_xlabel('X')
-#ax[1,1].set_ylabel('Y')
-#ax[1,1].set_zlabel('Z')
 ax[1,1].set_title(r"$u_z$")
 ax[1,1].view_init(40, 240, 0)
 ax[1,1].set_box_aspect((4, 4, 1), zoom=0.9)
-fig.colorbar(uz_top, ax=ax[1,1], fraction=0.02, pad=0.1)
+#fig.colorbar(uz_top, ax=ax[1,1], norm=make_norm(uzmax), fraction=0.02, pad=0.1)
+fig.colorbar(sclmap(cmap,uzmax), ax=ax[1,1])
 
+
+# Additional Plot Formating
 # makes room for the slider
 fig.subplots_adjust(0, .05, .90, .90,
 .05,.05)
-
-# horizaontally oriented slider
-taxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
-staxis = Slider(taxis, 'Time', t[0], t[-1], valinit=t[0], valstep=dt)
-
-# vertically orientated slider
-#zaxis = plt.axes([0.94,0.15,0.03,0.7],facecolor='blue',orientation='vertical')
-#szaxis = Slider(zaxis, 'Height', 0, np.pi, valinit=0, valstep=dz)
-
 for axis_set in ax:
     for axis in axis_set:
         axis.set_xticks([])
         axis.set_yticks([])
         axis.set_zticks([])
+# horizaontally oriented slider
+taxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
+staxis = Slider(taxis, 'Time', t[0], t[-1], valinit=t[0], valstep=dt)
 
 # movie down vertical extent of domain
 def update_frame(frame):
     ux_top = ax[0,0].contourf(XX[:,:,0],YY[:,:,0],
-    ux_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwux)
-    # x side of box (XZ SLICE)
+        ux_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwux)
     ux_xzside = ax[0,0].contourf(XX[0,:,:],ux_xz[frame,:,:].T,
-    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwux)
-    # y-side of box (YZ SLICE)
+        ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwux)
     ux_yzside = ax[0,0].contourf(ux_yz[frame,:,:].T,YY[:,-1,:],
-    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwux)
+        ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwux)
     uy_top = ax[0,1].contourf(XX[:,:,0],YY[:,:,0],
-    uy_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwuy)
-    # x side of box (XZ SLICE)
+        uy_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwuy)
     uy_xzside = ax[0,1].contourf(XX[0,:,:],uy_xz[frame,:,:].T,
-    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuy)
-    # y-side of box (YZ SLICE)
+        ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuy)
     uy_yzside = ax[0,1].contourf(uy_yz[frame,:,:].T,YY[:,-1,:],
-    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuy)
+        ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuy)
     temp_top = ax[1,0].contourf(XX[:,:,0],YY[:,:,0],
-    temp_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwtemp)
-    # x side of box (XZ SLICE)
+        temp_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwtemp)
     temp_xzside = ax[1,0].contourf(XX[0,:,:],temp_xz[frame,:,:].T,
-    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwtemp)
-    # y-side of box (YZ SLICE)
+        ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwtemp)
     temp_yzside = ax[1,0].contourf(temp_yz[frame,:,:].T,YY[:,-1,:],
-    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwtemp)
+        ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwtemp)
     uz_top = ax[1,1].contourf(XX[:,:,0],YY[:,:,0],
-    uz_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwuz)
-    # x side of box (XZ SLICE)
+        uz_xy[frame,:,:], levels=num_contours, zdir='z', offset=0, **kwuz)
     uz_xzside = ax[1,1].contourf(XX[0,:,:],uz_xz[frame,:,:].T,
-    ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuz)
-    # y-side of box (YZ SLICE)
+        ZZ[0,:,:], levels=num_contours, zdir='y', offset=0, **kwuz)
     uz_yzside = ax[1,1].contourf(uz_yz[frame,:,:].T,YY[:,-1,:],
-    ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuz)
+        ZZ[:,-1,:], levels=num_contours,zdir='x', offset=0, **kwuz)
     staxis.set_val(t[frame]) 
     print('Done with frame: ', frame)
     return (ux_top, ux_xzside, ux_yzside, uy_top, uy_xzside, uy_yzside,
-    temp_top, temp_xzside, temp_yzside, uz_top, uz_xzside, uz_yzside)
+        temp_top, temp_xzside, temp_yzside, uz_top, uz_xzside, uz_yzside)
 
 ani = animation.FuncAnimation(fig=fig,
-func=update_frame,frames=20,interval=100,blit=True)
+    func=update_frame,frames=20,interval=100,blit=True)
 ani.save('psuedoplot.gif')
 #plt.show()
 
