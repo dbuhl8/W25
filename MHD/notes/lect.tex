@@ -28,8 +28,6 @@
 \author{Dante Buhl}
 \doublespacing
 
-
-
 \newcommand{\wrms}{w_{\text{rms}}}
 \newcommand{\bs}[1]{\boldsymbol{#1}}
 \newcommand{\tb}[1]{\textbf{#1}}
@@ -72,6 +70,9 @@
 \newcommand{\ez}{\bs{e}_z}
 \newcommand{\ex}{\bs{e}_x}
 \newcommand{\ey}{\bs{e}_y}
+\newcommand{\thetahat}{\hat{\bs{\theta}}}
+\newcommand{\rhat}{\hat{\bs{r}}}
+\newcommand{\zhat}{\hat{\bs{z}}}
 \newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
 \newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
@@ -1418,12 +1419,123 @@ which is a linear helmholtz equation for the magnetic field. Where as, solving
 for a force free field by $\jvec\times\B = 0$ is much more difficult due to
 nonlinearity. 
 
-\section{}
-\subsection{}
+\section{Magnetohydrostatics: Continued}
+\subsection{Review of Magnetohydrostatic balance}
+We remember the equation for Magnetohydrostatic balance, whereby a steady state
+inviscid flow is given by the balance between pressure, buoyancy/gravity, and
+the lorentz force. Similarly, in the induction equation we only have magnetic
+diffusion affecting the magnetic field. Thereby, the magnetic field will decay
+and thus the magnetohydrostatic balance will erode and return to hydrostatic
+balance. Note that in order for hydrostatic balance to be useful, we must
+consider timescales much shorter than the magnetic diffusion timescale. 
 \begin{gather*}
+    0 = -\grad p + \rho\bs{g} + \jvec\times\B\\
+    \ppt{\B} = \eta\grad^2\B
+\end{gather*}
+
+\subsection{Non-forcefree solutions}
+Let us consider a simplified case to solve these equations whereby we have,
+\begin{gather*}
+    \B\cdot\left( 0 = -\grad p + \jvec\times\B\right), \quad \beta =
+    \frac{p_{\text{gas}}}{p_{\text{mag}}}\\
+    0 = \B\cdot\grad p\\
+    \jvec\cdot\left( 0 = -\grad p + \jvec\times\B\right) \to 0 =
+    \jvec\cdot\grad p
+\end{gather*}
+this tells us, as the original equation implies, that both $\B$ and $\jvec$ lie
+within surfaces of constant pressure, and therefore $\jvec\times\B$ is parallel
+to the gradients of pressure everywhere. Essentially this balance begs the
+physical intuition of pressure balancing the lorentz force. 
+
+\subsection{The Theta-Pinch}
+\begin{gather*}
+    \jvec = J\hat{\bs{\theta}}, \quad \B = b(r)\hat{\bs{r}}\\
+    \jvec = \frac{1}{\mu_0}\grad\times\B =
+    \frac{1}{\mu_0}\pp{b(r)}{r}\thetahat\\
+    \jvec\times\B = \frac{1}{\mu_0}\left|\begin{array}{c c c}
+                    \rhat & \thetahat & \zhat \\
+                    0 & -\pp{b}{r} & 0\\
+                    0 & 0 & b\end{array}\right|\\
+                  = -\frac{b}{\mu_0}\frac{db}{dr}\rhat
+\end{gather*}
+With some algebra, we can show that $\ldots$.
+Thus we obtain the conclusion that at some point,
+\begin{gather*}
+    \frac{b^2}{2\mu_0} = p_0 \implies p_{\text{gas}} = 0 
+\end{gather*}
+
+\subsection{Linear Pinch}
+
+\begin{gather*}
+    \B = b(r)\thetahat\\
+    \jvec = \frac{1}{\mu_0r}\left|\begin{array}{c c c}
+            \rhat & \thetahat & \zhat \\
+            \pp{}{r} & \pp{}{\theta} & \ppz{}\\
+            0 & rb(r) & 0\end{array}\right|\\
+            = \frac{1}{\mu_0 r}\pp{rb}{r}\zhat\\
+    \jvec\times\B = \frac{1}{\mu_0r}\left|\begin{array}{c c c}
+            \rhat & \thetahat & \zhat \\
+            0 & 0 & \pp{rb}{r}\\
+            0 & b & 0\end{array}\right|\\
+            = -\frac{b}{\mu_0r}\pp{rb}{r}\rhat
+\end{gather*}
+
+In order to solve this equation we first write
+
+This solves the problem inside the radius of $a$ where there is current.
+\begin{gather*}
+    \jvec = J_0\zhat \\
+    \pp{rb}{r} = J_0\mu_0r\\
+    rb = \frac{J_0\mu_0}{2}r^2 + c_1\\
+    b(r) = \frac{J_0\mu_0}{2}r + \frac{c_1}{r}\\
+    b_i(r) = \frac{J_0\mu_0}{2}r, \quad r \le a
+\end{gather*}
+Outside of this current region we have a different solution and must solve for
+continuity at the interface. 
+\begin{gather*}
+    \pp{rb}{r} = 0\\
+    b_o(r) = \frac{c_1}{r} \to \frac{J_0\mu_0 a^2}{2r}, \quad r > a
+\end{gather*}
+We next want to understand how this solution affects the gas pressure in the
+system. 
+\begin{gather*}
+    \frac{dp}{dr} = -\frac{b}{\mu_0r}\frac{d(rb)}{dr}\rhat\\
+    \vdots\\
+    p = \begin{cases}
+        p_{\text{atmos}} & r > a\\
+        -\frac{1}{4}J_0^2\mu_0(r^2-a^2)+p_{\text{atmos}} & r \le a\end{cases}
+\end{gather*}
+
+\subsection{Cylindrical Pinch}
+The cylindrical pinch requires that the magnetic field has both an angular
+component and a vertical component, i.e. 
+\begin{gather*}
+    \B = b_L\thetahat + b_T\zhat\\
+    \jvec = J_T\thetahat + J_L\zhat\\
+    -\pp{p}{r} - \pp{}{r}\left(\frac{b_L^2 + b_T^2}{2\mu_0}\right) -
+    \frac{b_L^2}{\mu_0r} = 0
+\end{gather*}
+We can solve for the amount of twist in the system using the equations for the
+fieldlines. 
+\begin{gather*}
+    \frac{d\theta}{dz} = \frac{b_L}{rb_T}\\
+    \int d\theta = \frac{Lb_L}{rb_T}
+\end{gather*}
+
+\subsection{Reverse Field Pinch}
+This idea stems from the Beltrami cylindrical geometry, 
+\begin{gather*}
+    \B = \left(0, B_{\theta}, B_z\right)\\
+    \grad^2\B + \alpha\B = 0\\
+    B_{\theta} = B_0J_0(\alpha r), \quad \text{this is a bessels function of
+    order zero}\\
+    B_{z} = B_0J_1(\alpha r), \quad \text{this is a bessels function of
+    order one}
 \end{gather*}
 
 
+
+    
 \begin{gather*}
 \end{gather*}
 \end{document}
