@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import matplotlib.cm as cm
 import matplotlib.colors as colors
 import matplotlib.animation as animation
 from matplotlib.widgets import Slider
@@ -139,8 +138,8 @@ def FD6Y(field,ny,dy):
                                            +field[:,:,i,:])
     return -dy_field
 
-# commented out because this breaks expanse plotting
-#plt.rcParams['text.usetex'] = True
+
+plt.rcParams['text.usetex'] = True
 
 dtype = np.float32
 ptstp = -1  # this choses which timestep to plot (-1 is the last one)
@@ -159,10 +158,10 @@ files_100 = ['Om0.5B100Re600Pe60/OUT.dat',\
     'Om8B100Re600Pe60/OUT.dat']
 cor_idx = [0, 1, 2, 3, 4, 6]
 
-simdat_files_30 = ['Om0.5B30Re600Pe60/simdat4.cdf',\
+simdat_files_30 = ['Om0.5B30Re600Pe60/simdat4.cdf'\
     'Om1B30Re600Pe60/simdat3.cdf','Om2B30Re600Pe60/simdat4.cdf',\
     'Om3B30Re600Pe60/simdat7.cdf','Om4B30Re600Pe60/simdat4.cdf',\
-    'Om5B30Re600Pe60/simdat2.cdf', 'Om8B30Re600Pe60/simdat1.cdf',\
+    'Om5B30Re600Pe60/simdat2.cdf', 'Om8B30Re600Pe60/simdat1.cdf'\
     'Om10B30Re600Pe60/simdat4.cdf']
 sim_30_idx = [0, 1, 2, 3, 4, 5, 6, 7]
 
@@ -190,7 +189,7 @@ avg_uh_30 = np.zeros_like(vol_frac_30)
 vol_frac_100 = np.zeros(sim_num_files[1])
 avg_uh_100 = np.zeros_like(vol_frac_100)
 
-for i, fn in enumerate(simdat_files_30):
+for i, fn in enumerate(simdat_files_100):
     #cdf_file = xr.open_dataset(fn)
     cdf_file = Dataset(fn)
 
@@ -216,12 +215,11 @@ for i, fn in enumerate(simdat_files_30):
     wzmax = np.max(np.abs(wz[ptstp,:,:,:]))
 
     #compute volume fraction where wz >= .1 wzmax
-    vol_frac_30[i] = len(np.where(np.abs(wz[ptstp,:,:,:]) <= 0.1*wzmax)[0])/\
+    vol_frac_100[i] = len(np.where(np.abs(wz[ptstp,:,:,:]) <= 0.1*wzmax)[0])/\
                         len(wz[ptstp,:,:,:])
-    print("Finished with file: ", fn, ".")
     cdf_file.close()
 
-for i, fn in enumerate(simdat_files_100):
+for i, fn in enumerate(simdat_files_30):
     cdf_file = Dataset(fn)
 
     x = np.array(cdf_file.variables["x"])
@@ -247,9 +245,8 @@ for i, fn in enumerate(simdat_files_100):
     wzmax = np.max(np.abs(wz[ptstp,:,:,:]))/4
 
     #compute volume fraction where wz >= .1 wzmax
-    vol_frac_100[i] = len(np.where(np.abs(wz[ptstp,:,:,:]) <= 0.1*wzmax)[0])/\
+    vol_frac_30[i] = len(np.where(np.abs(wz[ptstp,:,:,:]) <= 0.1*wzmax)[0])/\
                         len(wz[ptstp,:,:,:])
-    print("Finished with file: ", fn, ".")
     cdf_file.close()
 
 eInvRo_30 = np.zeros([num_files[0], num_samples])
@@ -289,7 +286,6 @@ for fn in files_30:
         avg_wT_err_30[i,j] = np.std(wT[idx])
         dt = 2*(np.pi**2)/urms[idx[-1]]
     i += 1
-    print("Finished with file: ", fn, ".")
     file.close()
 
 i = 0
@@ -319,12 +315,11 @@ for fn in files_100:
         avg_wT_err_100[i,j] = np.std(wT[idx])
         dt = 2*(np.pi**2)/urms[idx[-1]]
     i += 1
-    print("Finished with file: ", fn, ".")
     file.close()
 
 fig, ax = plt.subplots(2, 2,sharex=True,figsize=(16,9))
 # rearrange ax arary to be indexed 1:4
-#ax = [axitem for axitem in [axset for axset in ax]] 
+ax = [axitem for axitem in [axset for axset in ax]] 
 dc = cvar/num_files[0]
 col = np.linspace(0+dc,1-dc,num_files[0], True)
 colors = [np.linspace(c-dc,c+dc,num_samples, True) for c in col]
@@ -333,19 +328,19 @@ artists = []
 
 for i in range(num_files[0]):
     for j in range(num_samples):
-        item = ax[0,0].errorbar(eInvRo_30[i,j], avg_wT_30[i,j],
+        item = ax[0].errorbar(eInvRo_30[i,j], avg_wT_30[i,j],
         avg_wT_err_30[i,j], eInvRo_err_30[i,j],\
         'none', cm.nipy_spectral_r(colors[i][j]))
         if j==2:
             artists.append(item)
 
-ax[0,0].set_xlabel(r'$Ro_e^{-1}$', **font)
-ax[0,0].set_ylabel(r'$wT$',rotation=0, **font)
-ax[0,0].tick_params(axis='both', labelsize=fs-5)
-ax[0,0].set_yscale('log')
-ax[0,0].set_xscale('log')
-ax[0,0].set_title(r'$Fr = 0.18$', **font)
-ax[0,0].legend(artists,labels_30,loc='lower left',fontsize=22)
+ax[0].set_xlabel(r'$Ro_e^{-1}$', **font)
+ax[0].set_ylabel(r'$wT$',rotation=0, **font)
+ax[0].tick_params(axis='both', labelsize=fs-5)
+ax[0].set_yscale('log')
+ax[0].set_xscale('log')
+ax[0].set_title(r'$Fr = 0.18$', **font)
+ax[0].legend(artists,labels_30,loc='lower left',fontsize=22)
 
 #dc = cvar/num_files[1]
 #col = np.linspace(0+dc,1-dc,num_files[1], True)
@@ -354,7 +349,7 @@ artists = []
 
 for i in range(num_files[1]):
     for j in range(num_samples):
-        item = ax[0,1].errorbar(eInvRo_100[i,j], avg_wT_100[i,j],
+        item = ax[1].errorbar(eInvRo_100[i,j], avg_wT_100[i,j],
         avg_wT_err_100[i,j], eInvRo_err_100[i,j],\
         'none', cm.nipy_spectral_r(colors[cor_idx[i]][j]))
         if j==2:
@@ -362,46 +357,43 @@ for i in range(num_files[1]):
 
 # if tick labels are wanted on right subplot
 #ax[1].tick_params(labelleft=True)
-ax[0,1].set_xlabel(r'$Ro_e^{-1}$', **font)
+ax[1].set_xlabel(r'$Ro_e^{-1}$', **font)
 #ax[1].set_ylabel(r'$wT$',rotation=0,labelpad=30, **font)
 #ax[1].set_ylabel(r'$wT$',rotation=0, **font)
-ax[0,1].tick_params(axis='both', labelsize=fs-5)
-ax[0,1].sharey(ax[0,0])
-ax[0,1].set_yscale('log')
-ax[0,1].set_xscale('log')
-ax[0,1].set_title(r'$Fr = 0.1$', **font)
-ax[0,1].legend(artists,labels_100,loc='lower left',fontsize=fs)
+ax[1].tick_params(axis='both', sharey=ax[0], labelsize=fs-5)
+ax[1].set_yscale('log')
+ax[1].set_xscale('log')
+ax[1].set_title(r'$Fr = 0.1$', **font)
+ax[1].legend(artists,labels_100,loc='lower left',fontsize=fs)
 
 for i in range(sim_num_files[0]):
-    artists.append(ax[1,0].scatter(invRo_30[i]/avg_uh_30[i], vol_frac_30[i], 
+    artists.append(ax[2].scatter(invRo_30[i]/avg_uh_30[i], vol_frac_30[i], 
     c=cm.nipy_spectral_r(colors[sim_30_idx[i]][2])))
 
-ax[1,0].set_xlabel(r'$Ro_e^{-1}$', **font)
-ax[1,0].set_ylabel(r'$\int_{\omega_z \le .1\omega_{z, \text{max}}$',rotation=0, **font)
-ax[1,0].tick_params(axis='both', labelsize=fs-5)
-ax[1,0].set_yscale('log')
-ax[1,0].set_xscale('log')
-ax[1,0].set_title(r'$Fr = 0.18$', **font)
-ax[1,0].legend(artists,labels_30,loc='lower left',fontsize=22)
+ax[2].set_xlabel(r'$Ro_e^{-1}$', **font)
+ax[2].set_ylabel(r'$\int_{\omega_z \le .1\omega_{z, \text{max}}$',rotation=0, **font)
+ax[2].tick_params(axis='both', labelsize=fs-5)
+ax[2].set_yscale('log')
+ax[2].set_xscale('log')
+ax[2].set_title(r'$Fr = 0.18$', **font)
+ax[2].legend(artists,labels_30,loc='lower left',fontsize=22)
 
 artists = []
 
 for i in range(sim_num_files[1]):
-    artists.append(ax[1,1].scatter(invRo_100[i]/avg_uh_100[i],
-    vol_frac_100[i], 
-    c=cm.nipy_spectral_r(colors[cor_idx[i]][2])))
+    artists.append(ax[2].scatter(invRo_30[i]/avg_uh_30[i], vol_frac_30[i], 
+    c=cm.nipy_spectral_r(colors[sim_30_idx[i]][2])))
 
 # if tick labels are wanted on right subplot
 #ax[1].tick_params(labelleft=True)
-ax[1,1].set_xlabel(r'$Ro_e^{-1}$', **font)
-ax[1,1].tick_params(axis='both', labelsize=fs-5)
-ax[1,1].sharey(ax[1,0])
-ax[1,1].set_yscale('log')
-ax[1,1].set_xscale('log')
-ax[1,1].set_title(r'$Fr = 0.1$', **font)
-ax[1,1].legend(artists,labels_100,loc='lower left',fontsize=fs)
+ax[3].set_xlabel(r'$Ro_e^{-1}$', **font)
+ax[3].tick_params(axis='both', sharey=ax[3], labelsize=fs-5)
+ax[3].set_yscale('log')
+ax[3].set_xscale('log')
+ax[3].set_title(r'$Fr = 0.1$', **font)
+ax[3].legend(artists,labels_100,loc='lower left',fontsize=fs)
 
-#fig.tight_layout()
+fig.tight_layout()
 #plt.show()
 plt.savefig('flux_vol_frac_plot.pdf')
 

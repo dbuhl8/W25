@@ -5,9 +5,10 @@
 \contentsline {section}{\numberline {2}Hattori \& Hirota Papers}{2}{section.2}%
 \contentsline {subsection}{\numberline {2.1}Stability of two-dimensional Taylor-Green vortices in rotating stratified fluids (2023)}{2}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Modal stability analysis of arrays of stably stratified vortices (2021)}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Suzuki et al (2018), Strato-hyperbolic instability: a new mechanism of instability in stably stratified vortices}{3}{subsection.2.3}%
 \contentsline {section}{\numberline {3}Miyazaki and Fukumoto}{3}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Three‐dimensional instability of strained vortices in a stably stratified fluid (1992)}{3}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Elliptical instability in a stably stratified rotating fluid (1993)}{3}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.2}Elliptical instability in a stably stratified rotating fluid (1993)}{4}{subsection.3.2}%
 \contentsline {section}{\numberline {4}Linden Papers}{4}{section.4}%
 \contentsline {subsection}{\numberline {4.1}The stability of vortices in a rotating, stratified fluid}{4}{subsection.4.1}%
 \contentsline {section}{\numberline {5}Herring and Metias}{5}{section.5}%
@@ -18,3 +19,5 @@
 \contentsline {subsection}{\numberline {7.1}Exploiting self-organized criticality in strongly stratified turbulence (2021)}{5}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Cope et al. 2020}{5}{subsection.7.2}%
 \contentsline {subsection}{\numberline {7.3}Shah et al. 2023}{5}{subsection.7.3}%
+\contentsline {section}{\numberline {8}Guo, Taylor, Zhou}{5}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Zigzag instability of columnar Taylor-Green vortices in a strongly stratified fluid}{5}{subsection.8.1}%

@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH --job-name="vort_frac_py"
+#SBATCH --partition=shared
+#SBATCH --output="PBSOUT.o%j"
+#SBATCH --error="PBSOUT.e%j"
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --mem=64G
+#SBATCH -t 00:30:00
+
+module reset 
+module load cpu/0.15.4
+module load gcc/10.2.0
+module load python
+module load py-matplotlib/3.3.2-openblas
+module load py-six
+module load py-netcdf4
+module load py-cftime
+
+python3 vort_frac.py
