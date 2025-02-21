@@ -1,9 +1,42 @@
 \providecommand{\noopsort}[1]{}\providecommand{\singleletter}[1]{#1}%
-\begin{thebibliography}{1}
+\begin{thebibliography}{12}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 \def\au#1{#1} \def\ed#1{#1} \def\yr#1{#1}\def\at#1{#1}\def\jt#1{\textit{#1}} \def\bt#1{#1}\def\bvol#1{\textbf{#1}} \def\vol#1{#1} \def\pg#1{#1} \def\publ#1{#1}\def\arxiv#1{#1}\def\org#1{#1}\def\st#1{\textit{#1}}
 
+\bibitem[{A.}(1941)]{Kolmogorov1941b}
+{\sc \au{{A.}, Kolmogorov}} \yr{1941}  \at{{On degeneration of isotropic turbulence in an incompressible viscous liquid}}.  \jt{Proc. Acad. Sci. USSR}  \pg{pp. 538--540}.
+
+\bibitem[{A.}(1991{\natexlab{{\em a\/}}})]{Kolmogorov1941c}
+{\sc \au{{A.}, Kolmogorov}} \yr{1991{\natexlab{{\em a\/}}}}  \at{{Dissipation of Energy in the locally isotropic turbulence}}.  \jt{Proceedings: Mathematical and Physical Sciences} ~(1890),  \pg{15--17}.
+
+\bibitem[{A.}(1991{\natexlab{{\em b\/}}})]{Kolmogorov1941a}
+{\sc \au{{A.}, Kolmogorov}} \yr{1991{\natexlab{{\em b\/}}}}  \at{{The Local Structure of Turbulence in Incompressible Viscous Fluid for Very Large Reynolds Numbers}}.  \jt{Proceedings: Mathematical and Physical Sciences} ~(1890),  \pg{9--13}.
+
+\bibitem[{Billant} \& {Chomaz}(2000{\natexlab{{\em a\/}}})]{BillantChomaz2000a}
+{\sc \au{{Billant}, Paul} \& \au{{Chomaz}, Jean-Marc}} \yr{2000{\natexlab{{\em a\/}}}}  \at{{Experimental evidence for a new instability of a vertical columnar vortex pair in a strongly stratified fluid}}.  \jt{Journal of Fluid Mechanics}  \bvol{418}~(1),  \pg{167--188}.
+
+\bibitem[{Billant} \& {Chomaz}(2000{\natexlab{{\em b\/}}})]{BillantChomaz2000b}
+{\sc \au{{Billant}, Paul} \& \au{{Chomaz}, Jean-Marc}} \yr{2000{\natexlab{{\em b\/}}}}  \at{Theoretical analysis of the zigzag instability of a vertical columnar vortex pair in a strongly stratified fluid}.  \jt{Journal of Fluid Mechanics}  \bvol{419},  \pg{29–63}.
+
+\bibitem[{Billant} \& {Chomaz}(2000{\natexlab{{\em c\/}}})]{BillantChomaz2000c}
+{\sc \au{{Billant}, Paul} \& \au{{Chomaz}, Jean-Marc}} \yr{2000{\natexlab{{\em c\/}}}}  \at{Three-dimensional stability of a vertical columnar vortex pair in a stratified fluid}.  \jt{Journal of Fluid Mechanics}  \bvol{419},  \pg{65–91}.
+
+\bibitem[{Billant} \& {Chomaz}(2001)]{BillantChomaz2001}
+{\sc \au{{Billant}, Paul} \& \au{{Chomaz}, Jean-Marc}} \yr{2001}  \at{{Self-similarity of strongly stratified inviscid flows}}.  \jt{Physics of Fluids}  \bvol{13}~(6),  \pg{1645--1651},  \arxiv{arXiv: https://pubs.aip.org/aip/pof/article-pdf/13/6/1645/19135376/1645\_1\_online.pdf}.
+
 \bibitem[{Chini} {\em et~al.\/}(2022){Chini}, {Michel}, {Julien}, {Rocha} \& {Caulfield}]{Chinial2022}
 {\sc \au{{Chini}, Gregory~P.}, \au{{Michel}, Guillaume}, \au{{Julien}, Keith}, \au{{Rocha}, Cesar~B.} \& \au{{Caulfield}, Colm-cille~P.}} \yr{2022}  \at{{Exploiting self-organized criticality in strongly stratified turbulence}}.  \jt{Journal of Fluid Mechanics}  \bvol{933},  \pg{A22},  \arxiv{arXiv: 2111.08806}.
+
+\bibitem[Guo {\em et~al.\/}(2024)Guo, Taylor \& Zhou]{Guo_Taylor_Zhou_2024}
+{\sc \au{Guo, Junwei}, \au{Taylor, John~R.} \& \au{Zhou, Qi}} \yr{2024}  \at{Zigzag instability of columnar taylor–green vortices in a strongly stratified fluid}.  \jt{Journal of Fluid Mechanics}  \bvol{997},  \pg{A34}.
+
+\bibitem[Hattori {\em et~al.\/}(2021)Hattori, Suzuki, Hirota \& Khandelwal]{Hattori_Suzuki_Hirota_Khandelwal_2021}
+{\sc \au{Hattori, Yuji}, \au{Suzuki, Shota}, \au{Hirota, Makoto} \& \au{Khandelwal, Manish}} \yr{2021}  \at{Modal stability analysis of arrays of stably stratified vortices}.  \jt{Journal of Fluid Mechanics}  \bvol{909},  \pg{A4}.
+
+\bibitem[Ozmidov(1965)]{Ozmidov1965}
+{\sc \au{Ozmidov, R.~V.}} \yr{1965}  \at{Certain features of energy spectrum of oceanic turbulence}.  \jt{Dokl. Akad. Nauk SSSR}  \bvol{161},  \pg{828--831}.
+
+\bibitem[{Shah} {\em et~al.\/}(2023){Shah}, {Chini}, {Caulfield} \& {Garaud}]{Shah2023}
+{\sc \au{{Shah}, Kasturi}, \au{{Chini}, Gregory~P.}, \au{{Caulfield}, Colm-cille~P.} \& \au{{Garaud}, Pascale}} \yr{2023}  \at{{Regimes of stratified turbulence at low Prandtl number}}.  \jt{arXiv e-prints}  \pg{p. arXiv:2311.06424},  \arxiv{arXiv: 2311.06424}.
 
 \end{thebibliography}

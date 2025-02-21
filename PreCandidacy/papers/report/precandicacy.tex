@@ -107,14 +107,14 @@ dynamics, whereby the effects of other physical mechanisms are ignored in order 
 better understand the instabilities, flow structures, and other properties which arise
 under specific conditions. This has led to many discoveries about stratified flows ({\red CITE PAPERS HERE}) and rotating
 flows ({\red CITE PAPERS HERE}). Solving problems in fluid dynamics becomes
-mouch more difficult when multiple dynamics are included in the governing
+more difficult when multiple dynamics are included in the governing
 equations. This is often due to the nonlinearity implicit to the Navier-Stokes
 equation which prevents the superposition of solutions. For this reason, there
 are fewer studies which involve both rotation and stratification, and among
-those, few that are able to make general statements about rotating stratified
+those, few that are able to make general and comprehensive statements about rotating stratified
 flows.
 
-Despite the limitations to analytical solutions of the Navier-Stokes equation
+Despite the lack of analytical solutions of the Navier-Stokes equation
 (coupled with the equations for mass conservation, an equation of state, and
 other quantities), 
 
@@ -127,10 +127,77 @@ other quantities),
 \section{Instabilities and turbulence in rotating and/or stratified
 flows}
 \label{sec:instabilitesturbulence}
+The topic of instabilities and turbulence in fluid dynamics is perhaps one of
+the oldest problems. 
+
+{\red talk about early investigation into instabilities}
+
+For non-stratified flows, typical exhibitions of turbulence
+are isotropic and generally follow the scaling laws posited by
+Kolmogorov \citet{Kolmogorov1941a, Kolmogorov1941b, Kolmogorov1941c} which were
+obtained using dimensional arguments. These
+scaling laws include the Kolmogorov velocity $u_{\eta}$, time $\tau_{\eta}$ and
+length $\eta$ scales, i.e.
+ the unit velocity, time, and length scales at which viscous diffusion occurs. These quantities
+ are given by $u_{\eta} = (\nu\varepsilon)^{1/4}$, $\tau_{\eta} =
+ \sqrt{\nu/\varepsilon}$, and $\eta = (\nu^3/\varepsilon)^{1/4}$, where $\varepsilon$ is the average rate of
+turbulent energy dissipation and $\nu$ is the kinematic viscosity. A Reynolds
+number can be defined using these values $Re = u_{\eta}\eta/\nu$ and is equal to
+one at the kolmogorov scale, implying that viscous diffusion is of $O(1)$ in the
+Navier-Stokes equation. This foundation of isotropic turbulence has been
+paramount in the development of models for viscous diffusion. These scaling laws
+are valid only when the turbulence is isotropic. When, for example,
+buoyancy forces create pancake vorticies in the flow as is typical in stratified
+flows, the nature of these eddies is anisotropic. \cite{Ozmidov1965} used a dimensional
+argument to show that there is a length scale $l_O = \sqrt{\varepsilon/N^3}$
+below which isotropic turbulence is expected (where $N$ is the buoyancy
+frequency of the flow). {\red Futhermore, there is a transition in the energy spectrum
+once the wavenumber of the flow increases past $l_O^{-1}$. Typical isotropic
+turbulence exhibits an energy spectrum proportional to $k^{-5/3}$. In a
+stratified fluid, this energy spectrum above the Ozmidov scale exhibits an
+energy spectrum proportional to $k_h^{-3}$ and then transitions to the kolmogorov
+scaling ($k^{-5/3}$) once the flow becomes isotropic.}
+
+\subsection{Non-rotating Stratified flows}
+
+The zigzag instability first studied by
+\citet{BillantChomaz2000a,BillantChomaz2000b,BillantChomaz2000c,
+BillantChomaz2001} is perhaps one of the most important instabilities in
+stratified flows. It has been shown by
+\citet{BillantChomaz2000c,Hattori_Suzuki_Hirota_Khandelwal_2021,Guo_Taylor_Zhou_2024} {\red see if
+other papers talk about the growth rate of the zigzag instability} that the
+zigzag instability (also referenced as the mixed-hyperbolic instability) is
+consistently the fastest growing instability mode for a stratified vortex column
+(or dipole) for sufficient stratification. The most notable characteristic of
+this instability is that it is a reliable mechanism for vertically invariant base flows
+to gain vertical structure. Most notably, several studies have shown that the
+vertical length scale of the zigzag instability scales with the Froude number and
+therefore $k_z \propto Fr^{-1}$. A multiscale asymototic analysis of the
+governing equations for strongly stratified flows recovers this scaling for the
+vertical length scale and additionally finds that the turbulent horizontal
+velocities scale with $Fr^{-1/2}$ and the turbulent vertical velocity scales with
+$Fr^{-1}$ \citep{Chinial2022}. This result is valid in the
+thermally-nondiffusive regime, i.e. when the P\'eclet number is greater than
+$O(1)$, and alternate scaling laws are valid in the thermally diffusive regime
+shown by \citet{Shah2023}. 
+
+\subsection{Rotating Non-stratified flows}
+
+\subsection{Rotating stratified flows}
+
+
 
 \section{Research Proposal}
 \label{sec:researchproposal}
-keep this in here until I have a lot of citations going \cite{Chinial2022}
+
+    \begin{itemize}
+        \item Numerically simulate rotating stratified flows with stochastic
+        forcing
+        \item Quantity mixing via modal analysis and instability structures
+        \item Eventually propose multiscale asymptotic model for rotating
+        stratified turbulence (find scaling laws for vertical velocity)
+        \item Try different domains
+    \end{itemize}
 
 \bibliographystyle{jfm}
 \bibliography{BuhlThesis}

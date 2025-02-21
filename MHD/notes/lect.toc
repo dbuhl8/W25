@@ -47,3 +47,5 @@
 \contentsline {subsection}{\numberline {13.4}Linear Pinch}{37}{subsection.13.4}%
 \contentsline {subsection}{\numberline {13.5}Cylindrical Pinch}{38}{subsection.13.5}%
 \contentsline {subsection}{\numberline {13.6}Reverse Field Pinch}{38}{subsection.13.6}%
+\contentsline {section}{\numberline {14}Dynamics for MHD: Continued}{39}{section.14}%
+\contentsline {subsection}{\numberline {14.1}Steady State MHD}{39}{subsection.14.1}%

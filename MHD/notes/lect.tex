@@ -1534,6 +1534,45 @@ This idea stems from the Beltrami cylindrical geometry,
 \end{gather*}
 
 
+\section{Dynamics for MHD: Continued}
+
+\subsection{Steady State MHD}
+    Let us consider a simplified dynamical regime in which we encounter a steady
+    state flow, i.e. $\ppt{\uvec} = 0$. We have that the governing equations
+    reduce to the following:
+\begin{gather*}
+    (\uvec\cdot\grad)\uvec = -\frac{1}{\rho_0}\grad p + \jvec\times\B + \nu\grad^2\uvec\\
+    \DDt{\B} = (\B\cdot\grad)\uvec + \eta\grad^2\B\\
+    \grad\cdot\uvec = 0, \quad \div{\B} = 0
+\end{gather*}
+Next we consider a specific flow field $\uvec$ called the Hartman flow given by
+$\uvec = \left(u, 0, 0\right)$ and a specific magnetic field given by $\B = (0,
+0, B_0\right)$. Let us investigate the dynamics that arise from this scenario.
+At $t = 0$ we have that $\ppx{u} = 0$ and $\ppz{B_0} = 0$. Therefore, 
+\begin{gather*}
+    0 = -\frac{1}{\rho_0}\grad p + \frac{1}{\mu_0\rho_0}\left(\ppz{b} - \ppx{B_0}\right)\left(B_0\ex
+    - b\ez\right)+ \nu\frac{\partial^2 u}{\partial z^2}\\
+    u\ppx{b}\ex + u\ppx{B_0}\ez = B_0\ppz{u}\ex + \eta\grad^2B_0\ez  +
+    \eta\grad^2b\ex\\
+    \ppx{b} + \ppz{B_0} = 0,\quad  \ppx{u} = 0
+\end{gather*}
+This problem has boundary conditions $u(z+d) = 0$ and $u(z-d) = 0$ where d
+is half of the height of the tube, and there is no boundary in the x-direction
+(implicitly indicating it is an infinite tube). With these conditions, we cannot
+presume any dependence on $x$ in the velocity field, nor the magnetic field
+perturbations $b$. Thus we obtain the solution given by, 
+\begin{gather*}
+    u(z) = \left(\frac{p_0 + \sigma B_0E_0}{\sigma B_0^2}\right)\left(1 -
+    \frac{\cosh(Mz/d)}{\cosh(M)}\right)\\
+    \ddz{b} = \frac{E_0 - uB_0}{\eta} \\
+    b(z) = \frac{E_0z}{\eta} - \left(\frac{p_0 + \sigma B_0E_0}{\eta\sigma
+    B_0}\right)\left(z -
+    \frac{d\sinh(Mz/d)}{M\cosh(M)}\right)
+\end{gather*}
+where $M$ is the Hartman number given by $M = B_0/\sqrt{\mu\mu_0\eta}$ (measures
+lorentz force against viscous diffusivity and $E_0$ is the $y$-component of
+the given electric field. 
+
 
     
 \begin{gather*}

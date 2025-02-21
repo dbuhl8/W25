@@ -144,7 +144,8 @@ def FD6Y(field,ny,dy):
 
 dtype = np.float32
 ptstp = -1  # this choses which timestep to plot (-1 is the last one)
-fs = 22
+fs = 18
+dfs = 9
 font = {'family': 'Times New Roman',
                         'size'   : fs}
 
@@ -174,6 +175,7 @@ sim_100_idx = [0,1,2,3,4,5]
 
 invRo_30 = [0.5, 1, 2, 3, 4, 5, 8, 10]
 invRo_100 = [0.5, 1, 2, 3, 4, 8]
+invFr = [np.sqrt(30), 10]
 
 labels_100 = [r'$\Omega=0.5$',r'$\Omega=1$',r'$\Omega=2$',r'$\Omega=3$',r'$\Omega=4$',r'$\Omega=8$']
 labels_30 = [r'$\Omega=0.5$',r'$\Omega=1$',r'$\Omega=2$',r'$\Omega=3$',r'$\Omega=4$',r'$\Omega=5$',r'$\Omega=8$',r'$\Omega=10$']
@@ -216,8 +218,8 @@ for i, fn in enumerate(simdat_files_30):
     wzmax = np.max(np.abs(wz[ptstp,:,:,:]))
 
     #compute volume fraction where wz >= .1 wzmax
-    vol_frac_30[i] = len(np.where(np.abs(wz[ptstp,:,:,:]) <= 0.1*wzmax)[0])/\
-                        len(wz[ptstp,:,:,:])
+    vol_frac_30[i] = len(np.where(np.abs(invFr[0]/(wz[ptstp,:,:,:]+invRo_30[i]))\
+                        < 1)[0])/len(wz[ptstp,:,:,:])
     print("Finished with file: ", fn, ".")
     cdf_file.close()
 
@@ -247,8 +249,9 @@ for i, fn in enumerate(simdat_files_100):
     wzmax = np.max(np.abs(wz[ptstp,:,:,:]))/4
 
     #compute volume fraction where wz >= .1 wzmax
-    vol_frac_100[i] = len(np.where(np.abs(wz[ptstp,:,:,:]) <= 0.1*wzmax)[0])/\
-                        len(wz[ptstp,:,:,:])
+    vol_frac_100[i] = len(np.where(\
+                np.abs(invFr[1]/(wz[ptstp,:,:,:]+invRo_100[i]))\
+                        < 1)[0])/len(wz[ptstp,:,:,:])
     print("Finished with file: ", fn, ".")
     cdf_file.close()
 
@@ -322,7 +325,7 @@ for fn in files_100:
     print("Finished with file: ", fn, ".")
     file.close()
 
-fig, ax = plt.subplots(2, 2,sharex=True,figsize=(16,9))
+fig, ax = plt.subplots(2, 2,figsize=(16,9))
 # rearrange ax arary to be indexed 1:4
 #ax = [axitem for axitem in [axset for axset in ax]] 
 dc = cvar/num_files[0]
@@ -341,11 +344,11 @@ for i in range(num_files[0]):
 
 ax[0,0].set_xlabel(r'$Ro_e^{-1}$', **font)
 ax[0,0].set_ylabel(r'$wT$',rotation=0, **font)
-ax[0,0].tick_params(axis='both', labelsize=fs-5)
+ax[0,0].tick_params(axis='both', labelsize=fs-dfs)
 ax[0,0].set_yscale('log')
 ax[0,0].set_xscale('log')
 ax[0,0].set_title(r'$Fr = 0.18$', **font)
-ax[0,0].legend(artists,labels_30,loc='lower left',fontsize=22)
+ax[0,0].legend(artists,labels_30,loc='lower left',fontsize=fs-dfs)
 
 #dc = cvar/num_files[1]
 #col = np.linspace(0+dc,1-dc,num_files[1], True)
@@ -365,24 +368,25 @@ for i in range(num_files[1]):
 ax[0,1].set_xlabel(r'$Ro_e^{-1}$', **font)
 #ax[1].set_ylabel(r'$wT$',rotation=0,labelpad=30, **font)
 #ax[1].set_ylabel(r'$wT$',rotation=0, **font)
-ax[0,1].tick_params(axis='both', labelsize=fs-5)
+ax[0,1].tick_params(axis='both', labelsize=fs-dfs)
 ax[0,1].sharey(ax[0,0])
+ax[0,1].sharex(ax[0,0])
 ax[0,1].set_yscale('log')
 ax[0,1].set_xscale('log')
 ax[0,1].set_title(r'$Fr = 0.1$', **font)
-ax[0,1].legend(artists,labels_100,loc='lower left',fontsize=fs)
+ax[0,1].legend(artists,labels_100,loc='lower left',fontsize=fs-dfs)
 
 for i in range(sim_num_files[0]):
     artists.append(ax[1,0].scatter(invRo_30[i]/avg_uh_30[i], vol_frac_30[i], 
     c=cm.nipy_spectral_r(colors[sim_30_idx[i]][2])))
 
 ax[1,0].set_xlabel(r'$Ro_e^{-1}$', **font)
-ax[1,0].set_ylabel(r'$\int_{\omega_z \le .1\omega_{z, \text{max}}$',rotation=0, **font)
-ax[1,0].tick_params(axis='both', labelsize=fs-5)
+ax[1,0].set_ylabel(r'$\frac{1}{|V|}\int_{Fr/Ro_e < 1}dV$',rotation=0, **font)
+ax[1,0].tick_params(axis='both', labelsize=fs-dfs)
 ax[1,0].set_yscale('log')
 ax[1,0].set_xscale('log')
 ax[1,0].set_title(r'$Fr = 0.18$', **font)
-ax[1,0].legend(artists,labels_30,loc='lower left',fontsize=22)
+ax[1,0].legend(artists,labels_30,loc='lower left',fontsize=fs-dfs)
 
 artists = []
 
@@ -394,12 +398,13 @@ for i in range(sim_num_files[1]):
 # if tick labels are wanted on right subplot
 #ax[1].tick_params(labelleft=True)
 ax[1,1].set_xlabel(r'$Ro_e^{-1}$', **font)
-ax[1,1].tick_params(axis='both', labelsize=fs-5)
+ax[1,1].tick_params(axis='both', labelsize=fs-dfs)
 ax[1,1].sharey(ax[1,0])
+ax[1,1].sharex(ax[1,0])
 ax[1,1].set_yscale('log')
 ax[1,1].set_xscale('log')
 ax[1,1].set_title(r'$Fr = 0.1$', **font)
-ax[1,1].legend(artists,labels_100,loc='lower left',fontsize=fs)
+ax[1,1].legend(artists,labels_100,loc='lower left',fontsize=fs-dfs)
 
 #fig.tight_layout()
 #plt.show()
