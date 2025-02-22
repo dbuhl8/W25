@@ -69,6 +69,7 @@
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
 \newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\pptwo}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\ddtwo}[2]{\frac{d^2 #1}{d #2^2}}
 \newcommand{\DDt}[1]{\frac{D #1}{D t}}
 \newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
 \newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
@@ -78,6 +79,7 @@
 \newcommand{\ppzs}[1]{\frac{\partial #1}{\partial z_s}}
 \newcommand{\ppzf}[1]{\frac{\partial #1}{\partial z_f}}
 \newcommand{\ppx}[1]{\frac{\partial #1}{\partial x}}
+\newcommand{\ddx}[1]{\frac{d #1}{d x}}
 \newcommand{\ppxi}[1]{\frac{\partial #1}{\partial x_i}}
 \newcommand{\ppxj}[1]{\frac{\partial #1}{\partial x_j}}
 \newcommand{\ppy}[1]{\frac{\partial #1}{\partial y}}
@@ -89,9 +91,144 @@
 \setlength{\parindent}{0pt}
 
 \section{}
+\begin{enumerate}[label=\alph*.)]
+    \item  We begin solving this problem by simply setting $\jvec\times\B = 0$. 
+    \begin{gather*}
+        \B = \left< B_x, B_y, 0\right>, \quad \jvec = \left< -\ppz{B_y},
+        \ppz{B_x}, 0\right>\\
+        \jvec\times\B = \left<0, 0, -B_y\ppz{B_y} - B_x\ppz{B_x}\right>\\
+        \jvec\times\B = 0 \implies \frac{1}{2}\ppz{}\left(B_x^2 + B_y^2\right) =
+        0 \implies B_x^2 + B_y^2 = \text{constant}
+    \end{gather*}
+    We have obtained the condition for this field to be force free, and in the
+    proceeding problems it will become clear why this satisfies the Beltrami
+    condition in Helmholtz form. 
+
+    \item Next we enforce the Beltrami property, i.e. $\grad\times\B =
+    \alpha\B$. We have, 
+    \begin{gather*}
+        \left< -\ppz{B_y}, \ppz{B_x}, 0\right> = \alpha\left<B_x, B_y,
+        0\right>\\
+        \alpha B_x = - \ppz{B_y}, \quad \alpha B_y = \ppz{B_x}
+    \end{gather*}
+    \item  We will now show using substitution that this field satisfies both
+    the Beltrami property in the Helmholtz form as well as the force-free
+    condition derived in part a. 
+    \begin{gather*}
+        \ppz{}\left(\alpha B_x = - \ppz{B_y}, \quad \alpha B_y =
+        \ppz{B_x}\right)\\
+        \alpha\ppx{B_x} = -\pptwo{B_y}{z}, \quad \alpha\ppz{B_y} =
+        \pptwo{B_x}{z}\\
+        \alpha^2 B_y = -\pptwo{B_y}{z}, \quad -\alpha^2 B_x =
+        \pptwo{B_x}{z}
+    \end{gather*}
+    We note that since $B_x$ and $B_y$ depend only on $z$, this exactly
+    satisfies the Helmholtz equation for the Beltrami property. We notice a
+    standard form for $B_x$ and $B_y$ given by,
+    \begin{gather*}
+        B_x = a\cos(\alpha z) + b\sin(\alpha z), \quad  B_y = c\cos(\alpha z) +
+        d\sin(\alpha z)
+    \end{gather*}
+    Notice that given the condition found in part b, that we have a limited
+    choice for the coefficients $a, b, c, d$. Specifically, 
+    \begin{gather*}
+        \alpha\left(a\cos(\alpha z) + b\sin(\alpha z)\right) = -\alpha c\sin(\alpha z) +
+        \alpha d\cos(\alpha z) \implies a = d, \quad b = -c\\
+        B_x = d\cos(\alpha z) - c\sin(\alpha z), \quad  B_y = c\cos(\alpha z) +
+        d\sin(\alpha z)\\
+        B_x^2 + B_y^2 = d^2\cos^2(\alpha z) + c^2\sin^2(\alpha z) -
+        2cd\cos(\alpha z)\sin(\alpha z) + c^2\cos^2(\alpha z) + d^2\sin^2(\alpha z) +
+        2cd\cos(\alpha z)\sin(\alpha z)\\
+         = d^2 + c^2 = \text{constant}
+    \end{gather*}
+\end{enumerate}
 
 \section{}
+    We begin this problem by writing the steady induction equation for an
+    incompressible fluid. We have, 
+    \begin{gather*}
+        (\uvec\cdot\grad)\B = (\B\cdot\grad)\uvec + \eta\grad^2\B
+    \end{gather*}
+    For the given flow field $\uvec = U_0\left(-x, y, 0\right)$ and $\B =
+    \left(0, B(x), 0\right)$, this reduces to,
+    \begin{gather*}
+        -U_0x\ppx{B} = U_0B + \eta\pptwo{B}{x}\\
+        \eta\ddtwo{B}{x} + U_0x\ddx{B} + U_0B = 0
+    \end{gather*}
+    This ODE can be solved in two manners. First, and probably the most general
+    argument is that we can write $U_0(x\ddx{B} + B) = U_0\ddx{}\left(xB\right)$ from which
+    you can directly integrate and then use integration by parts to show the
+    solution. The alternate method is to presume an ansatz for $B$ and then
+    solve the resultant ODE obtained from that. We will do the latter, 
+    \begin{gather*}
+        B = e^{f(x)}, \quad B' = f'e^f, \quad B'' = f'^2e^f + f''e^f\\
+        \eta\left(f'^2 + f''\right)e^f + U_0xf'e^f + U_0e^f = 0\\
+        \eta f'^2 + \eta f'' + U_0xf' + U_0 = 0
+    \end{gather*}
+    Here we will attempt to solve using $f = Cx^{\alpha}$. This gives,
+    \begin{gather*}
+        \eta C^2\alpha^2x^{2\alpha - 2} + \eta C\alpha(\alpha -1)x^{\alpha - 2}
+        + U_0C\alpha x^{\alpha} + U_0 = 0 
+   \end{gather*}
+    Notice that we have 4 different orders of x in this solution and yet it must
+    be satisfied for all x. We must chose $\alpha$ such that there are actually
+    only 2 different orders of $x$ and then solve for the coefficient $C$.
+    Notice that $\alpha = 2$ yields $2\alpha - 2 = \alpha$ and $\alpha - 2 =
+    0$. Thus we substitute $\alpha = 2$ into the ODE. 
+    \begin{gather*}
+        4\eta C^2 = -2U_0C, \quad 2\eta C = -U_0
+    \end{gather*}
+    These two equations are thankfully linearly dependent, i.e. thery are
+    rescaled versions of one another. Thus we find $C = -U_0/2\eta$. Finally, we
+    have,
+    \begin{gather*}
+        B(x) = B_0e^{-U_0x^2/2\eta}
+    \end{gather*}
 
 \section{}
+    The solution of this problem derives first from expanding each term in the
+    navier stokes equation from the presummed magnetohydrostatic balance. We
+    have, 
+    \begin{gather*}
+        \B = \left(B_x, 0, B\right),\quad \jvec = \frac{1}{\mu_0}\left(0, -\ppx{B}, 0\right),
+        \quad \jvec\times\B = -\frac{B}{\mu_0}\ddx{B}\ex + \frac{B_x}{\mu_0}\ddx{B} \ez\\
+        p = \alpha\rho, \quad \grad p = \alpha\ddx{\rho}\ex\\
+        -\alpha\ddx{\rho} = \frac{B}{\mu_0}\ddx{B}, \quad
+        \frac{B_x}{\mu_0}\ddx{B} = \rho g
+    \end{gather*}
+    Notice here that we obtain a series of coupled ODEs for $B$ and $\rho$. More
+    importantly, we can use a derivative identity to write, 
+    \begin{gather*}
+        \ddx{\rho} = -\frac{1}{2\alpha\mu_0}\ddx{B^2} \implies \rho =
+        -\frac{B^2}{2\alpha\mu_0} + c
+    \end{gather*}
+    Using the boundary conditions given ($B(0) = 0$ and $\rho(0) = \rho_0$) we
+    find that $c = \rho_0$. Now we substitute into the other obtained equation, 
+    \begin{gather*}
+        \frac{B_x}{\mu_0}\ddx{B} = -\frac{gB^2}{2\alpha\mu_0} + \rho_0g\\
+        \ddx{B} = -\frac{gB^2}{2\alpha B_x} +
+        \frac{\mu_0\rho_0g}{B_x}
+    \end{gather*}
+    Now, if one were to naively approach this ODE, they might have some trouble
+    finding a solution. We, however, who are primed to find a solution of the
+    form $\tanh(x)$, know that the derivative of $\tanh(x)$ is $1 - \tanh^2(x)$,
+    and might notice some resemblance in the resultant ODE. We therefore write an
+    ansatz of the form $B(x) = C\tanh(f(x))$. 
+    \begin{gather*}
+        B' = Cf'(1 - \tanh^2(f)) = Cf' - \frac{f'}{C}B^2\\
+        \frac{\mu_0\rho_0g}{B_x} = Cf',\quad \frac{g}{2\alpha B_x} =
+        \frac{f'}{C}\\
+        \frac{\mu_0\rho_0g}{B_x} = \frac{C^2g}{2\alpha B_x} \implies C =
+        \sqrt{2\mu_0\alpha\rho_0}\\
+        f' = \frac{g\sqrt{\mu_0\rho_0}}{B_x\sqrt{2\alpha}} \implies f =
+        \frac{g\sqrt{\mu_0\rho_0}}{B_x\sqrt{2\alpha}}x
+    \end{gather*}
+    Thus we have solved for $B$ to satisfy the obtained ODE and find in
+    conclusion, 
+    \begin{gather*}
+        B(x) = \sqrt{2\mu_0\alpha\rho_0}\tanh\left(\sqrt{\frac{\mu_0\rho_0}{2\alpha}}
+        \frac{gx}{B_x}\right)
+    \end{gather*}
+
 
 \end{document}

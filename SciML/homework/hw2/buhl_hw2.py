@@ -3,6 +3,10 @@ import matplotlib.pyplot as plt
 import torch
 import matplotlib as mpl
 import matplotlib.cm as cm
+from torch import nn
+from torch.utils.data import DataLoader
+from torchvision import datasets
+from torchvision.transforms import ToTensor
 
 # the idea behind this assignment is to solve the Lorenz' 96 system
 
@@ -52,9 +56,85 @@ F = 8
 for i in range(nt):
     y[i+1,:] = rk4(lorenz96, y[:,i],dt)
 
-# train model on this trajectory (need to use torch for this)
+# need to scramble the data and then allocate portions of the trajectory as
+# training and testing data
+# scramble
+y = np.random.shuffle(y)
+num_train = 8000
+num_test = 2001
 
-# oop
+# train model on this trajectory (need to use torch for this)
+device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"
+print(f"Using {device} device")
+
+test_data = torch.from_numpy(y[num_train:,:]).to(device)
+training_data = torch.from_numpy(y[:num_train,:]).to(device)
+batch_size = 64
+
+class lM(torch.nn.Module):
+    def __init__(self):
+        super(lM, self).__init__()
+        self.linear1 = torch.nn.Linear(100, 200)
+        self.activation = torch.nn.ReLU()
+        self.linear2 = torch.nn.Linear(200, 10)
+        self.softmax = torch.nn.Softmax()
+
+    def forward(self, x):
+        x = self.linear1(x)
+        x = self.activation(x)
+        x = self.linear2(x)
+        x = self.softmax(x)
+        return x
+
+M = lM()
+
+# Create data loaders.
+train_dataloader = DataLoader(training_data, batch_size=batch_size)
+test_dataloader = DataLoader(test_data, batch_size=batch_size)
+
+loss_fn = nn.MSELoss()
+optimizer = torch.optim.SGD(M.parameters(), lr=1e-3)
+
+def train(dataloader, model, loss_fn, optimizer):
+    size = len(dataloader.dataset)
+    model.train()
+    for batch, (X, y) in enumerate(dataloader):
+        X, y = X.to(device), y.to(device)
+
+        # Compute prediction error
+        pred = model(X)
+        loss = loss_fn(pred, y)
+
+        # Backpropagation
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+
+        if batch % 100 == 0:
+            loss, current = loss.item(), (batch + 1) * len(X)
+            print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+
+def test(dataloader, model, loss_fn):
+    size = len(dataloader.dataset)
+    num_batches = len(dataloader)
+    model.eval()
+    test_loss, correct = 0, 0
+    with torch.no_grad():
+        for X, y in dataloader:
+            X, y = X.to(device), y.to(device)
+            pred = model(X)
+            test_loss += loss_fn(pred, y).item()
+            correct += (pred.argmax(1) == y).type(torch.float).sum().item()
+    test_loss /= num_batches
+    correct /= size
+    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+
+epochs = 5
+for t in range(epochs):
+    print(f"Epoch {t+1}\n-------------------------------")
+    train(train_dataloader, model, loss_fn, optimizer)
+    test(test_dataloader, model, loss_fn)
+print("Done!")
 
 # problem b is to solve the same problem but with F = 24 (not sure what F is)
 # psuedo code: (repeat problem a with different parameters)
