@@ -75,6 +75,8 @@
 \newcommand{\zhat}{\hat{\bs{z}}}
 \newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
 \newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\pptwo}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\ppthree}[2]{\frac{\partial^3 #1}{\partial #2^3}}
 \newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\ddt}[1]{\frac{d #1}{d t}}
 \newcommand{\DDt}[1]{\frac{D #1}{D t}}
@@ -94,10 +96,8 @@
 
 
 \maketitle 
-\pagebreak
 
 \tableofcontents
-\pagebreak
 
 \setlength{\parindent}{0pt}
 \setcounter{section}{1}
@@ -1545,9 +1545,9 @@ This idea stems from the Beltrami cylindrical geometry,
     \DDt{\B} = (\B\cdot\grad)\uvec + \eta\grad^2\B\\
     \grad\cdot\uvec = 0, \quad \div{\B} = 0
 \end{gather*}
-Next we consider a specific flow field $\uvec$ called the Hartman flow given by
+Next we consider a specific flow field $\uvec$ called the Hartmann flow given by
 $\uvec = \left(u, 0, 0\right)$ and a specific magnetic field given by $\B = (0,
-0, B_0\right)$. Let us investigate the dynamics that arise from this scenario.
+0, B_0)$. Let us investigate the dynamics that arise from this scenario.
 At $t = 0$ we have that $\ppx{u} = 0$ and $\ppz{B_0} = 0$. Therefore, 
 \begin{gather*}
     0 = -\frac{1}{\rho_0}\grad p + \frac{1}{\mu_0\rho_0}\left(\ppz{b} - \ppx{B_0}\right)\left(B_0\ex
@@ -1569,12 +1569,135 @@ perturbations $b$. Thus we obtain the solution given by,
     B_0}\right)\left(z -
     \frac{d\sinh(Mz/d)}{M\cosh(M)}\right)
 \end{gather*}
-where $M$ is the Hartman number given by $M = B_0/\sqrt{\mu\mu_0\eta}$ (measures
+where $M$ is the Hartmann number given by $M = B_0/\sqrt{\mu\mu_0\eta}$ (measures
 lorentz force against viscous diffusivity and $E_0$ is the $y$-component of
-the given electric field. 
+the given electric field) and $\mu$ is the permeability and $\mu_0$ is the
+viscosity. 
+
+\section{Dynamics for MHD: Continued}
+\subsection{Steady State MHD and Hartmann flows}
+    As a result of studying Hartmann flows, we obtain the Hartmann number
+    which describes the relative weight of the lorentz force to the viscous
+    diffusion of the flow. Most importantly, like any non-dimensional number,
+    we have two limits which describe extreme regimes of dynamics. We have
+    either $M \ll 1$ or $M\gg 1$. Let us investigate the solution to the
+    Hartmann flow problem in either regime. 
+\begin{align*}
+    \frac{\cosh{Mz/d}}{\cosh{M}} &\sim \frac{\left(1 + \frac{(Mz/d)^2}{2} +
+    \cdots\right)}{\left(1 + \frac{M^2}{2} + \cdots\right)}\\
+    &\sim \left(1 + \frac{(Mz/d)^2}{2} +
+    \cdots\right)\left(1 - \frac{M^2}{2} + \cdots\right)\\
+    &\sim 1 - \frac{M^2}{2} + \frac{(Mz/d)^2}{2} + \cdots\\
+    &\sim 1 - \frac{M^2}{2}\left(1 - \frac{z^2}{d^2}\right) + \cdots
+\end{align*}
+We can substitute this back into the solution for $u(z)$ we obtained in the last
+lecture. We have, 
+\begin{align*}
+    u(z) &= \left(\frac{p_0 + \sigma B_0E_0}{\sigma
+    B_0^2}\right)\left(\frac{M^2}{2}\left(1 - \frac{z^2}{d}\right)\right)\\
+    &= \frac{1}{2\mu}\left(p_0 + \sigma B_0E_0\right) \left(d^2-z^2\right)
+\end{align*}
+This is the given solution in the limit of $M \ll 1$. We can redo this
+computation in the limit where $M \gg 1$. In this scenario we have, 
+\begin{align*}
+    \cosh(x) &= \frac{e^x + e^{-x}}{2} \approx \frac{1}{2}e^{|x|}\\
+    \frac{\cosh{Mz/d}}{\cosh{M}} &\sim \begin{cases} e^{|Mz/d| - |M|} &
+    \left|\frac{Mz}{d}\right| \gg 1\\O(e^{-M}) &
+    \left|\frac{Mz}{d}\right| < O(1)\end{cases}
+\end{align*}
+we notice that the $\cosh$ term is small everywhere except where $(1 - |z/d|)$
+is also small, i.e. close to the boundary. Thus our solution reduces to a
+constant flow field (with the constant given by the prefactor in front of the $1
+- \cosh$ term), with a small boundary layer with a scale height given by $d$. We
+can rescale our main variable, $z = d - \epsilon$, where $\epsilon$ is the
+distance from the boundary such that $0 < \epsilon \ll 1$. We have, 
+\begin{align*}
+    \cosh(Mz/d) &= \cos\left(M(1 - \epsilon/d)\right) \sim e^{-M\epsilon/d}\\
+    u(\epsilon) &\sim \left(\frac{p_0 + \sigma B_0E_0}{\sigma
+    B_0^2}\right)\left(\frac{M\epsilon}{d} + \cdots\right)
+\end{align*}
+This solution gives a flow field which is asymptotically constant except within
+the boundary layers which are given by a scale height $\frac{d}{M}$. This can be
+seen in Figure \ref{fig:hartmann}. 
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{plots/bl_hartmann.pdf}
+    \caption{Plot of the Steady State Hartmann flow with $M = 10$ $d = 1$ which
+    shows the boundary layers created in the flow}
+    \label{fig:hartmann}
+\end{figure}
+
+\subsection{Controlling flow and field with current}
+
+Let us consider an electric field in a given three-dimensional domain $y \in
+[-L, L]$. Let us consider, a simple Ohm's law given by $j = \sigma(\E + \uvec
+\times \B)$ and a given electric field $\E = (0, E_0, 0)$, magnetic field $\B =
+(0, 0, B_0)$, and  unidirectional flow
+$\uvec = u(z)\ex$. Next we will perform an
+average in the $z$ direction of the $y$ component of the current. 
+\begin{gather*}
+    I_y = \frac{1}{2d}\int_{-d}^{d} j_y dz = \sigma E_0 + \sigma
+    B_0\int_{-d}^{d} u(z)dz\\
+    = \sigma E_0 + \sigma
+    B_0\overline{u}
+\end{gather*}
+This integral has cases. For example, given an open circuit we have that $I_y =
+0$ whereby $\bar{u} = E_0/B_0$. This will act as a flow meter. Another example
+is that of a short circuit, for example shorting the circuit by connecting the
+two ends with another fire. We will have $E_0 = 0$ and therefore $j_y =
+-u(z)B_0$. Let us consider the Lorentz force in the $x$-direction according to
+this scenario. We have, 
+\begin{gather*}
+    \left(\jvec\times\B\right)_x = -j_zB_y + j_yB_z = -u(z)B_0^2
+\end{gather*}
+which will act as a negative definite term and resist the flow field. 
+
+Another example could be introducing a small EMF (particularly $E_0 <
+\bar{u}B_0$). Then we have, $j_y < 0$ and specifically, we have created an
+electric generator, that is, the mechanical energy of the fluid drives a current
+and this generates electrical energy. Note, that in this scenario the Lorentz
+force would be negative as well. 
+
+Finally, we could consider a large EMF (specifically larger than $\bar{u}B_0$).
+This would create a positive current and thus a positive Lorentz force. 
+
+\subsection{Waves}
+In order to investigate waves in MHD, we must review waves in their most general
+conceptualization. For example, the wave equation is classically defined as, 
+\begin{gather*}
+    \pptwo{\eta}{t} = c^2\pptwo{\eta}{x}
+\end{gather*}
+which is a hypervolid PDE and is governed by a parameter $c$ which is generally
+thought of as the phase speed of the wave. The wave equation has some very
+general solutions, for example D'Alembert's solution for the wave equation given
+by $u(x,t) = f(x-ct) + f(x + ct)$ which is obtained by rewriting the wave
+equation as the superposition of two transport equations ($\ppt{} \pm c\ppx{}$).
+Most important about waves is their typical solutions. The periodicity of waves
+often yields solutions of the form $\sin$ and $\cos$, i.e. fourier
+eigenfunctions. This often simplifies the wave equation into an eigenvalue
+problem which can be solved for multiple BC forms and problem setups.
+Additionally, we can use Euler's identity to write general solutions as, 
+\begin{gather*}
+    u(x,t) = \sum_{k,\omega} A_{k,\omega}e^{i(kx - \omega t)}
+\end{gather*}
+D'Alemberts solution is non-dispersive (for $c$ constant). However, there are
+many disperive waves, i.e. they might not have constant phase and group speeds.
+If we return to the wave equation and use an ansatz to solve for the angular
+velocity and wavenumber we obtain a dispersion relation, 
+\begin{gather*}
+    \ppt{\eta} + c\ppx{\eta} +\alpha\pp{^3\eta}{x^3} = 0
+    -i\omega + c(ik) - \alpha ik^3 = 0 \implies \frac{w}{k} = c - k^2
+\end{gather*}
+This is the phase speed, and in constrast the group speed is given by
+$\pp{\omega}{k}$. These are general wave properties and each of them apply to
+the waves studied in other contexts. Specifically in MHD, there are several
+restoring forces which can be used to generate waves. Alfven waves are generated
+by magnetic tension. Compressional Alfven waves are generated by magnetic
+pressure. Surface/internal gravity waves are generated by
+gravity/stratification. Acoustic waves ar generated by pressure gradients.
+Inertial waves are typically generated by the coriolis force. 
 
 
-    
 \begin{gather*}
 \end{gather*}
 \end{document}

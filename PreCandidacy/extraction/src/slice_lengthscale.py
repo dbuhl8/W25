@@ -67,6 +67,7 @@ np.savez("lz_data", lz = lz, alz = alz, ux = ux, uy = uy, x = x)
 ptstp = 27
 invRo = 2
 Fr = np.round(1/np.sqrt(30),4)
+Ro = np.round(1/invRo,4)
 
 
 #npzfile = np.load("lz_data.npz")
@@ -78,8 +79,8 @@ Fr = np.round(1/np.sqrt(30),4)
 
 
 
-uxmax = np.max(ux[ptstp,:,:])
-uymax = np.max(uy[ptstp,:,:])
+uxmax = np.max(np.abs(ux[ptstp,:,:]))
+uymax = np.max(np.abs(uy[ptstp,:,:]))
 umax = max([uxmax, uymax])
 
 fig, ax = plt.subplots(3, 2)
@@ -121,7 +122,7 @@ cbar_ax = fig.add_axes([0.85, 0.40, 0.05, 0.45])
 cbar_ax2 = fig.add_axes([0.85, 0.10, 0.05, 0.25])
 fig.colorbar(im4, cax=cbar_ax)
 fig.colorbar(im5, cax=cbar_ax2)
-fig.suptitle(r't_i = '+str(t[ptstp])+', i = '+str(ptstp)+', Fr = '+str(Fr))
+fig.suptitle(r't_i = '+str(t[ptstp])+', i = '+str(ptstp)+', Fr = '+str(Fr)+', Ro = '+str(Ro))
 
 for axis_set in ax:
     for axis in axis_set:

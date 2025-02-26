@@ -1,32 +1,32 @@
-\contentsline {section}{\numberline {2}Hydrodynamics Review}{4}{section.2}%
-\contentsline {section}{\numberline {3}Continuing Review of the Kinematic Equations}{6}{section.3}%
-\contentsline {subsection}{\numberline {3.1}Obtaining the Navier-Stokes equation}{6}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Vorticity equation}{7}{subsection.3.2}%
+\contentsline {section}{\numberline {2}Hydrodynamics Review}{3}{section.2}%
+\contentsline {section}{\numberline {3}Continuing Review of the Kinematic Equations}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Obtaining the Navier-Stokes equation}{5}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Vorticity equation}{6}{subsection.3.2}%
 \contentsline {subsection}{\numberline {3.3}Rotation}{7}{subsection.3.3}%
-\contentsline {section}{\numberline {4}Conservation of Energy and Maxwell's equations}{8}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Conservation of Energy}{8}{subsection.4.1}%
-\contentsline {subsection}{\numberline {4.2}Introducing Maxwell's Equations}{9}{subsection.4.2}%
-\contentsline {section}{\numberline {5}Derivation of Maxwell's Equations: Continued}{11}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Faraday's Law of Induction}{11}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Ampere's Law}{11}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Units of Electrodynamics (c.f. Priest p436)}{12}{subsection.5.3}%
+\contentsline {section}{\numberline {4}Conservation of Energy and Maxwell's equations}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Conservation of Energy}{7}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Introducing Maxwell's Equations}{8}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Derivation of Maxwell's Equations: Continued}{10}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Faraday's Law of Induction}{10}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Ampere's Law}{10}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Units of Electrodynamics (c.f. Priest p436)}{11}{subsection.5.3}%
 \contentsline {subsection}{\numberline {5.4}From Maxwell's Equation to MHD}{12}{subsection.5.4}%
-\contentsline {section}{\numberline {6}Boundary Conditions and Kinematics for MHD}{15}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Validity of MHD equations and assumptions}{15}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Consequences of Gauss's law for Magnetism}{16}{subsection.6.2}%
+\contentsline {section}{\numberline {6}Boundary Conditions and Kinematics for MHD}{14}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Validity of MHD equations and assumptions}{14}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Consequences of Gauss's law for Magnetism}{15}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Common Boundary Conditions for the MHD equations}{16}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Kinematics}{18}{subsection.6.4}%
-\contentsline {section}{\numberline {7}Kinematics for MHD: Continued}{19}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Magnetic Fieldlines}{19}{subsection.7.1}%
+\contentsline {section}{\numberline {7}Kinematics for MHD: Continued}{18}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Magnetic Fieldlines}{18}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Magnetic Flux}{19}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Magnetic Flux Tubes}{20}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}Nondimensionalization}{20}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.3}Magnetic Flux Tubes}{19}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Nondimensionalization}{19}{subsection.7.4}%
 \contentsline {section}{\numberline {8}Kinematics for MHD: Continued}{21}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Charged Plate example}{21}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Perfectly Conducting Limit}{23}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.2}Perfectly Conducting Limit}{22}{subsection.8.2}%
 \contentsline {section}{\numberline {9}Kinematics for MHD: Continued}{24}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Additional Vorticity Analogies}{24}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Helicity}{25}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.2}Helicity}{24}{subsection.9.2}%
 \contentsline {subsection}{\numberline {9.3}Additional Theorems for MHD}{25}{subsection.9.3}%
 \contentsline {subsection}{\numberline {9.4}Cauchy Solutions}{26}{subsection.9.4}%
 \contentsline {section}{\numberline {10}Kinematics for MHD: Continued}{28}{section.10}%
@@ -49,3 +49,7 @@
 \contentsline {subsection}{\numberline {13.6}Reverse Field Pinch}{38}{subsection.13.6}%
 \contentsline {section}{\numberline {14}Dynamics for MHD: Continued}{39}{section.14}%
 \contentsline {subsection}{\numberline {14.1}Steady State MHD}{39}{subsection.14.1}%
+\contentsline {section}{\numberline {15}Dynamics for MHD: Continued}{40}{section.15}%
+\contentsline {subsection}{\numberline {15.1}Steady State MHD and Hartmann flows}{40}{subsection.15.1}%
+\contentsline {subsection}{\numberline {15.2}Controlling flow and field with current}{41}{subsection.15.2}%
+\contentsline {subsection}{\numberline {15.3}Waves}{42}{subsection.15.3}%
