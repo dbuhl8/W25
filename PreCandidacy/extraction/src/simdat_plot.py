@@ -34,23 +34,33 @@ invFr = np.sqrt(cdf_file.variables['B_therm'])
 #these arrays are indexed by [t,z,y,x]
 ux = np.array(cdf_file.variables['ux'][:])
 uy = np.array(cdf_file.variables['uy'][:])
-#uz = np.array(cdf_file.variables['uz'][:])
-#temp = np.array(cdf_file.variables['Temp'][:])
-wz =  db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
-#tdisp = np.sqrt(FD6X(temp,Nx,dx)**2 +\
-        #FD6Y(temp,Ny,dy)**2 + \
-        #FD4Z(temp,Nz,dz)**2)
-#uxmax = np.max(np.abs(ux),axis=0)
-#uymax = np.max(np.abs(uy),axis=0)
-#uzmax = np.max(np.abs(uz),axis=0)
-#wzmax = np.max(np.abs(wz),axis=0)/4
+uz = np.array(cdf_file.variables['uz'][:])
+wz = db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
+wz_bar = np.sum(wz, axis=1)/Nz
 
-#tempmax = np.max(np.abs(temp),axis=0)
-#tdispmax = np.max(np.abs(tdisp),axis=0)
 
-# plotting with matplotlib
-#XX, YY = np.meshgrid(x,y) # if spatial discretization is needed
-#fig, ax = plt.subplots(2, 2)
+def ACFlz(field, l):
+    # performs integral of f(z)f(z+l) over vertical domain
+    # and normalizes it by f^2(z)
+    num_z = len(field[0,:,0,0])
+    norm = np.sum(field**2, axis=1)
+    val = np.zeros_like(norm)
+    for fj in range(num_z):
+        val += field[:,(fj+l)%num_z,:,:]*field[:,fj,:,:]
+    norm = np.divide(val,np.maximum(norm, 1e-5))
+    return norm
+
+
+Nlz = int(Nz/2)
+lz = np.zeros(Nlz)
+idx = np.where(invFr/(wz_bar+invRo) < 1)
+alz = np.zeros([Nt, Nlz, Ny, Nz])
+
+for i in range(Nlz):
+    l = Nlz - i
+    lz[i] = dz*l
+    alz[:,i,:,:] = ACFlz(uz, l)
+    print("Completed Lengthscale: ", lz[i])
 
 """
     # can loop over this to create a movie through the vertical domain
@@ -140,38 +150,6 @@ wz =  db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
     ani.save('imshow_z_extent.gif')
 """
 
-# compute vertical averages
-#ux_bar = np.sum(ux,axis=1)/Nz
-#uy_bar = np.sum(uy,axis=1)/Nz
-#uz_bar = np.sum(uz,axis=1)/Nz   
-#temp_bar = np.sum(temp,axis=1)/Nz 
-wz_bar = np.sum(wz,axis=1)/Nz   
-
-np.savez("Om8B100_vertavg", x = x, y = y, z = z, t = t, ux = ux,\
-        uy = uy, wz = wz, wz_bar=wz_bar)
-#tdisp_bar = np.sum(tdisp,axis=1)/Nz
-
-fig, ax = plt.subplots(figsize=(16,9))
-
-# horizontal slider bar
-taxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
-staxis = Slider(taxis, 'Height', 0, t[-1]-t[0], valinit=0)
-
-# plot vertically averaged quantities
-pc1 = ax.imshow(invFr/np.maximum(wz_bar[0,:,:].T+invRo,1e-5),
-    norm=colors.Normalize(vmin=0,vmax=1), cmap='plasma_r', origin='lower')
-fig.colorbar(pc1, ax=ax)
-ax.set_title(r"$\frac{Fr^{-1}}{\hat{\omega}_z+Ro^{-1}}$")
-
-
-def update_frame(frame):
-    pc1.set_array(invFr/np.maximum(wz_bar[frame,:,:].T+invRo, 1e-5))
-    staxis.set_val(t[frame]) 
-    print('Done with frame: ', frame)
-    return pc1
-
-ani = animation.FuncAnimation(fig=fig, func=update_frame,frames=Nt,interval=100,blit=True)
-ani.save('RC_evolution.gif')
-
-plt.show()
+np.savez("vertavg", x = x, y = y, z = z, t = t, ux = ux,\
+        uy = uy, wz = wz, wz_bar=wz_bar, lz=lz, alz=alz)
 
