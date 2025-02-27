@@ -138,9 +138,9 @@ for i, fn in enumerate(simdat_files_100):
             # adds an extra column of zeros to the arrays
             avg_uh_100 = np.hstack((avg_uh_100,np.zeros((sim_num_files[1],1))))
             vol_frac_100 = np.hstack((vol_frac_100,np.zeros((sim_num_files[1],1))))
-        avg_uh_100[i] = np.sqrt(np.sum(ux[ptstp,:,:,:]**2 + uy[ptstp,:,:,:]**2))
-        vol_frac_100[i] = len(np.where(np.abs(invFr[1]/\
-                        np.maximum(wz[ptstp,:,:,:]+invRo_100[i],1e-5))\
+        avg_uh_100[i,j] = np.sqrt(np.sum(ux[j,:,:,:]**2 + uy[j,:,:,:]**2))
+        vol_frac_100[i,j] = len(np.where(np.abs(invFr[1]/\
+                        np.maximum(wz[j,:,:,:]+invRo_100[i],1e-5))\
                             < 1)[0])/(Nz*Nx*Ny)
     print("Finished with file: ", fn, ".")
     cdf_file.close()

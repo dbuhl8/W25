@@ -13,30 +13,30 @@ dtype = np.float32
 #ptstp = -1  # this choses which timestep to plot (-1 is the last one)
 
 #obtaining discretization data
-x = np.array(cdf_file.variables['x'])
-y = np.array(cdf_file.variables['y'])
-z = np.array(cdf_file.variables['z'])
-t = np.array(cdf_file.variables['t'][:])
-Nx = len(x)
-Ny = len(y)
-Nz = len(z)
-Nt = len(t)
-gx = cdf_file.variables['Gammax'][0]
-gy = cdf_file.variables['Gammay'][0]
-gz = cdf_file.variables['Gammaz'][0]
-dx = gx/Nx
-dy = gy/Ny
-dz = gz/Nz
+#x = np.array(cdf_file.variables['x'])
+#y = np.array(cdf_file.variables['y'])
+#z = np.array(cdf_file.variables['z'])
+#t = np.array(cdf_file.variables['t'][:])
+#Nx = len(x)
+#Ny = len(y)
+#Nz = len(z)
+#Nt = len(t)
+#gx = cdf_file.variables['Gammax'][0]
+#gy = cdf_file.variables['Gammay'][0]
+#gz = cdf_file.variables['Gammaz'][0]
+#dx = gx/Nx
+#dy = gy/Ny
+#dz = gz/Nz
 
 invRo = cdf_file.variables['R']
 invFr = np.sqrt(cdf_file.variables['B_therm'])
 
 #these arrays are indexed by [t,z,y,x]
-ux = np.array(cdf_file.variables['ux'][:])
-uy = np.array(cdf_file.variables['uy'][:])
+#ux = np.array(cdf_file.variables['ux'][:])
+#uy = np.array(cdf_file.variables['uy'][:])
 #uz = np.array(cdf_file.variables['uz'][:])
 #temp = np.array(cdf_file.variables['Temp'][:])
-wz =  db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
+#wz =  db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
 #tdisp = np.sqrt(FD6X(temp,Nx,dx)**2 +\
         #FD6Y(temp,Ny,dy)**2 + \
         #FD4Z(temp,Nz,dz)**2)
@@ -145,33 +145,45 @@ wz =  db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
 #uy_bar = np.sum(uy,axis=1)/Nz
 #uz_bar = np.sum(uz,axis=1)/Nz   
 #temp_bar = np.sum(temp,axis=1)/Nz 
-wz_bar = np.sum(wz,axis=1)/Nz   
+#wz_bar = np.sum(wz,axis=1)/Nz   
 
-np.savez("Om8B100_vertavg", x = x, y = y, z = z, t = t, ux = ux,\
-        uy = uy, wz = wz, wz_bar=wz_bar)
-#tdisp_bar = np.sum(tdisp,axis=1)/Nz
+#np.savez("Om8B100_vertavg", x = x, y = y, z = z, t = t, ux = ux,\
+        #uy = uy, wz = wz, wz_bar=wz_bar)
+npz_file = np.load("Om8B100_vertavg.npz")
+t = npz_file['t']
+wz_bar = npz_file['wz_bar']
+wzmax = np.max(np.abs(wz_bar+invRo))
+Nt = len(t)
 
-fig, ax = plt.subplots(figsize=(16,9))
+
+fig, ax = plt.subplots(1, 2,figsize=(16,9))
 
 # horizontal slider bar
 taxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
 staxis = Slider(taxis, 'Height', 0, t[-1]-t[0], valinit=0)
 
 # plot vertically averaged quantities
-pc1 = ax.imshow(invFr/np.maximum(wz_bar[0,:,:].T+invRo,1e-5),
+pc1 = ax[0].imshow(invFr/np.maximum(wz_bar[0,:,:].T+invRo,1e-5),
     norm=colors.Normalize(vmin=0,vmax=1), cmap='plasma_r', origin='lower')
-fig.colorbar(pc1, ax=ax)
-ax.set_title(r"$\frac{Fr^{-1}}{\hat{\omega}_z+Ro^{-1}}$")
+fig.colorbar(pc1, ax=ax[0])
+ax[0].set_title(r"$\frac{Fr^{-1}}{\hat{\omega}_z+Ro^{-1}}$")
+
+pc2 = ax[1].imshow(wz_bar[0,:,:].T+invRo,
+    norm=colors.Normalize(vmin=-wzmax,vmax=wzmax), cmap='RdYlBu_r', origin='lower')
+fig.colorbar(pc2, ax=ax[1])
+ax[1].set_title(r"$\hat{\omega}_z+Ro^{-1}$")
 
 
 def update_frame(frame):
     pc1.set_array(invFr/np.maximum(wz_bar[frame,:,:].T+invRo, 1e-5))
-    staxis.set_val(t[frame]) 
+    pc2.set_array(wz_bar[frame,:,:].T+invRo)
+    staxis.set_val(t[frame]-t[0]) 
     print('Done with frame: ', frame)
-    return pc1
+    return (pc1, pc2)
 
-ani = animation.FuncAnimation(fig=fig, func=update_frame,frames=Nt,interval=100,blit=True)
+ani = animation.FuncAnimation(fig=fig,
+func=update_frame,frames=Nt,interval=1000,blit=True)
 ani.save('RC_evolution.gif')
 
-plt.show()
+#plt.show()
 
