@@ -44,22 +44,45 @@ def rk4(func, y, dt):
     return y + (dt/6)*(k1 + 2*k2 + 2*k3 + k4)
 
 # initializing trajectory (why not a vector of ones)
-y0 = np.ones(72)
-nt = 10000
+y0 = np.random.randn(72)
+z0 = y0+(1e-5)*np.random.randn(72)
+nt = 20000
 dt = .001
 y = np.zeros([nt+1, 72])
+z = np.zeros([nt+1, 72])
 y[0,:] = y0
+z[0,:] = z0
 F = 20
+
 
 for i in range(nt):
     y[i+1,:] = rk4(lorenz96, y[i,:],dt)
+    z[i+1,:] = rk4(lorenz96, z[i,:],dt)
+
+t = np.linspace(0, nt*dt, nt+1,True)
+
+fig, ax = plt.subplots(1, 2)
+
+ax[0].plot(t, np.sqrt(np.sum((y[:,:8] - z[:,:8])**2, axis=1)))
+ax[0].set_yscale("log")
+ax[0].set_xlabel("Time")
+ax[0].set_title("Using a small perturbation")
+
+
+def sum_y(y):
+    ysum = torch.zeros([len(y[:,0]),8]).to(dtype=dtype, device=device)
+    for i in range(8):
+        ysum[:,i] = torch.sum(y[:,8*(i):8*(i+1)], 1)
+    return ysum
 
 # need to scramble the data and then allocate portions of the trajectory as
 # training and testing data
 # scramble
 np.random.shuffle(y)
-num_train = 8000
-num_test = 2001
+num_train = 19500
+num_test = 501
+num_epochs = 10
+num_ts = 20
 
 # train model on this trajectory (need to use torch for this)
 device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"
@@ -73,10 +96,16 @@ batch_size = 64
 class lM(torch.nn.Module):
     def __init__(self):
         super(lM, self).__init__()
-        self.l1 = torch.nn.Linear(8, 256)
-        self.l2 = torch.nn.Linear(256, 256)
-        self.l3 = torch.nn.Linear(256, 256)
-        self.l4 = torch.nn.Linear(256, 64)
+        self.l1 = torch.nn.Linear(8, 512)
+        self.l2 = torch.nn.Linear(512, 512)
+        self.l3 = torch.nn.Linear(512, 512)
+        self.l4 = torch.nn.Linear(512, 512)
+        self.l5 = torch.nn.Linear(512, 512)
+        self.l6 = torch.nn.Linear(512, 512)
+        self.l7 = torch.nn.Linear(512, 512)
+        self.l8 = torch.nn.Linear(512, 512)
+        self.l9 = torch.nn.Linear(512, 512)
+        self.l10 = torch.nn.Linear(512, 64)
         self.act = torch.nn.ReLU()
 
     def forward(self, x):
@@ -87,11 +116,23 @@ class lM(torch.nn.Module):
         x = self.l3(x)
         x = self.act(x)
         x = self.l4(x)
+        x = self.act(x)
+        x = self.l5(x)
+        x = self.act(x)
+        x = self.l6(x)
+        x = self.act(x)
+        x = self.l7(x)
+        x = self.act(x)
+        x = self.l8(x)
+        x = self.act(x)
+        x = self.l9(x)
+        x = self.act(x)
+        x = self.l10(x)
         return x
 
 M = lM().to(device)
 loss_fn = nn.MSELoss()
-optimizer = torch.optim.Adam(M.parameters(), lr=1e-3)
+optimizer = torch.optim.Adam(M.parameters(), lr=1e-4)
 
 def train(trajectory, model, loss_fn, optimizer):
     global batch_size
@@ -108,16 +149,16 @@ def train(trajectory, model, loss_fn, optimizer):
 
         # Compute prediction error
         pred = model(x)
-        loss = loss_fn(pred, y)
+        #loss = loss_fn(pred, sum_y(y))
+        loss = loss_fn(pred, y) + 100*loss_fn(sum_y(pred), sum_y(y))
 
         # Backpropagation
         loss.backward()
         optimizer.step()
         optimizer.zero_grad()
-
-        #if batch % 10 == 0:
-            #loss, current = loss.item(), (batch + 1) * len(x[:,0])
-            #print(f"loss: {loss:>7f}  [{current:>5d}/{size:>5d}]")
+        if batch%20 == 0:
+            print("Loss :", loss.item(), ", Batch: [",\
+            batch_size*batch,"/",num_train,"]")
 
 def test(trajectory, model, loss_fn):
     size = len(trajectory[:,0])
@@ -137,20 +178,32 @@ def test(trajectory, model, loss_fn):
             x = trajectory[idx[0]:idx[1],:8]
             y = trajectory[idx[0]:idx[1],8:]
             pred = model(x)
-            test_loss += loss_fn(pred, y).item()
+            test_loss += loss_fn(sum_y(pred), sum_y(y)).item()
             #correct += (pred.argmax(1) == y).type(torch.float).sum().item()
     test_loss /= num_batches
-    #correct /= size
-    #print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
-    #print(f"Test Error: \n Avg loss: {test_loss:>8f} \n")
+    print("Avg Test Loss: ", test_loss)
 
-epochs = 5
-for t in range(epochs):
-    #print(f"Epoch {t+1}\n-------------------------------")
-    train(training_data , M, loss_fn, optimizer)
-    test(test_data, M, loss_fn)
-print("Completed Training (F = 8)")
+for j in range(num_ts):
+    y = np.zeros([nt+1, 72])
+    y[0,:] = np.random.randn(72)
 
+    for i in range(nt):
+        y[i+1,:] = rk4(lorenz96, y[i, :],dt)
+    np.random.shuffle(y)
+    test_data = torch.from_numpy(y[num_train:,:]).to(dtype=dtype, device=device)
+    training_data = torch.from_numpy(y[:num_train,:]).to(dtype=dtype, device=device)
+    for k in range(num_epochs):
+        #print(f"Epoch {t+1}\n-------------------------------")
+        train(training_data , M, loss_fn, optimizer)
+        test(test_data, M, loss_fn)
+        print("  ")
+        print("Finished Epoch: ", k+1)
+        print("  ")
+    print(" ------------- ")
+    print("  Completed Timeseries: ", j+1)
+    print(" ------------- ")
+
+print("Completed Training (F = 20)")
 # problem b is to solve the same problem but with F = 24 (not sure what F is)
 # psuedo code: (repeat problem a with different parameters)
 # 1. generate testing data (with F = 24)
@@ -158,9 +211,7 @@ print("Completed Training (F = 8)")
 # 3. retrain the model with new data
 
 # compute new trajectory 
-y0 = np.ones(72)
-nt = 10000
-dt = .001
+#y0 = np.ones(72)
 
 y = np.zeros([nt+1, 72])
 y[0,:] = y0
@@ -178,12 +229,19 @@ training_data = torch.from_numpy(y[:num_train,:]).to(dtype=dtype, device=device)
 test(ytest, M, loss_fn)
 
 # retrain the model 
-epochs = 5
-for t in range(epochs):
-    #print(f"Epoch {t+1}\n-------------------------------")
+epochs = num_epochs
+for k in range(epochs):
     train(training_data , M, loss_fn, optimizer)
     test(test_data, M, loss_fn)
+    print("  ")
+    print("Finished Epoch: ", k+1)
+    print("  ")
 print("Completed Training (F = 24)")
+
+
+# ------------------------------------------------------------------------------------------
+
+
 
 # problem c is to couple the model to the dynamics of the system, i.e.
 # numerically integrate the model where sum_j y_j,k is obtained using the model
@@ -208,12 +266,14 @@ def lorenz96M(x):
     for i in range(8):
         dx[i] = x[i-1]*(x[(i+1)%8]-x[i-2]) - x[i] + F \
                 -(h*c/b)*torch.sum(y[8*i:8*(i+1)])
+                #-(h*c/b)*y[i+64]
     return dx
 
-x0 = np.ones(8)
+
 x = np.zeros([nt+1,8])
-y0 = np.ones(72)
 y = np.zeros([nt+1,72])
+y[0,:] = np.random.randn(72)
+x[0,:] = y[0,:8]
 
 F = 20
 
@@ -225,13 +285,17 @@ for i in range(nt):
 div_x = np.sqrt(np.sum((y[1:,:8]-x[1:,:])**2)/nt)
 print("Divergence from Actual Trajectory: ", div_x, " (Total MSE Loss)")
 
+t = np.linspace(0,nt*dt,nt+1,True)
 # visualize the "divergence"
-fig, ax = plt.subplots(figsize=(16,9))
 
-ax.plot(np.sum((y[1:,:8]-x[1:,:])**2, axis=1))
-ax.set_xlabel("Time")
-ax.set_ylabel("MSE loss", rotation=0)
-ax.set_yscale('log')
+ax[1].plot(t[1:], np.sqrt(np.sum((y[1:,:8]-x[1:,:])**2, axis=1)))
+ax[1].set_xlabel("Time")
+ax[1].set_yscale('log')
+ax[1].set_title(r'Using the Model v Actual')
+ax[0].set_ylabel("D", rotation=0)
+fig.suptitle(r'Distance Between Trajectories')
+
+
 
 plt.show()
 

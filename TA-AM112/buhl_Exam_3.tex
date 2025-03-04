@@ -1,0 +1,162 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm} %proof environment
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{enumitem} %nice lists
+\usepackage{verbatim} %useful for something 
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{blindtext} % I have no idea what this is 
+\usepackage{caption}  % need this for unnumbered captions/figures
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\titleformat{\section}{\bfseries\Large}{Problem \thesection:}{5pt}{}
+
+\begin{document}
+
+\title{AM 112 - Exam 3:}
+\author{Dante Buhl}
+
+
+\newcommand{\wrms}{w_{\text{rms}}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+\newcommand{\Div}{\nabla \cdot}
+\renewcommand{\div}{\nabla \cdot}
+\newcommand{\Curl}{\nabla \times}
+\newcommand{\Grad}{\nabla}
+\newcommand{\grad}{\nabla}
+\newcommand{\grads}{\nabla_s}
+\newcommand{\gradf}{\nabla_f}
+\newcommand{\xs}{x_s}
+\newcommand{\xf}{x_f}
+\newcommand{\ts}{t_s}
+\newcommand{\tf}{t_f}
+\newcommand{\pt}{\partial t}
+\newcommand{\pz}{\partial z}
+\newcommand{\uvec}{\bs{u}}
+\newcommand{\bvec}{\bs{B}}
+\newcommand{\B}{\bs{B}}
+\newcommand{\jvec}{\bs{j}}
+\newcommand{\F}{\bs{F}}
+\newcommand{\T}{\tilde{T}}
+\newcommand{\ez}{\bs{e}_z}
+\newcommand{\ex}{\bs{e}_x}
+\newcommand{\ey}{\bs{e}_y}
+\newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
+\newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pptwo}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\DDt}[1]{\frac{D #1}{D t}}
+\newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
+\newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
+\newcommand{\ppz}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\ddz}[1]{\frac{d #1}{d z}}
+\newcommand{\ppzetas}[1]{\frac{\partial^2 #1}{\partial \zeta^2}}
+\newcommand{\ppzs}[1]{\frac{\partial #1}{\partial z_s}}
+\newcommand{\ppzf}[1]{\frac{\partial #1}{\partial z_f}}
+\newcommand{\ppx}[1]{\frac{\partial #1}{\partial x}}
+\newcommand{\ppxi}[1]{\frac{\partial #1}{\partial x_i}}
+\newcommand{\ppxj}[1]{\frac{\partial #1}{\partial x_j}}
+\newcommand{\ppy}[1]{\frac{\partial #1}{\partial y}}
+\newcommand{\ppzeta}[1]{\frac{\partial #1}{\partial \zeta}}
+
+
+\maketitle 
+% This line removes the automatic indentation on new paragraphs
+\setlength{\parindent}{0pt}
+\setcounter{section}{3}
+\section{}
+
+\begin{gather*}
+    \pptwo{u}{t} = c^2\pptwo{u}{x} + \cos(ct)\sin(x)\\
+    u(0,t) = 0, \quad u(\pi, t) = 0\\
+    u(x,0) = 0, \quad u_t(x,0) = 0
+\end{gather*}
+We begin with a separation of variables approach, i.e. $u = X(x)T(t)$ and
+proceed to obtain the following ODEs and BC. 
+\begin{gather}
+    X'' = \lambda X, \quad X(0) = 0, \quad X(\pi) = 0\\
+    X(x) = \sin(nx),\quad \lambda = n^2
+\end{gather}
+Using the eigenfunction expansion approach to obtain an ODE for time reveals, 
+\begin{gather}
+    T_n''\sin(nx) = -c^2n^2T_n\sin(nx)+ \cos(ct)\sin(x)\\
+    \int_0^{\pi}T''\sin(nx)\sin(mx)dx = \int_0^{\pi}\left(-c^2n^2T\sin(nx)+
+    \cos(ct)\sin(x)\right)\sin(mx)dx \\
+    T_1'' = -c^2T_1 + \cos(ct)
+\end{gather}
+Thus, only one of the spatial eigenmodes is forced and will be non-zero in our
+solution. We continue to solve this ODE using the Laplace transform. 
+\begin{gather}
+    L[T_1''](s) = c^2L[T](s) + L[\cos(t)](s)\\
+    (s^2+c^2)L[T](s) = L[\cos(t)](s)\\
+    L[T](s) = \frac{1}{s^2+c^2}L[\cos(t)](s)\\
+    T(t) = L^{-1}\left[\frac{1}{s^2+c^2}L[\cos(t)](s)\right]
+\end{gather}
+Applying the convolution theorem for Laplace transforms we have, 
+\begin{align}
+    T(t) &= \frac{1}{c}\int_0^t\sin(c(t-u))\cos(cu)du \\
+    &= \frac{1}{2c}\int_0^t\sin(ct) + \sin(c(t-2u))du \\
+    &= \frac{1}{2c}u\sin(ct)\Big|_0^t + \frac{1}{4c^2}\cos(ct -
+    2cu)\Big|_0^{t}\\
+    &= \frac{1}{2c}t\sin(ct) + \frac{1}{4c^2}\left(\cos(-ct) - \cos(ct)\right)\\
+    &= \frac{1}{2c}t\sin(ct)
+\end{align}
+
+Thus the solution would be, 
+\begin{gather}
+    u(x,t) = \frac{1}{2c}t\sin(ct)\sin(x)
+\end{gather}
+This solution can be validated by applying the initial conditions and checking
+if it satisfies the forced differential equation. 
+\begin{gather}
+    u(x,0) = \frac{1}{2c}(0)\sin(x) = 0 \\
+    u_t(x,t) = \frac{1}{2c}\left(\sin(ct) + ct\cos(ct)\right)\sin(x)\\
+    u_t(x,0) = \frac{1}{2c}\left(0 + c(0)\right)\sin(x) = 0
+\end{gather}
+Next we consider the original differential equation, 
+\begin{align}
+    u_{tt} &= \frac{1}{2c}\left(c\cos(ct) + c\cos(ct) - c^2t\sin(ct)
+    \right)\sin(x)\\
+    &= \cos(ct)\sin(x) - \frac{ct}{2}\sin(t)\sin(x)\\
+    &= F(x,t) + c^2u_{xx}
+\end{align}
+Therefore, we have that this solution solves the forced PDE with the given
+boundary conditions. 
+
+
+\subsection{The posted solution}
+In the posted solutions, the solution is,
+\begin{gather*}
+    u(x,t) = \left(\frac{1}{2c^2}\sin(ct) - \frac{1}{2c}t\cos(ct)\right)\sin(x)
+\end{gather*}
+This solution successfully satisfies the IC, but after expanding the second
+derivative in time we find that it may not satisfy the PDE. 
+\begin{gather}
+    u_t = \frac{1}{2c}\cos(ct)\sin(x) - \frac{1}{2c}(\cos(ct) -
+    ct\sin(ct))\sin(x) = -\frac{1}{2}t\sin(ct)\sin(x)\\
+    u_{tt} = -\frac{ct}{2}\cos(ct)\sin(x) \ne c^2\left(\frac{1}{2c^2}\sin(ct) - \frac{1}{2c}t\cos(ct)\right)\sin(x) + \cos(ct)\sin(x)
+\end{gather}
+
+
+\end{document}

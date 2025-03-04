@@ -53,3 +53,6 @@
 \contentsline {subsection}{\numberline {15.1}Steady State MHD and Hartmann flows}{40}{subsection.15.1}%
 \contentsline {subsection}{\numberline {15.2}Controlling flow and field with current}{41}{subsection.15.2}%
 \contentsline {subsection}{\numberline {15.3}Waves}{42}{subsection.15.3}%
+\contentsline {section}{\numberline {16}Waves in MHD: Continued}{43}{section.16}%
+\contentsline {subsection}{\numberline {16.1}Elastic Waves on a String}{43}{subsection.16.1}%
+\contentsline {subsection}{\numberline {16.2}Searching for Wavelike Solutions from the linearized equations}{45}{subsection.16.2}%

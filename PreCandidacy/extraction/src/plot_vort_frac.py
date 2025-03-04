@@ -53,7 +53,7 @@ cor_label_30 = [1,2,3,4,5,7]
 
 num_files = [len(files_30), len(files_100)]
 sim_num_files = [len(simdat_files_30), len(simdat_files_100)]
-cvar = 0.2
+cvar = 0.5
 
 # there is a section missing from vort_frac.py where data extraction is
 # performed 
@@ -88,50 +88,46 @@ invRo_100=npzfile["invRo_100"]
 avg_uh_100=npzfile["avg_uh_100"]/np.sqrt(Nz*Ny*Nx)
 vol_frac_100=npzfile["vol_frac_100"]
 
+wtMax = [np.max(avg_wT_30), np.max(avg_wT_100)]
+
 fig, ax = plt.subplots(1, 2,figsize=(16,9))
 # rearrange ax arary to be indexed 1:4
 #ax = [axitem for axitem in [axset for axset in ax]] 
 dc = cvar/num_files[0]
 col = np.linspace(0+dc,1-dc,len(invRo_30), True)
-#colors = [np.linspace(c-dc,c+dc,num_samples, True) for c in col]
 
 def ccol(c, dc, n):
     return np.linspace(c-dc,c+dc,n, True)
 
 artists = []
 
-# plots wT computation
+# plots wT B = 30 computation
 for i in range(num_files[0]):
     idx_list = np.where(eInvRo_30[i,:] > 0)
-    ni = len(idx_list)
+    ni = len(idx_list[0])
+    clist = ccol(col[i],dc,ni)
     for j, idx in enumerate(idx_list):
-        clist = ccol(col[i],dc,ni)
         item = ax[0].errorbar(eInvRo_30[i,idx], avg_wT_30[i,idx],
         avg_wT_err_30[i,idx], eInvRo_err_30[i,idx],\
         'none', cm.nipy_spectral_r(clist[j]))
-        #'none', cm.nipy_spectral_r(colors[i][idx]))
         if j==int(ni/2):
             artists.append(item)
 
 ax[0].set_xlabel(r'$Ro_e^{-1}$', **font)
-#ax[0].set_ylabel(r'$wT$',rotation=0, **font)
 ax[0].tick_params(axis='both', labelsize=fs-dfs)
 ax[0].set_yscale('log')
 ax[0].set_xscale('log')
 ax[0].set_title(r'$Fr = 0.18$', **font)
 fl0 = ax[0].legend(artists,labels_30,title=r'$wT$',loc='lower left',fontsize=fs-dfs)
 
-#dc = cvar/num_files[1]
-#col = np.linspace(0+dc,1-dc,num_files[1], True)
-#colors = [np.linspace(c-dc,c+dc,num_samples, True) for c in col]
 artists = []
 
 # plots wT B100 computation
 for i in range(num_files[1]):
     idx_list = np.where(eInvRo_100[i,:] > 0)
     ni = len(idx_list[0])
+    clist = ccol(col[cor_idx[i]],dc,ni)
     for j, idx in enumerate(idx_list[0]):
-        clist = ccol(col[cor_idx[i]],dc,ni)
         item = ax[1].errorbar(eInvRo_100[i,idx], avg_wT_100[i,idx],
         avg_wT_err_100[i,idx], eInvRo_err_100[i,idx],\
         'none', cm.nipy_spectral_r(clist[j]))
@@ -155,8 +151,8 @@ artists = []
 for i in range(sim_num_files[0]):
     idx_list = np.where(avg_uh_30[i,:] > 0)
     ni = len(idx_list[0])
+    clist = ccol(col[i],dc,ni)
     for j, idx in enumerate(idx_list[0]):
-        clist = ccol(col[i],dc,ni)
         item = ax[0].scatter(invRo_30[i]/avg_uh_30[i,idx],
         1-vol_frac_30[i,idx], s=ms,
         color=cm.nipy_spectral_r(clist[j]))
@@ -181,10 +177,8 @@ for i in range(sim_num_files[1]):
     #color=cm.nipy_spectral_r(colors[cor_idx[i]][2])))
     idx_list = np.where(avg_uh_100[i,:] > 0)
     ni = len(idx_list[0])
-    print(ni)
-    print(idx_list)
+    clist = ccol(col[cor_idx[i]],dc,ni)
     for j, idx in enumerate(idx_list[0]):
-        clist = ccol(col[cor_idx[i]],dc,ni)
         item = ax[1].scatter(invRo_100[i]/avg_uh_100[i,idx],
         1-vol_frac_100[i,idx], s=ms,
         color=cm.nipy_spectral_r(clist[j]))

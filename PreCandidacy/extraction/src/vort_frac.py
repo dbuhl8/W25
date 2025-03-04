@@ -38,7 +38,8 @@ sim_100_idx = [0,1,2,3,4,5]
 
 invRo_30 = [0.5, 1, 2, 3, 4, 5, 8, 10]
 invRo_100 = [0.5, 1, 2, 3, 4, 8]
-invFr = [np.sqrt(30), 10]
+invFr = np.array([np.sqrt(30), 10.])
+Fr = np.array([1./f for f in invFr])
 
 labels_100 = [r'$\Omega=0.5$',r'$\Omega=1$',r'$\Omega=2$',r'$\Omega=3$',r'$\Omega=4$',r'$\Omega=8$']
 labels_30 = [r'$\Omega=0.5$',r'$\Omega=1$',r'$\Omega=2$',r'$\Omega=3$',r'$\Omega=4$',r'$\Omega=5$',r'$\Omega=8$',r'$\Omega=10$']
@@ -56,9 +57,9 @@ cvar = 0.2
 # arrays will be made 2D such that a computation can be done for each timestep
 # for initial testing this will be keep as a 1d array to tst MFDataset
 vol_frac_30 = np.zeros([sim_num_files[0],num_samples])
-avg_uh_30 = np.zeros_like(vol_frac_30)
+horiz_urms_30 = np.zeros_like(vol_frac_30)
 vol_frac_100 = np.zeros([sim_num_files[1],num_samples])
-avg_uh_100 = np.zeros_like(vol_frac_100)
+horiz_urms_100 = np.zeros_like(vol_frac_100)
 
 # can change these definitions to have simple 2d structure and then append
 eInvRo_30 = np.zeros([num_files[0], num_samples])
@@ -98,14 +99,13 @@ for i, fn in enumerate(simdat_files_30):
     #compute volume fraction where wz >= .1 wzmax
     for j, tval in enumerate(t):
         # if array has j-1 columns, create new column
-        if len(avg_uh_30[0,:])-1 < j:
+        if len(horiz_urms_30[0,:])-1 < j:
             # adds an extra column of zeros to the arrays
-            avg_uh_30 = np.hstack((avg_uh_30,np.zeros((sim_num_files[0],1))))
+            horiz_urms_30 = np.hstack((horiz_urms_30,np.zeros((sim_num_files[0],1))))
             vol_frac_30 = np.hstack((vol_frac_30,np.zeros((sim_num_files[0],1))))
-        avg_uh_30[i,j] = np.sqrt(np.sum(ux[j,:,:,:]**2 + uy[j,:,:,:]**2))
-        vol_frac_30[i,j] = len(np.where(np.abs(invFr[0]/\
-                        np.maximum(wz[j,:,:,:]+invRo_30[i],1e-5))\
-                            < 1)[0])/(Nz*Nx*Ny)
+        horiz_urms_30[i,j] = np.sqrt(np.sum(ux[j,:,:,:]**2 + uy[j,:,:,:]**2))
+        vol_frac_30[i,j] = len(np.where(Fr[0]*np.abs(wz[j,:,:,:]+invRo_30[i])\
+                            <= 1)[0])/(Nz*Nx*Ny)
         print("Finished with file: ", fn, ".")
     cdf_file.close()
 
@@ -134,14 +134,13 @@ for i, fn in enumerate(simdat_files_100):
 
     #compute volume fraction where wz >= .1 wzmax
     for j, tval in enumerate(t):
-        if len(avg_uh_100[0,:])-1 < j:
+        if len(horiz_urms_100[0,:])-1 < j:
             # adds an extra column of zeros to the arrays
-            avg_uh_100 = np.hstack((avg_uh_100,np.zeros((sim_num_files[1],1))))
+            horiz_urms_100 = np.hstack((horiz_urms_100,np.zeros((sim_num_files[1],1))))
             vol_frac_100 = np.hstack((vol_frac_100,np.zeros((sim_num_files[1],1))))
-        avg_uh_100[i,j] = np.sqrt(np.sum(ux[j,:,:,:]**2 + uy[j,:,:,:]**2))
-        vol_frac_100[i,j] = len(np.where(np.abs(invFr[1]/\
-                        np.maximum(wz[j,:,:,:]+invRo_100[i],1e-5))\
-                            < 1)[0])/(Nz*Nx*Ny)
+        horiz_urms_100[i,j] = np.sqrt(np.sum(ux[j,:,:,:]**2 + uy[j,:,:,:]**2))
+        vol_frac_100[i,j] = len(np.where(Fr[1]*np.abs(wz[j,:,:,:]+invRo_100[i])\
+                            <= 1)[0])/(Nz*Nx*Ny)
     print("Finished with file: ", fn, ".")
     cdf_file.close()
 
@@ -230,8 +229,8 @@ for i, fn in enumerate(files_100):
 # save computed data as txt files
 np.savez("vort_frac", eInvRo_30=eInvRo_30, avg_wT_30=avg_wT_30,\
     eInvRo_err_30=eInvRo_err_30, avg_wT_err_30=avg_wT_err_30,\
-    invRo_30=invRo_30, avg_uh_30=avg_uh_30, vol_frac_30=vol_frac_30,\
+    invRo_30=invRo_30, horiz_urms_30=horiz_urms_30, vol_frac_30=vol_frac_30,\
     eInvRo_100=eInvRo_100, avg_wT_100=avg_wT_100,\
     eInvRo_err_100=eInvRo_err_100, avg_wT_err_100=avg_wT_err_100,\
-    invRo_100=invRo_100, avg_uh_100=avg_uh_100, vol_frac_100=vol_frac_100)
+    invRo_100=invRo_100, horiz_urms_100=horiz_urms_100, vol_frac_100=vol_frac_100)
 

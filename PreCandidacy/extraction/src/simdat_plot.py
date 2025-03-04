@@ -28,15 +28,22 @@ dx = gx/Nx
 dy = gy/Ny
 dz = gz/Nz
 
-invRo = cdf_file.variables['R']
-invFr = np.sqrt(cdf_file.variables['B_therm'])
+invRo = cdf_file.variables['R'][0]
+invFr = np.sqrt(cdf_file.variables['B_therm'][0])
+Fr = np.round(1/invFr,4)
+Ro = np.round(1/invRo,4)
 
 #these arrays are indexed by [t,z,y,x]
 ux = np.array(cdf_file.variables['ux'][:])
 uy = np.array(cdf_file.variables['uy'][:])
 uz = np.array(cdf_file.variables['uz'][:])
+temp = np.array(cdf_file.variables['Temp'][:])
 wz = db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
+uz_rms = np.sqrt(np.sum(uz**2,axis=1)/Nz)
 wz_bar = np.sum(wz, axis=1)/Nz
+tflux_bar = np.sum(uz*temp, axis=1)/Nz
+wTmax = np.max(tflux_bar)
+uz_rms_max = np.max(uz_rms)
 
 
 def ACFlz(field, l):
@@ -54,102 +61,75 @@ def ACFlz(field, l):
 Nlz = int(Nz/2)
 lz = np.zeros(Nlz)
 idx = np.where(invFr/(wz_bar+invRo) < 1)
-alz = np.zeros([Nt, Nlz, Ny, Nz])
+alz = np.zeros([Nt, Nlz, Ny, Nx])
 
 for i in range(Nlz):
-    l = Nlz - i
+    l = i
     lz[i] = dz*l
     alz[:,i,:,:] = ACFlz(uz, l)
     print("Completed Lengthscale: ", lz[i])
 
-"""
-    # can loop over this to create a movie through the vertical domain
-    pc1 = ax[0,0].pcolor(XX[:,:],
-        YY[:,:], ux[-1,0,:,:].T,
-        norm=colors.Normalize(vmin=-uxmax,vmax=uxmax), cmap='seismic')
-    fig.colorbar(pc1, ax=ax[0,0])
-    ax[0,0].set_title(r'$u_x$')
-
-    pc2 = ax[0,1].pcolor(XX[:,:],
-        YY[:,:], uy[-1,0,:,:].T,
-        norm=colors.Normalize(vmin=-uymax,vmax=uymax), cmap='seismic')
-    fig.colorbar(pc2, ax=ax[0,1])
-    ax[0,1].set_title(r'$u_y$')
-
-    pc3 = ax[1,0].pcolor(XX[:,:],
-        YY[:,:], wz[-1,0,:,:].T,
-        norm=colors.Normalize(vmin=-wzmax,vmax=wzmax), cmap='seismic')
-    fig.colorbar(pc3, ax=ax[1,0])
-    ax[1,0].set_title(r'$\omega_z$')
-
-    pc4 = ax[1,1].pcolor(XX[:,:],
-        YY[:,:], uz[-1,0,:,:].T,
-        norm=colors.Normalize(vmin=-uzmax,vmax=uzmax), cmap='seismic')
-    fig.colorbar(pc4, ax=ax[1,1])
-    ax[1,1].set_title(r'$u_z$')
-"""
-
-"""
-    # can loop over this to create a movie through the vertical domain
-    pc1 = ax[0,0].imshow(temp[ptstp,0,:,:].T,
-        norm=colors.Normalize(vmin=-tempmax,vmax=tempmax), cmap='seismic',
-        origin='lower')
-    fig.colorbar(pc1, ax=ax[0,0])
-    ax[0,0].set_title(r"$T'$")
-
-    pc2 = ax[0,1].imshow(tdisp[ptstp,0,:,:].T,
-        norm=colors.Normalize(vmin=0,vmax=tdispmax), cmap='viridis',
-        origin='lower')
-    fig.colorbar(pc2, ax=ax[0,1])
-    ax[0,1].set_title(r'$|\nabla T|^2$')
-
-    pc3 = ax[1,0].imshow(wz[ptstp,0,:,:].T,
-        norm=colors.Normalize(vmin=-wzmax,vmax=wzmax), cmap='seismic',
-        origin='lower')
-    fig.colorbar(pc3, ax=ax[1,0])
-    ax[1,0].set_title(r'$\omega_z$')
-
-    pc4 = ax[1,1].imshow(uz[ptstp,0,:,:].T,
-        norm=colors.Normalize(vmin=-uzmax,vmax=uzmax), cmap='seismic',
-        origin='lower')
-    fig.colorbar(pc4, ax=ax[1,1])
-    ax[1,1].set_title(r'$u_z$')
-
-    # adjusts spacing so that slider fits
-    fig.subplots_adjust(0.01, .1, .91, .9,
-    .2,.15)
-
-    # horizontal slider bar
-    #zaxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
-    #szaxis = Slider(zaxis, 'Height', 0, np.pi,
-    #valinit=0, valstep=dz)
-
-    # vertical slider bar
-    zaxis = plt.axes([0.93, 0.15, 0.03, 0.7], facecolor='blue')
-    szaxis = Slider(zaxis, 'Height', 0, np.pi,
-    valinit=0, valstep=dz, orientation='vertical')
-
-    for axis_set in ax:
-        for axis in axis_set:
-            axis.set_xticks([])
-            axis.set_yticks([])
-
-
-    # movie down vertical extent of domain
-    def update_frame(frame):
-        pc1.set_array(temp[ptstp,frame,:,:].T)
-        pc2.set_array(tdisp[ptstp,frame,:,:].T)
-        pc3.set_array(wz[ptstp,frame,:,:].T)
-        pc4.set_array(uz[ptstp,frame,:,:].T)
-        szaxis.set_val(frame*dz) 
-        print('Done with frame: ', frame)
-        return (pc1,pc2,pc3,pc4)
-
-    ani = animation.FuncAnimation(fig=fig,
-    func=update_frame,frames=Nz,interval=50,blit=True)
-    ani.save('imshow_z_extent.gif')
-"""
+# perform FWHM
+clz = np.zeros_like(alz[:,0,:,:])
+for i in range(Nt):
+    for j in range(Ny):
+        for k in range(Nx):
+            idx = np.where(alz[i,:,j,k] <= 0.5)
+            if (len(idx[0]) == 0):
+                clz[i,j,k] = lz[np.where(alz[i,:,j,k] == min(alz[i,:,j,k]))[0][0]]
+            else:
+                clz[i,j,k] = lz[idx[0][0]]
 
 np.savez("vertavg", x = x, y = y, z = z, t = t, ux = ux,\
-        uy = uy, wz = wz, wz_bar=wz_bar, lz=lz, alz=alz)
+        uy = uy, wz = wz, wz_bar=wz_bar, tfluz_bar=tflux_bar, lz=lz, alz=alz,
+        uz_rms=uz_rms)
 
+fig, ax = plt.subplots(2, 2,figsize=(16,9))
+
+# horizontal slider bar
+#taxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
+#staxis = Slider(taxis, 'Height', 0, t[-1]-t[0], valinit=0)
+
+# plot vertically averaged quantities
+pc1 = ax[0,0].imshow(Fr*np.abs(wz_bar[0,:,:].T+invRo),
+    norm=colors.Normalize(vmin=0,vmax=2), cmap='RdYlBu_r', origin='lower')
+fig.colorbar(pc1, ax=ax[0,0])
+ax[0,0].set_title(r"$Fr|\hat{\omega}_z+Ro^{-1}|$")
+
+pc2 = ax[0,1].imshow(tflux_bar[0,:,:].T,
+    norm=colors.Normalize(vmin=-wTmax,vmax=wTmax), cmap='seismic', origin='lower')
+fig.colorbar(pc2, ax=ax[0,1])
+ax[0,1].set_title(r"$\hat{wT}$")
+
+
+pc3 = ax[1,0].imshow(clz[0,:,:].T,
+    norm=colors.Normalize(vmin=dz,vmax=dz*Nlz), cmap='viridis', origin='lower')
+fig.colorbar(pc3, ax=ax[1,0])
+ax[1,0].set_title(r"$l_z$")
+
+pc4 = ax[1,1].imshow(clz[0,:,:].T,
+    norm=colors.Normalize(vmin=0,vmax=uz_rms_max), cmap='plasma', origin='lower')
+fig.colorbar(pc4, ax=ax[1,1])
+ax[1,1].set_title(r"$\hat{u}_z$")
+
+for axisset in ax:
+    for axis in axisset:
+        axis.set_yticks([])
+        axis.set_xticks([])
+
+fig.suptitle("t = "+str(t[0])+", Fr = "+str(Fr)+", Ro = "+str(Ro))
+
+
+def update_frame(frame):
+    pc1.set_array(Fr*np.abs(wz_bar[frame,:,:].T+invRo))
+    pc2.set_array(tflux_bar[frame,:,:].T)
+    pc3.set_array(clz[frame,:,:].T)
+    pc4.set_array(uz_rms[frame,:,:].T)
+    fig.suptitle("t = "+str(t[frame])+", Fr = "+str(Fr)+", Ro = "+str(Ro))
+    #staxis.set_val(t[frame]-t[0]) 
+    print('Done with frame: ', frame)
+    return (pc1, pc2, pc3, pc4)
+
+ani = animation.FuncAnimation(fig=fig,
+func=update_frame,frames=Nt,interval=1000,blit=True)
+ani.save('RC_evolution.mp4')

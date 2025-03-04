@@ -64,7 +64,10 @@ invFr = np.sqrt(cdf_file.variables['B_therm'])
 npz_file = np.load("vertavg.npz")
 t = npz_file['t']
 wz_bar = npz_file['wz_bar']
-wzmax = np.max(np.abs(wz_bar+invRo))
+tflux_bar= npz_file['tflux_bar']
+ux = npz_file['ux']
+uy = npz_file['uy']
+wTmax = np.max(tflux_bar)
 Nt = len(t)
 lz = npz_file['lz']
 Nlz = len(lz)
@@ -84,15 +87,15 @@ pc1 = ax[0].imshow(invFr/np.maximum(wz_bar[0,:,:].T+invRo,1e-5),
 fig.colorbar(pc1, ax=ax[0])
 ax[0].set_title(r"$\frac{Fr^{-1}}{\hat{\omega}_z+Ro^{-1}}$")
 
-pc2 = ax[1].imshow(alz[0,:,:].T,
-    norm=colors.Normalize(vmin=-wzmax,vmax=wzmax), cmap='RdYlBu_r', origin='lower')
+pc2 = ax[1].imshow(tflux_bar[0,:,:].T,
+    norm=colors.Normalize(vmin=-wTmax,vmax=wTmax), cmap='RdYlBu_r', origin='lower')
 fig.colorbar(pc2, ax=ax[1])
 ax[1].set_title(r"$\hat{\omega}_z+Ro^{-1}$")
 
 
 def update_frame(frame):
     pc1.set_array(invFr/np.maximum(wz_bar[frame,:,:].T+invRo, 1e-5))
-    pc2.set_array(wz_bar[frame,:,:].T+invRo)
+    pc2.set_array(tflux_bar[frame,:,:].T)
     staxis.set_val(t[frame]-t[0]) 
     print('Done with frame: ', frame)
     return (pc1, pc2)
