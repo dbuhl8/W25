@@ -53,7 +53,7 @@ cor_label_30 = [1,2,3,4,5,7]
 
 num_files = [len(files_30), len(files_100)]
 sim_num_files = [len(simdat_files_30), len(simdat_files_100)]
-cvar = 0.5
+cvar = 0.3
 
 # there is a section missing from vort_frac.py where data extraction is
 # performed 
@@ -78,14 +78,14 @@ avg_wT_30=npzfile["avg_wT_30"]
 eInvRo_err_30=npzfile["eInvRo_err_30"]
 avg_wT_err_30=npzfile["avg_wT_err_30"]
 invRo_30=npzfile["invRo_30"]
-avg_uh_30=npzfile["avg_uh_30"]/np.sqrt(Nz*Ny*Nx)
+horiz_urms_30=npzfile["horiz_urms_30"]/np.sqrt(Nz*Ny*Nx)
 vol_frac_30=npzfile["vol_frac_30"]
 eInvRo_100=npzfile["eInvRo_100"]
 avg_wT_100=npzfile["avg_wT_100"]
 eInvRo_err_100=npzfile["eInvRo_err_100"]
 avg_wT_err_100=npzfile["avg_wT_err_100"]
 invRo_100=npzfile["invRo_100"]
-avg_uh_100=npzfile["avg_uh_100"]/np.sqrt(Nz*Ny*Nx)
+horiz_urms_100=npzfile["horiz_urms_100"]/np.sqrt(Nz*Ny*Nx)
 vol_frac_100=npzfile["vol_frac_100"]
 
 wtMax = [np.max(avg_wT_30), np.max(avg_wT_100)]
@@ -99,7 +99,10 @@ col = np.linspace(0+dc,1-dc,len(invRo_30), True)
 def ccol(c, dc, n):
     return np.linspace(c-dc,c+dc,n, True)
 
+
+
 artists = []
+
 
 # plots wT B = 30 computation
 for i in range(num_files[0]):
@@ -113,6 +116,7 @@ for i in range(num_files[0]):
         if j==int(ni/2):
             artists.append(item)
 
+
 ax[0].set_xlabel(r'$Ro_e^{-1}$', **font)
 ax[0].tick_params(axis='both', labelsize=fs-dfs)
 ax[0].set_yscale('log')
@@ -121,6 +125,12 @@ ax[0].set_title(r'$Fr = 0.18$', **font)
 fl0 = ax[0].legend(artists,labels_30,title=r'$wT$',loc='lower left',fontsize=fs-dfs)
 
 artists = []
+print("Debugging 1:")
+clist = ccol(col[0],dc,5)
+print(clist)
+print("Debugging 2:")
+clist = ccol(col[cor_idx[0]],dc,5)
+print(clist)
 
 # plots wT B100 computation
 for i in range(num_files[1]):
@@ -148,39 +158,34 @@ fl1 = ax[1].legend(artists,labels_100,title=r'$wT$',loc='lower left',fontsize=fs
 
 artists = []
 
+# B = 30 volume fraction data
 for i in range(sim_num_files[0]):
-    idx_list = np.where(avg_uh_30[i,:] > 0)
+    idx_list = np.where(horiz_urms_30[i,:] > 0)
     ni = len(idx_list[0])
     clist = ccol(col[i],dc,ni)
     for j, idx in enumerate(idx_list[0]):
-        item = ax[0].scatter(invRo_30[i]/avg_uh_30[i,idx],
-        1-vol_frac_30[i,idx], s=ms,
+        item = ax[0].scatter(invRo_30[i]/horiz_urms_30[i,idx],
+        vol_frac_30[i,idx], s=ms,
         color=cm.nipy_spectral_r(clist[j]))
         #color=cm.nipy_spectral_r(colors[sim_30_idx[i]][2])))
         if j == int(len(idx_list)/2):
             artists.append(item) 
 
-#ax[0].set_xlabel(r'$Ro_e^{-1}$', **font)
-#ax[0].set_ylabel(r'$S$',rotation=0, **font)
-#ax[0].tick_params(axis='both', labelsize=fs-dfs)
-#ax[0].sharex(ax[0,0])
-#ax[0].set_yscale('log')
-#ax[0].set_xscale('log')
-#ax[0].set_title(r'$Fr = 0.18$', **font)
 ax[0].legend(artists,labels_30,title=r'$S$',loc='upper left',fontsize=fs-dfs)
 
 artists = []
 
+# B = 100 volume fraction data
 for i in range(sim_num_files[1]):
     #artists.append(ax[1].scatter(invRo_100[i]/avg_uh_100[i],
     #1-vol_frac_100[i], s=ms,
     #color=cm.nipy_spectral_r(colors[cor_idx[i]][2])))
-    idx_list = np.where(avg_uh_100[i,:] > 0)
+    idx_list = np.where(horiz_urms_100[i,:] > 0)
     ni = len(idx_list[0])
     clist = ccol(col[cor_idx[i]],dc,ni)
     for j, idx in enumerate(idx_list[0]):
-        item = ax[1].scatter(invRo_100[i]/avg_uh_100[i,idx],
-        1-vol_frac_100[i,idx], s=ms,
+        item = ax[1].scatter(invRo_100[i]/horiz_urms_100[i,idx],
+        vol_frac_100[i,idx], s=ms,
         color=cm.nipy_spectral_r(clist[j]))
         #color=cm.nipy_spectral_r(colors[sim_30_idx[i]][2])))
         if j == int(ni/2):
