@@ -10,7 +10,9 @@ from netCDF4 import MFDataset
 fn = 'simdat*.cdf'
 cdf_file = MFDataset(fn)
 dtype = np.float32
-#ptstp = -1  # this choses which timestep to plot (-1 is the last one)
+fs = 22
+font = {'family': 'Times New Roman',
+                        'size'   : fs}
 
 #obtaining discretization data
 x = np.array(cdf_file.variables['x'])
@@ -84,7 +86,7 @@ np.savez("vertavg", x = x, y = y, z = z, t = t, ux = ux,\
         uy = uy, wz = wz, wz_bar=wz_bar, tfluz_bar=tflux_bar, lz=lz, alz=alz,
         uz_rms=uz_rms)
 
-fig, ax = plt.subplots(2, 2,figsize=(16,9))
+fig, ax = plt.subplots(2, 2,figsize=(10,10))
 
 # horizontal slider bar
 #taxis = plt.axes([0.15, 0.02, 0.7, 0.03], facecolor='blue')
@@ -94,38 +96,39 @@ fig, ax = plt.subplots(2, 2,figsize=(16,9))
 pc1 = ax[0,0].imshow(Fr*np.abs(wz_bar[0,:,:].T+invRo),
     norm=colors.Normalize(vmin=0,vmax=2), cmap='RdYlBu_r', origin='lower')
 fig.colorbar(pc1, ax=ax[0,0])
-ax[0,0].set_title(r"$Fr|\hat{\omega}_z+Ro^{-1}|$")
+ax[0,0].set_title(r"$Fr|\hat{\omega}_z+Ro^{-1}|$", **font)
 
 pc2 = ax[0,1].imshow(tflux_bar[0,:,:].T,
     norm=colors.Normalize(vmin=-wTmax,vmax=wTmax), cmap='seismic', origin='lower')
 fig.colorbar(pc2, ax=ax[0,1])
-ax[0,1].set_title(r"$\hat{wT}$")
+ax[0,1].set_title(r"$\hat{wT}$", **font)
 
 
 pc3 = ax[1,0].imshow(clz[0,:,:].T,
     norm=colors.Normalize(vmin=dz,vmax=dz*Nlz), cmap='viridis', origin='lower')
 fig.colorbar(pc3, ax=ax[1,0])
-ax[1,0].set_title(r"$l_z$")
+ax[1,0].set_title(r"$l_z$", **font)
 
 pc4 = ax[1,1].imshow(clz[0,:,:].T,
     norm=colors.Normalize(vmin=0,vmax=uz_rms_max), cmap='plasma', origin='lower')
 fig.colorbar(pc4, ax=ax[1,1])
-ax[1,1].set_title(r"$\hat{u}_z$")
+ax[1,1].set_title(r"$\hat{u}_z$", **font)
 
 for axisset in ax:
     for axis in axisset:
         axis.set_yticks([])
         axis.set_xticks([])
 
-fig.suptitle("t = "+str(t[0])+", Fr = "+str(Fr)+", Ro = "+str(Ro))
-
+fig.suptitle("t = "+str(t[0])+", Fr = "+str(Fr)+", Ro = "+str(Ro), **font)
+fig.tight_layout()
 
 def update_frame(frame):
     pc1.set_array(Fr*np.abs(wz_bar[frame,:,:].T+invRo))
     pc2.set_array(tflux_bar[frame,:,:].T)
     pc3.set_array(clz[frame,:,:].T)
     pc4.set_array(uz_rms[frame,:,:].T)
-    fig.suptitle("t = "+str(t[frame])+", Fr = "+str(Fr)+", Ro = "+str(Ro))
+    fig.suptitle("t = "+str(t[frame])+\
+                ", Fr = "+str(Fr)+", Ro = "+str(Ro), **font)
     #staxis.set_val(t[frame]-t[0]) 
     print('Done with frame: ', frame)
     return (pc1, pc2, pc3, pc4)
@@ -133,3 +136,4 @@ def update_frame(frame):
 ani = animation.FuncAnimation(fig=fig,
 func=update_frame,frames=Nt,interval=1000,blit=True)
 ani.save('RC_evolution.mp4')
+ani.save('RC_evolution.gif')

@@ -99,23 +99,19 @@ col = np.linspace(0+dc,1-dc,len(invRo_30), True)
 def ccol(c, dc, n):
     return np.linspace(c-dc,c+dc,n, True)
 
-
-
 artists = []
-
 
 # plots wT B = 30 computation
 for i in range(num_files[0]):
     idx_list = np.where(eInvRo_30[i,:] > 0)
     ni = len(idx_list[0])
     clist = ccol(col[i],dc,ni)
-    for j, idx in enumerate(idx_list):
+    for j, idx in enumerate(idx_list[0]):
         item = ax[0].errorbar(eInvRo_30[i,idx], avg_wT_30[i,idx],
         avg_wT_err_30[i,idx], eInvRo_err_30[i,idx],\
         'none', cm.nipy_spectral_r(clist[j]))
         if j==int(ni/2):
             artists.append(item)
-
 
 ax[0].set_xlabel(r'$Ro_e^{-1}$', **font)
 ax[0].tick_params(axis='both', labelsize=fs-dfs)
@@ -125,12 +121,6 @@ ax[0].set_title(r'$Fr = 0.18$', **font)
 fl0 = ax[0].legend(artists,labels_30,title=r'$wT$',loc='lower left',fontsize=fs-dfs)
 
 artists = []
-print("Debugging 1:")
-clist = ccol(col[0],dc,5)
-print(clist)
-print("Debugging 2:")
-clist = ccol(col[cor_idx[0]],dc,5)
-print(clist)
 
 # plots wT B100 computation
 for i in range(num_files[1]):
@@ -177,9 +167,6 @@ artists = []
 
 # B = 100 volume fraction data
 for i in range(sim_num_files[1]):
-    #artists.append(ax[1].scatter(invRo_100[i]/avg_uh_100[i],
-    #1-vol_frac_100[i], s=ms,
-    #color=cm.nipy_spectral_r(colors[cor_idx[i]][2])))
     idx_list = np.where(horiz_urms_100[i,:] > 0)
     ni = len(idx_list[0])
     clist = ccol(col[cor_idx[i]],dc,ni)
