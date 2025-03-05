@@ -1,0 +1,205 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Required for inserting images
+\usepackage[left=1in,right=1in,top=1in,bottom=1in]{geometry} \usepackage{amsmath}
+\usepackage{amsthm} %proof environment
+\usepackage{amsthm} %proof environment
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{enumitem} %nice lists
+\usepackage{verbatim} %useful for something 
+\usepackage{xcolor}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{blindtext} % I have no idea what this is 
+\usepackage{caption}  % need this for unnumbered captions/figures
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{hyperref}
+
+\titleformat{\section}{\bfseries\Large}{Problem \thesection:}{5pt}{}
+
+\begin{document}
+
+\title{AM 275 - Magnetohydrodynamics: Homework 4}
+\author{Dante Buhl}
+
+
+\newcommand{\wrms}{w_{\text{rms}}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\bmp}[1]{\begin{minipage}{#1\textwidth}}
+\newcommand{\emp}{\end{minipage}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathcal{N}}
+%\newcommand{\K}{\bs{\mathrm{K}}}
+\newcommand{\m}{\bs{\mu}_*}
+\newcommand{\s}{\bs{\Sigma}_*}
+\newcommand{\dt}{\Delta t}
+\newcommand{\dx}{\Delta x}
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\Tr}[1]{\text{Tr}(#1)}
+\newcommand{\Div}{\nabla \cdot}
+\renewcommand{\div}{\nabla \cdot}
+\newcommand{\Curl}{\nabla \times}
+\newcommand{\Grad}{\nabla}
+\newcommand{\grad}{\nabla}
+\newcommand{\grads}{\nabla_s}
+\newcommand{\gradf}{\nabla_f}
+\newcommand{\xs}{x_s}
+\newcommand{\x}{\bs{x}}
+\newcommand{\xf}{x_f}
+\newcommand{\ts}{t_s}
+\newcommand{\tf}{t_f}
+\newcommand{\pt}{\partial t}
+\newcommand{\pz}{\partial z}
+\newcommand{\uvec}{\bs{u}}
+\newcommand{\bvec}{\bs{B}}
+\newcommand{\nvec}{\hat{\bs{n}}}
+\newcommand{\B}{\bs{B}}
+\newcommand{\A}{\bs{A}}
+\newcommand{\jvec}{\bs{j}}
+\newcommand{\F}{\bs{F}}
+\newcommand{\T}{\tilde{T}}
+\newcommand{\ez}{\bs{e}_z}
+\newcommand{\ex}{\bs{e}_x}
+\newcommand{\ey}{\bs{e}_y}
+\newcommand{\eo}{\bs{e}_{\bs{\Omega}}}
+\newcommand{\ppt}[1]{\frac{\partial #1}{\partial t}}
+\newcommand{\pp}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pptwo}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\ddtwo}[2]{\frac{d^2 #1}{d #2^2}}
+\newcommand{\DDt}[1]{\frac{D #1}{D t}}
+\newcommand{\ppts}[1]{\frac{\partial #1}{\partial t_s}}
+\newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
+\newcommand{\ppz}[1]{\frac{\partial #1}{\partial z}}
+\newcommand{\ddz}[1]{\frac{d #1}{d z}}
+\newcommand{\ppzetas}[1]{\frac{\partial^2 #1}{\partial \zeta^2}}
+\newcommand{\ppzs}[1]{\frac{\partial #1}{\partial z_s}}
+\newcommand{\ppzf}[1]{\frac{\partial #1}{\partial z_f}}
+\newcommand{\ppx}[1]{\frac{\partial #1}{\partial x}}
+\newcommand{\ddx}[1]{\frac{d #1}{d x}}
+\newcommand{\ppxi}[1]{\frac{\partial #1}{\partial x_i}}
+\newcommand{\ppxj}[1]{\frac{\partial #1}{\partial x_j}}
+\newcommand{\ppy}[1]{\frac{\partial #1}{\partial y}}
+\newcommand{\ppzeta}[1]{\frac{\partial #1}{\partial \zeta}}
+\renewcommand{\k}{\bs{k}}
+\newcommand{\real}[1]{\text{Re}\left[#1\right]}
+
+
+\maketitle 
+% This line removes the automatic indentation on new paragraphs
+\setlength{\parindent}{0pt}
+
+\section{}
+\begin{enumerate}[label=\alph*.)]
+    \item We begin here with the linearized perturbation equations taken from
+    the lecture, but now including the Coriolis force. We will ignore the
+    centripedal force here as claim that it acts only on the base flow and not
+    the perturbations. {\color{red} make a better excuse}. 
+    \begin{gather*}
+        \rho_0\left(\ppt{\uvec'} \right) + 2\rho_0\bs{\Omega}\times\uvec'= -\grad \left(p' +
+        \frac{1}{\mu_0}\B'\cdot\overline{\B}\right) + \frac{1}{\mu_0}(\overline{\B}\cdot\grad)\B', \quad \div{\uvec'}
+        = 0\\
+        \ppt{\B'} = (\overline{\B}\cdot\grad)\uvec', \quad \div{\B'} = 0
+    \end{gather*}
+    From these equations, we proceed with the usual wave-like ansatz whereby
+    each quantity (vector and scalar) is of the form, 
+    \begin{gather*}
+        q' = \tilde{q}e^{i\left(\k\cdot\x - \omega t\right)}
+    \end{gather*}
+    where $\tilde{q}$ is generally a complex scalar (or vector) and the
+    exponential term follows Euler's identity. We give specific attention to the
+    complex components of any general $q'$. We have very specifically, that
+    conditions on that quantity (for example, the divergence of $\uvec'$ and boundary
+    conditions on the relevant characteristics of the flow) are only considered
+    in real space. That is, we would care very rigorously about the
+    $\real{\div{\uvec}} = 0$ and not necessarily about the imaginary component
+    (Note that in this specific case there is an extra i floating around and can
+    be factored out so it happens that both the real and imaginary components of
+    the divergence of $\uvec'$ must be zero). We have as a consequence that
+    this simplifies these equations to an algebraic dilema rather than that of a
+    partial differential equation. These equations then have the form, 
+    \begin{gather*}
+        -i\rho_0\omega\tilde{\uvec} + 2\rho_0\bs{\Omega}\times\tilde{\uvec} =
+        -i\k\left(\tilde{p} + \frac{1}{\mu_0}\overline{\B}\cdot\tilde{\B}\right)
+        + \frac{i}{\mu_0}\left(\overline{\B}\cdot\k\right)\tilde{\B}, \quad
+        i\k\cdot\tilde{\uvec} = 0\\
+        -i\omega\tilde{\B} = i(\overline{\B}\cdot\k)\tilde{\uvec}, \quad
+        i\k\cdot\tilde{\B}
+    \end{gather*}
+    In order to proceed, we take a pseudo-curl in this vector space. Note that
+    since we have taken $\nabla = i\k$, and thus we take $i\k\times(\cdot)$ for
+    the momentum and induction equation. 
+    \begin{gather*}
+        \rho_0\omega(\k\times\tilde{\uvec}) +
+        2i\rho_0(\k\times(\bs{\Omega}\times\tilde{\uvec})) =
+        - \frac{1}{\mu_0}\left(\overline{\B}\cdot\k\right)(\k\times\tilde{\B})\\
+        -i\omega(\k\times\tilde{\B}) = i(\overline{\B}\cdot\k)(\k\times\tilde{\uvec})
+    \end{gather*}
+    Here the ``curl'' of the Coriolis term is given specific attention (whereby
+    the NRL plasma formulary 2019 is referenced) and we have,
+    \begin{gather*}
+        \rho_0\omega(\k\times\tilde{\uvec}) -
+        2i\rho_0(\k\cdot\bs{\Omega})\tilde{\uvec} =
+        - \frac{1}{\mu_0}\left(\overline{\B}\cdot\k\right)(\k\times\tilde{\B})\\
+        \omega(\k\times\tilde{\B}) = -(\overline{\B}\cdot\k)(\k\times\tilde{\uvec})
+    \end{gather*}
+    Now, upon first inspection, we see something quite odd. We have (and this
+    must be satisfied) that $\k\times\tilde{\uvec}$ must be colinear to
+    $\tilde{\uvec}$. This first appears non-sensicle as multivariate calculus
+    has taught us that the cross product of two vectors must be perpendicular to
+    both those vectors. Here, we point to the consideration of these complex
+    quantities representing real (physical) quantities at the end of the day. We
+    can imagine different criterium for the orthogonality of these complex
+    vectors, that is we must chose a specific inner product to satisfy
+    orthogonality. Since we care about the real component of the inner product
+    we must have that, 
+    \begin{align*}
+        \real{\left<\tilde{\uvec},\k\times\tilde{\uvec}\right>} &= 0\\
+        \real{\left<\tilde{\uvec},\k\times\tilde{\uvec}\right>} &=
+        \real{(\tilde{\uvec}_R^T -i\tilde{\uvec}_I^T) ((\k\times\tilde{\uvec}_R) +
+        i(\k\times\tilde{\uvec}_I))}\\
+        &= \real{i\tilde{\uvec}_R\cdot(\k\times\tilde{\uvec}_I)
+        -i\tilde{\uvec}_I\cdot(\k\times\tilde{\uvec}_R)}\\
+        &= 0
+    \end{align*}
+    and yet the magnitude/modulus/absolute-value of this cross product is
+    non-zero!! It is for this precise reason that we have that $\tilde{\uvec}$
+    can be colinear to $\k\times\tilde{\uvec}$ (note the i attached to
+    $\tilde{\uvec}$ in the momentum / vorticity equation). Thus we proceed with
+    the notion that we have some wiggle room in an initially seemingly obsurb
+    statement. We continue with the substitution made in class. 
+    \begin{gather*}
+        \rho_0\omega(\k\times\tilde{\uvec}) -
+        2i\rho_0(\k\cdot\bs{\Omega})\tilde{\uvec} =
+        \frac{1}{\omega\mu_0}\left(\overline{\B}\cdot\k\right)^2(\k\times\tilde{\uvec})\\
+        \rho_0\omega^2(\k\times\tilde{\uvec}) -
+        2i\omega\rho_0(\k\cdot\bs{\Omega})\tilde{\uvec} -
+        \frac{1}{\mu_0}\left(\overline{\B}\cdot\k\right)^2(\k\times\tilde{\uvec})
+        = 0
+    \end{gather*}
+    Finally we take the inner product of this entire equation with
+    $(\k\times\tilde{\uvec})/|\k\times\tilde{\uvec}|^2$. We have then, 
+    \begin{gather*}
+        \omega^2 -
+        2\omega(\k\cdot\bs{\Omega})\frac{\left<i\tilde{\uvec},
+        \k\times\tilde{\uvec}\right>}{|\k\times\tilde{\uvec}|^2} -
+        \frac{1}{\rho_0\mu_0}\left(\overline{\B}\cdot\k\right)^2
+        = 0
+    \end{gather*}
+    In order to resolve this equation, we simply need to resolve the two inner
+    products. It simplifies to the following:
+
+    And thus we have according to these equations, 
+    \begin{gather*}
+        \omega^2 -
+        2\frac{\omega}{|\k|}(\k\cdot\bs{\Omega}) -
+        \frac{1}{\rho_0\mu_0}\left(\overline{\B}\cdot\k\right)^2
+        = 0
+    \end{gather*}
+
+\end{enumerate}
+
+\end{document}
