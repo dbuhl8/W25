@@ -10,6 +10,10 @@ from torchvision.transforms import ToTensor
 
 # the idea behind this assignment is to solve the Lorenz' 96 system
 
+print("\n----------------------------------------------------------------------------\n")
+# ------------------------------------------------------------------------------------------
+print(" Part a: \n\n")
+
 # problem a is to have a model predict all of the Y variables given the X data
 # set
 # psuedo code:
@@ -172,16 +176,19 @@ def test(trajectory, model, loss_fn):
 
  
     model.eval()
-    test_loss, correct = 0, 0
+    pred_loss, correct = 0, 0
+    sum_loss = 0
     with torch.no_grad():
         for idx  in batch_list:
             x = trajectory[idx[0]:idx[1],:8]
             y = trajectory[idx[0]:idx[1],8:]
             pred = model(x)
-            test_loss += loss_fn(sum_y(pred), sum_y(y)).item()
+            pred_loss += loss_fn(pred, y).item()
+            sum_loss += loss_fn(sum_y(pred), sum_y(y)).item()
             #correct += (pred.argmax(1) == y).type(torch.float).sum().item()
-    test_loss /= num_batches
-    print("Avg Test Loss: ", test_loss)
+    pred_loss /= num_batches
+    sum_loss /= num_batches
+    print("Avg Y Pred Loss: ", pred_loss,"\n Avg Y Sum Loss: ", sum_loss)
 
 for j in range(num_ts):
     y = np.zeros([nt+1, 72])
@@ -203,7 +210,22 @@ for j in range(num_ts):
     print("  Completed Timeseries: ", j+1)
     print(" ------------- ")
 
-print("Completed Training (F = 20)")
+print("Completed Training (F = 20), testing prediction error")
+
+# generating a new test set (trajectory)
+y[0,:] = np.random.randn(72)
+for i in range(nt):
+    y[i+1,:] = rk4(lorenz96, y[i,:],dt)
+
+np.random.shuffle(y)
+test_data = torch.from_numpy(y).to(dtype=dtype, device=device)
+test(test_data,M,loss_fn)
+
+
+print("\n----------------------------------------------------------------------------\n")
+# ----------------------------------------------------------------------------
+print(" Part b: \n\n")
+
 # problem b is to solve the same problem but with F = 24 (not sure what F is)
 # psuedo code: (repeat problem a with different parameters)
 # 1. generate testing data (with F = 24)
@@ -220,15 +242,19 @@ F = 24
 for i in range(nt):
     y[i+1,:] = rk4(lorenz96, y[i, :],dt)
 
-ytest = torch.from_numpy(y).to(dtype=dtype,device=device)
 np.random.shuffle(y)
+ytest = torch.from_numpy(y).to(dtype=dtype,device=device)
 test_data = torch.from_numpy(y[num_train:,:]).to(dtype=dtype, device=device)
 training_data = torch.from_numpy(y[:num_train,:]).to(dtype=dtype, device=device)
 
 # compute error in model predictions
+print("\n Testing Model on Trajectory with F = 24\n")
 test(ytest, M, loss_fn)
+print("\n\n")
+
 
 # retrain the model 
+print(" Retraining the Model on a Trajectory with F = 24 ")
 epochs = num_epochs
 for k in range(epochs):
     train(training_data , M, loss_fn, optimizer)
@@ -236,11 +262,12 @@ for k in range(epochs):
     print("  ")
     print("Finished Epoch: ", k+1)
     print("  ")
-print("Completed Training (F = 24)")
+print("\nCompleted Training (F = 24)\n")
 
 
+print("\n----------------------------------------------------------------------------\n")
 # ------------------------------------------------------------------------------------------
-
+print(" Part c: \n\n")
 
 
 # problem c is to couple the model to the dynamics of the system, i.e.
@@ -266,7 +293,6 @@ def lorenz96M(x):
     for i in range(8):
         dx[i] = x[i-1]*(x[(i+1)%8]-x[i-2]) - x[i] + F \
                 -(h*c/b)*torch.sum(y[8*i:8*(i+1)])
-                #-(h*c/b)*y[i+64]
     return dx
 
 
@@ -283,7 +309,7 @@ for i in range(nt):
 
 # compute divergence from actual trajectory
 div_x = np.sqrt(np.sum((y[1:,:8]-x[1:,:])**2)/nt)
-print("Divergence from Actual Trajectory: ", div_x, " (Total MSE Loss)")
+print("RMS Divergence from Actual Trajectory: ", div_x, " (Normalized MSE Loss)")
 
 t = np.linspace(0,nt*dt,nt+1,True)
 # visualize the "divergence"
@@ -293,13 +319,9 @@ ax[1].set_xlabel("Time")
 ax[1].set_yscale('log')
 ax[1].set_title(r'Using the Model v Actual')
 ax[0].set_ylabel("D", rotation=0)
-fig.suptitle(r'Distance Between Trajectories')
+fig.suptitle(r'Distance between Trajectories')
 
+fig.tight_layout()
 
-
-plt.show()
-
-# attempt to stabilize the system
-
-
+plt.savefig("traj_div.pdf")
 

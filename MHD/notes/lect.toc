@@ -53,6 +53,9 @@
 \contentsline {subsection}{\numberline {15.1}Steady State MHD and Hartmann flows}{40}{subsection.15.1}%
 \contentsline {subsection}{\numberline {15.2}Controlling flow and field with current}{41}{subsection.15.2}%
 \contentsline {subsection}{\numberline {15.3}Waves}{42}{subsection.15.3}%
-\contentsline {section}{\numberline {16}Waves in MHD: Continued}{43}{section.16}%
+\contentsline {section}{\numberline {16}Waves in MHD: Shear Alfv\'en Waves}{43}{section.16}%
 \contentsline {subsection}{\numberline {16.1}Elastic Waves on a String}{43}{subsection.16.1}%
 \contentsline {subsection}{\numberline {16.2}Searching for Wavelike Solutions from the linearized equations}{45}{subsection.16.2}%
+\contentsline {section}{\numberline {17}Waves for MHD: Continued}{46}{section.17}%
+\contentsline {subsection}{\numberline {17.1}Compressible Alfv\'en Waves}{46}{subsection.17.1}%
+\contentsline {subsubsection}{\numberline {17.1.1}The Cold Limit}{48}{subsubsection.17.1.1}%
