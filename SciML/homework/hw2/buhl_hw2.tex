@@ -136,7 +136,19 @@ input.
 
     As shown in the output.txt file, using this method we are able to test the
     prediction error and find that the average error in $0.04$ for $Y$ and
-    $0.81$ for $\sum_j Y_{i,k}$. 
+    $0.81$ for $\sum_j Y_{i,k}$. We can visualize the inaccuracy between the
+    model and prediction in the same manner that Ashesh's sample code does. In
+    Figure \ref{fig:y_sum_error}, we see the disparity between the prediction
+    and actual values for $\sum_j Y_{i,j}$ for each value of $i$ at an arbitrary
+    timestep. The error seems to be relatively small (though some can be off by
+    as much as a factor of 50\%. 
+    \begin{figure}[htb]
+        \centering
+        \includegraphics[width=.8\textwidth]{y_sum_error.pdf}
+        \caption{Plot of $\sum_j Y_{i,j}$ for each value of $i$ chosen from an
+        arbitrary timestep taken from a given testing timeseries.}
+        \label{fig:y_sum_error}
+    \end{figure}
 
     \item With $F = 24$, I am able to get relatively low prediction error. As
     shown in the output.txt file, the error obtained for $Y_{i,j}$ prediction is

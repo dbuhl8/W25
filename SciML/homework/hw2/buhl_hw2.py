@@ -51,7 +51,7 @@ def rk4(func, y, dt):
 y0 = np.random.randn(72)
 z0 = y0+(1e-5)*np.random.randn(72)
 nt = 20000
-dt = .001
+dt = .005
 y = np.zeros([nt+1, 72])
 z = np.zeros([nt+1, 72])
 y[0,:] = y0
@@ -65,12 +65,13 @@ for i in range(nt):
 
 t = np.linspace(0, nt*dt, nt+1,True)
 
-fig, ax = plt.subplots(1, 2)
+fig1, ax1 = plt.subplots(1, 2)
+fig2, ax2 = plt.subplots()
 
-ax[0].plot(t, np.sqrt(np.sum((y[:,:8] - z[:,:8])**2, axis=1)))
-ax[0].set_yscale("log")
-ax[0].set_xlabel("Time")
-ax[0].set_title("Using a small perturbation")
+ax1[0].plot(t, np.sqrt(np.sum((y[:,:8] - z[:,:8])**2, axis=1)))
+ax1[0].set_yscale("log")
+ax1[0].set_xlabel("Time")
+ax1[0].set_title("Using a small perturbation")
 
 
 def sum_y(y):
@@ -218,8 +219,21 @@ for i in range(nt):
     y[i+1,:] = rk4(lorenz96, y[i,:],dt)
 
 np.random.shuffle(y)
+ytest = torch.from_numpy(y).to(dtype=dtype,device=device)
 test_data = torch.from_numpy(y).to(dtype=dtype, device=device)
 test(test_data,M,loss_fn)
+
+ts = 100
+def plot_sum_np(point):
+    return [np.sum(point[8*(i+1):8*(i+2)]) for i in range(8)]
+def plot_sum_torch(point):
+    return [torch.sum(point[8*(i+1):8*(i+2)]).cpu().detach().numpy() for i in range(8)]
+ax2.plot(plot_sum_np(y[ts,:]), 'bo', label=r'Act')
+ax2.plot(plot_sum_torch(M(ytest[ts,:8])), 'r+', label=r'Pred')
+ax2.set_title(r'Differences between Actual and Prediction')
+ax2.set_xlabel('i')
+ax2.set_ylabel(r'$\sum_jY_{i,j}$', rotation=0)
+ax2.legend()
 
 
 print("\n----------------------------------------------------------------------------\n")
@@ -314,14 +328,18 @@ print("RMS Divergence from Actual Trajectory: ", div_x, " (Normalized MSE Loss)"
 t = np.linspace(0,nt*dt,nt+1,True)
 # visualize the "divergence"
 
-ax[1].plot(t[1:], np.sqrt(np.sum((y[1:,:8]-x[1:,:])**2, axis=1)))
-ax[1].set_xlabel("Time")
-ax[1].set_yscale('log')
-ax[1].set_title(r'Using the Model v Actual')
-ax[0].set_ylabel("D", rotation=0)
-fig.suptitle(r'Distance between Trajectories')
+ax1[1].plot(t[1:], np.sqrt(np.sum((y[1:,:8]-x[1:,:])**2, axis=1)))
+ax1[1].set_xlabel("Time")
+ax1[1].set_yscale('log')
+ax1[1].set_title(r'Using the Model v Actual')
+ax1[0].set_ylabel("D", rotation=0)
+fig1.suptitle(r'Distance between Trajectories')
 
-fig.tight_layout()
+fig1.tight_layout()
 
-plt.savefig("traj_div.pdf")
+fig1.savefig("traj_div.pdf")
+fig2.savefig("y_sum_error.pdf")
+
+torch.save(M.state_dict(), "lorenz96_Y")
+# net.load_state_dict(torch.load(load_model_path + 'FNO2D_Eulerstep_MSE_Loss_Randomized_Cahn_Hilliard_modes_12_wavenum_50_lead_10.pt'))
 
