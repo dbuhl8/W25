@@ -57,6 +57,7 @@
 \newcommand{\uvec}{\bs{u}}
 \newcommand{\bvec}{\bs{B}}
 \newcommand{\nvec}{\hat{\bs{n}}}
+\newcommand{\tu}{\tilde{\uvec}}
 \newcommand{\B}{\bs{B}}
 \newcommand{\A}{\bs{A}}
 \newcommand{\jvec}{\bs{j}}
@@ -190,7 +191,34 @@
         = 0
     \end{gather*}
     In order to resolve this equation, we simply need to resolve the two inner
-    products. It simplifies to the following:
+    products. It simplifies in the following manner: 
+    \begin{align*}
+        \left<i\tilde{\uvec}, \k\times\tilde{\uvec}\right> &= \left(-\tilde{\uvec}_I -
+        i\tu_R\right)\cdot\left(\k\times\tu_R + i\k\times\tu_I\right)\\
+        &= -\tu_I\cdot\k\times\tu_R + \tu_R\cdot\k\times\tu_I\\
+        &= -\k\cdot(\tu_R\times\tu_I) + \k\cdot(\tu_I\times\tu_R)\\
+        &= 2\k\cdot(\tu_I\times\tu_R)
+    \end{align*}
+    Where the second to last line is taken from line (1) of the NRL plasma
+    formulary ($A\cdot B\times C = B\cdot C\times A$), and the last line can be
+    shown algebraicly by the anti-symmetry of the cross product. We can simplify
+    this further using some geometric arguments. Namely, we have that both
+    $\tu_I$ and $\tu_R$ are perfectly orthogonal to $\k$ and this is taken from
+    the divergence free condition on the flow. This means that $\k$ must be
+    parallel to $\tu_I\times\tu_R$ (this is further aided by the fact that
+    $\tu_I$ is perpendicular to $\tu_R$, which can be shown from the navier
+    stokes equation). We can therefore use the norms of these vectors to
+    determine the numerator. We have, 
+    \begin{align*}
+        2\k\cdot(\tu_I\times\tu_R) &= \pm 2|\k||\tu_I\times\tu_R|\\
+        &= \pm2|\k||\tu_I||\tu_R|\sin(\theta)\\
+        &= \pm2|\k||\tu_I||\tu_R|
+    \end{align*}
+    where here the sine of theta must be $1$ because (as I will show later)
+    $\tu_I$ and $\tu_R$ are orthogonal ($\theta = 1$) and therefore their cross
+    product's norm is their two norms multiplied together. 
+    
+    Next, we simplify the denominator
 
     And thus we have according to these equations, 
     \begin{gather*}
@@ -208,7 +236,7 @@
     Specifically if we consider $\sqrt{c} \ll b$ then we have that,
     \begin{gather*}
         \omega = \frac{-b \pm |b|\sqrt{1 + \epsilon}}{2} \approx
-        \frac{1}{2}\left(-b \pm |b|\left(1 + \frac{\epsilon}{2}\right +
+        \frac{1}{2}\left(-b \pm |b|\left(1 + \frac{\epsilon}{2}\right) +
         O(\epsilon^2)\right) =  \begin{cases} -b, & +\\
         \frac{|b|\epsilon}{4}, & -
         \end{cases}
