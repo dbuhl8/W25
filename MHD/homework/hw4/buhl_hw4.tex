@@ -194,12 +194,34 @@
 
     And thus we have according to these equations, 
     \begin{gather*}
-        \omega^2 -
-        2\frac{\omega}{|\k|}(\k\cdot\bs{\Omega}) -
-        \frac{1}{\rho_0\mu_0}\left(\overline{\B}\cdot\k\right)^2
+        \omega^2 \pm 2\frac{\omega}{|\k|}(\k\cdot\bs{\Omega}) 
+        - \frac{1}{\rho_0\mu_0}\left(\overline{\B}\cdot\k\right)^2
         = 0
     \end{gather*}
 
+    \item Next we are to determine the roots of this quadratic, i.e. find the
+    values of $\omega$ in a specific limit. We have of course that 
+    \begin{gather*}
+        \omega = \frac{-b \pm \sqrt{b^2 - 4c}}{2}, \quad b = \pm
+        2\frac{(\k\cdot\bs{\Omega})}{|\k|}, \quad c = -\frac{1}{\rho_0\mu_0}\left(\overline{\B}\cdot\k\right)^2
+    \end{gather*}
+    Specifically if we consider $\sqrt{c} \ll b$ then we have that,
+    \begin{gather*}
+        \omega = \frac{-b \pm |b|\sqrt{1 + \epsilon}}{2} \approx
+        \frac{1}{2}\left(-b \pm |b|\left(1 + \frac{\epsilon}{2}\right +
+        O(\epsilon^2)\right) =  \begin{cases} -b, & +\\
+        \frac{|b|\epsilon}{4}, & -
+        \end{cases}
+    \end{gather*}
+    where we have specifically that $0<\epsilon \ll 1$ and it is given by the
+    following, 
+    \begin{gather*}
+        \epsilon = -\frac{4c}{b^2} =
+        \frac{4\left(\overline{\B}\cdot\k\right)^2/(\mu_0\rho_0)}{4(\k\cdot\bs{\Omega})^2/|\k|^2}\\
+        \omega \approx  \begin{cases} \mp2(\k\cdot\bs{\Omega})/|\k|, & +\\
+        \frac{1}{2}\frac{\left(\overline{\B}\cdot\k\right)^2/(\mu_0\rho_0)}{(\k\cdot\bs{\Omega})/|\k|}, & -
+        \end{cases}
+    \end{gather*}
 \end{enumerate}
 
 \end{document}

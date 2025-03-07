@@ -85,6 +85,7 @@
 \newcommand{\pptf}[1]{\frac{\partial #1}{\partial t_f}}
 \newcommand{\ppz}[1]{\frac{\partial #1}{\partial z}}
 \newcommand{\ddz}[1]{\frac{d #1}{d z}}
+\newcommand{\dd}[2]{\frac{d #1}{d #2}}
 \newcommand{\ppzetas}[1]{\frac{\partial^2 #1}{\partial \zeta^2}}
 \newcommand{\ppzs}[1]{\frac{\partial #1}{\partial z_s}}
 \newcommand{\ppzf}[1]{\frac{\partial #1}{\partial z_f}}
@@ -1930,4 +1931,140 @@ aptly described as an ``Magnetoacoustic Wave in the limit of $c_s \to 0$''. More
 general examples of Magnetoacoustic waves is given by the Eric Priest book
 ``Solar MHD'' and Chandrasehkar's book ``Hydrodynamic and Magnetohydrodynamic
 stability''. 
+
+
+\section{Instabilities in MHD}
+
+\subsection{Linear Instabilities}
+The first consideration when it comes to instabilities in fluid mechanics is
+typically the notion of a linear instability caused by a perturbation. We could
+imagine a parabolic energy slope. If the slope is an parabola which opens up the
+extreme value is a minumum and perturbations away from that minimum will
+oscillate around that minimum by restoring force. That is, the ampltitude of the
+pertubation oscillates but does not grow in time. If the parabola downs down, a
+perturbation away from that maximum will continue to fall down the parabola,
+i.e. tending towards an energetic minimum, and the amplitude of oscillation
+grows exponentially in time, hence instability. 
+
+There is another case called non-linear instability whereby by a finite
+amplitude pertubation we might find a region of different stability which is
+inaccessible by infinitesimal perturbations. These landscapes tend to originate
+from nonlinearity in the governing equations. 
+
+\subsection{Common Hydrodynamic Instabilities}
+The Rayleigh-Taylor instability is a common instability whereby two fliud bodies
+separated by an interface whereby the compositional or thermal gradient is
+oriented as to be energetically unstable. In this regime, we find that some sort
+of convection must occur in order to rearrange the gradient to be in a stable
+configuration. As an example, let us consider a wavelike perturbation to the
+interface between two fluids. In the case where the higher density fluid is on
+the bottom, the interface perturbation relaxes back to equilibrium. In the case
+where the higher density fluid is on the top, the perturbation to the interface
+leads to convective plumes and an interchange and perhaps destruction of the
+interface completely occurs. 
+
+When a magnetic field is present and the fluid is highly conducting, we find
+that the presence of a unidirectional magnetic field might stabilize the
+Rayleigh-Taylor instability, whereby magnetic pressure and tension will suppress
+the perturbation of the fluid due to the stretching and movement of the field
+lines. There are two different modes of the instability which depend on the
+alignment of the magnetic field. Let us say that the field is pointing in the
+x-direction. We have then that the instability modes with $k_x = 0$ are called
+interchange modes, whereas the modes with $k_x \ne  0$ are called undular modes. We
+think of the undular modes being acted on by magnetic tension primarily and the
+interchange modes being acted upon by the magnetic pressure primarily. By
+performing a linear stability analysis we find the following dispersion
+relation, 
+\begin{gather*}
+    \omega^2 = -g\bs{k}\left(\frac{\rho_{top} - \rho_{bot}}{\rho_{top} +
+    \rho_{bot}}\right) + \frac{2B_0^2k_x^2}{\mu_0(\rho_{top}+\rho_{bot})}
+\end{gather*}
+Note that this dispersion relation may or may not yield complex values for the
+angular frequency $\omega$ depending on the relative weight of the convective
+instability compared the stabilizing effect of the magnetic field as illustrated
+by the dispersion relation. 
+
+Another popular instability is the Kelvin-Helmholtz instability, typically the result of a shear flow wherein the
+interface between the velocity profiles induces small eddies which grow in time
+as a result of a linear instability. 
+
+\subsection{Magnetic Buoyancy}
+The Parker 1955 paper was a paer that investigated the notion of magnetic
+buoyancy whereby flux tubes containing internal properties isolated and
+distinct from the
+external properties. What Parker posited was that ther much be some magnetic
+pressure which equilibriated the flux tube so that the total pressure is
+the same as outside the flux tube. Parker found that the adjustment must
+happen by the mechanism of a magnetoacoustic wave which is often the fastest
+propagating sound/acoustic wave in the presence of a magnetic field. 
+
+We can show that there must be a formal instability here and let us investigate
+that. Let us take some quantities which vary with the height in the system, i.e.
+$\rho = \rho(z)$, $\B = \B(z)$. Let us take the density to increase as the
+height decreases, and the same for the magnetic field intensity. Let us take
+that at some level in the domain we have the quantities $\rho_0, p_0, T_0, B_0$.
+We now consider a blob which is lifted from that level without being able to
+equilibrate. We have the properties of the blob are now, 
+\begin{gather*}
+    \rho_0 \to \rho_0 + \delta \rho\\ p_0\to p_0 + \delta p\\ T_0\to T_0 +
+    \delta T\\ B_0\to B_0 + \delta B
+\end{gather*}
+Inside the blob, we do have to conserve mass. In order to do so we notice an
+adjustment to the volume of the blob. 
+\begin{gather*}
+    \rho_0V_0 = (\rho_0+\delta\rho)(V_0+\delta V)\\
+    (\rho_0+\delta\rho)\delta V = -\delta\rho V_0
+\end{gather*}
+There is also an adjustment to the flux and because flux must be conserved
+through the tube, 
+\begin{gather*}
+    \rho_0V_0 = (\rho_0+\delta\rho)(V_0+\delta V)\\
+    (\rho_0+\delta\rho)\delta V = -\delta\rho V_0
+\end{gather*}
+As a consequence we must have, 
+\begin{gather*}
+    \frac{d\rho}{\rho_0} = \frac{dB}{B_0}\\
+    \frac{\delta p}{p_0} = \gamma \frac{\delta \rho}{\rho_0}\\
+    (p_0+dp) + \frac{(B_0 + d B)^2}{2\mu_0} = (p+\delta p_0) + \frac{(B_0 + \delta
+    B_0)^2}{2\mu+0}\\
+    dp + \frac{B_0dB}{\mu_0} = \delta p_0 + \frac{B_0\delta B_0}{\mu_0}\\
+    \delta\rho = \frac{\rho_0}{\gamma p_0}\delta p\\
+    = \frac{\rho_0}{\gamma p_0}\left(dp + \frac{B_0dB}{\mu_0} - \delta p_0 +
+    \frac{B_0\delta B_0}{\mu_0}\right)\\
+    = \frac{\rho_0}{\gamma p_0}\left(dp + \frac{B_0dB}{\mu_0} - \delta p_0 +
+    \frac{B_0^2\delta \rho_0}{\mu_0\rho_0}\right)\\
+    \delta\rho\left(1 + \frac{B_0^2}{\mu_0\gamma p_0}\right) =
+    \frac{\rho_0}{\gamma p_0}\left(dp + \frac{B_0dB}{\mu_0}\right)\\
+    \delta\rho = \frac{\frac{\rho_0}{\gamma p_0}\left(dp +
+    \frac{B_0dB}{\mu_0}\right)}{\left(1 + \frac{B_0^2}{\mu_0\gamma
+    p_0}\right)}
+\end{gather*}
+Now that we have solved for $\delta\rho$ we must now satisfy the following
+equality:
+\begin{gather*}
+    \delta \rho < d\rho\\
+    \frac{\rho_0\left(dp +
+    \frac{B_0dB}{\mu_0}\right)}{\left(\gamma p_0 + \frac{B_0^2}{\mu_0}\right)} < d\rho
+\end{gather*}
+This equation must be satisfied and it is perhaps more intuitive to divide by
+$dz$ in which case all of the terms becomes vertical gradients of the background
+profiles. After some simplifications we can obtain, 
+\begin{gather*}
+    \frac{d\rho}{dz} > \frac{-\rho_0 g}{\gamma \frac{p_0}{\rho_0} +
+    \frac{B_0^2}{\rho_0\mu_0}} = \frac{-\rho_0 g}{c_s^2+v_A^2}
+\end{gather*}
+Alternatively we can consider the following inequality which is equivalent,
+\begin{gather*}
+    \left(c_s^2 + v_A^2 - 1\right) \frac{d\rho_0}{dz} >
+    \frac{B_0}{\mu_0}\dd{B_0}{z}\\
+    -v_A^2\left[\ddz{}\left(\ln(B_0)\right) -
+    \ddz{}\left(\ln(\rho_0)\right)\right] > \ddz{}\left(\ln(p_0)\right) -
+    \gamma\ddz{}\left(\ln(\rho_0)\right)\\
+    -v_A^2\ddz{}\left(\ln\left(\frac{B_0}{\rho_0}\right)\right)>
+    \ddz{}\left(\ln\left(\frac{p_0}{\rho^{\gamma}}\right)\right)
+\end{gather*}
+
+
+\begin{gather*}
+\end{gather*}
 \end{document}

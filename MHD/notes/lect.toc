@@ -8,25 +8,25 @@
 \contentsline {subsection}{\numberline {4.2}Introducing Maxwell's Equations}{8}{subsection.4.2}%
 \contentsline {section}{\numberline {5}Derivation of Maxwell's Equations: Continued}{10}{section.5}%
 \contentsline {subsection}{\numberline {5.1}Faraday's Law of Induction}{10}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Ampere's Law}{10}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Units of Electrodynamics (c.f. Priest p436)}{11}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.2}Ampere's Law}{11}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Units of Electrodynamics (c.f. Priest p436)}{12}{subsection.5.3}%
 \contentsline {subsection}{\numberline {5.4}From Maxwell's Equation to MHD}{12}{subsection.5.4}%
-\contentsline {section}{\numberline {6}Boundary Conditions and Kinematics for MHD}{14}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Validity of MHD equations and assumptions}{14}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Consequences of Gauss's law for Magnetism}{15}{subsection.6.2}%
+\contentsline {section}{\numberline {6}Boundary Conditions and Kinematics for MHD}{15}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Validity of MHD equations and assumptions}{15}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Consequences of Gauss's law for Magnetism}{16}{subsection.6.2}%
 \contentsline {subsection}{\numberline {6.3}Common Boundary Conditions for the MHD equations}{16}{subsection.6.3}%
 \contentsline {subsection}{\numberline {6.4}Kinematics}{18}{subsection.6.4}%
-\contentsline {section}{\numberline {7}Kinematics for MHD: Continued}{18}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Magnetic Fieldlines}{18}{subsection.7.1}%
+\contentsline {section}{\numberline {7}Kinematics for MHD: Continued}{19}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Magnetic Fieldlines}{19}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}Magnetic Flux}{19}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Magnetic Flux Tubes}{19}{subsection.7.3}%
-\contentsline {subsection}{\numberline {7.4}Nondimensionalization}{19}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.3}Magnetic Flux Tubes}{20}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Nondimensionalization}{20}{subsection.7.4}%
 \contentsline {section}{\numberline {8}Kinematics for MHD: Continued}{21}{section.8}%
 \contentsline {subsection}{\numberline {8.1}Charged Plate example}{21}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Perfectly Conducting Limit}{22}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.2}Perfectly Conducting Limit}{23}{subsection.8.2}%
 \contentsline {section}{\numberline {9}Kinematics for MHD: Continued}{24}{section.9}%
 \contentsline {subsection}{\numberline {9.1}Additional Vorticity Analogies}{24}{subsection.9.1}%
-\contentsline {subsection}{\numberline {9.2}Helicity}{24}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.2}Helicity}{25}{subsection.9.2}%
 \contentsline {subsection}{\numberline {9.3}Additional Theorems for MHD}{25}{subsection.9.3}%
 \contentsline {subsection}{\numberline {9.4}Cauchy Solutions}{26}{subsection.9.4}%
 \contentsline {section}{\numberline {10}Kinematics for MHD: Continued}{28}{section.10}%
@@ -59,3 +59,7 @@
 \contentsline {section}{\numberline {17}Waves for MHD: Continued}{46}{section.17}%
 \contentsline {subsection}{\numberline {17.1}Compressible Alfv\'en Waves}{46}{subsection.17.1}%
 \contentsline {subsubsection}{\numberline {17.1.1}The Cold Limit}{48}{subsubsection.17.1.1}%
+\contentsline {section}{\numberline {18}Instabilities in MHD}{49}{section.18}%
+\contentsline {subsection}{\numberline {18.1}Linear Instabilities}{49}{subsection.18.1}%
+\contentsline {subsection}{\numberline {18.2}Common Hydrodynamic Instabilities}{49}{subsection.18.2}%
+\contentsline {subsection}{\numberline {18.3}Magnetic Buoyancy}{50}{subsection.18.3}%
