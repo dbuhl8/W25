@@ -58,8 +58,12 @@ cvar = 0.2
 # for initial testing this will be keep as a 1d array to tst MFDataset
 vol_frac_30 = np.zeros([sim_num_files[0],num_samples])
 horiz_urms_30 = np.zeros_like(vol_frac_30)
+wt_in_turb_30 = np.zeros_like(vol_frac_30)
+urms_in_turb_30 = np.zeros_like(vol_frac_30)
 vol_frac_100 = np.zeros([sim_num_files[1],num_samples])
 horiz_urms_100 = np.zeros_like(vol_frac_100)
+wt_in_turb_100 = np.zeros_like(vol_frac_100)
+urms_in_turb_100 = np.zeros_like(vol_frac_100)
 
 # can change these definitions to have simple 2d structure and then append
 eInvRo_30 = np.zeros([num_files[0], num_samples])
@@ -94,6 +98,8 @@ for i, fn in enumerate(simdat_files_30):
     #these arrays are indexed by [t,z,y,x]
     ux = np.array(cdf_file.variables["ux"][:])
     uy = np.array(cdf_file.variables["uy"][:])
+    uz = np.array(cdf_file.variables["uz"][:])
+    temp = np.array(cdf_file.variables["Temp"][:])
     wz =  db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
 
     #compute volume fraction where wz >= .1 wzmax
@@ -103,9 +109,18 @@ for i, fn in enumerate(simdat_files_30):
             # adds an extra column of zeros to the arrays
             horiz_urms_30 = np.hstack((horiz_urms_30,np.zeros((sim_num_files[0],1))))
             vol_frac_30 = np.hstack((vol_frac_30,np.zeros((sim_num_files[0],1))))
+            wt_in_turb_30 = np.hstack((wt_in_turb_30,np.zeros((sim_num_files[0],1))))
+            urms_in_turb_30 = np.hstack((urms_in_turb_30,np.zeros((sim_num_files[0],1))))
+        idx = np.where(Fr[0]*np.abs(wz[j,:,:,:]+invRo_30[i]) <= 1)
         horiz_urms_30[i,j] = np.sqrt(np.sum(ux[j,:,:,:]**2 + uy[j,:,:,:]**2))
-        vol_frac_30[i,j] = len(np.where(Fr[0]*np.abs(wz[j,:,:,:]+invRo_30[i])\
-                            <= 1)[0])/(Nz*Nx*Ny)
+        vol_frac_30[i,j] = len(idx[0])/(Nz*Nx*Ny)
+        # compute rms values of wt and urms in turbulent regions
+        wt_in_turb_30[i,j] = np.sqrt(np.sum(\
+            (uz[j,idx[0],idx[1],idx[2]]*temp[j,idx[0],idx[1],idx[2]])**2)/len(idx[0]))
+        urms_in_turb_30[i,j] = np.sqrt(np.sum(\
+            ux[j,idx[0],idx[1],idx[2]]**2 +
+            uy[j,idx[0],idx[1],idx[2]]**2 +
+            uz[j,idx[0],idx[1],idx[2]]**2)/len(idx[0]))
         print("Finished with file: ", fn, ".")
     cdf_file.close()
 
@@ -130,6 +145,8 @@ for i, fn in enumerate(simdat_files_100):
     #these arrays are indexed by [t,z,y,x]
     ux = np.array(cdf_file.variables["ux"][:])
     uy = np.array(cdf_file.variables["uy"][:])
+    uz = np.array(cdf_file.variables["uz"][:])
+    temp = np.array(cdf_file.variables["Temp"][:])
     wz =  db.FD6X(uy, Nx, dx) - db.FD6Y(ux, Ny, dy)
 
     #compute volume fraction where wz >= .1 wzmax
@@ -138,9 +155,18 @@ for i, fn in enumerate(simdat_files_100):
             # adds an extra column of zeros to the arrays
             horiz_urms_100 = np.hstack((horiz_urms_100,np.zeros((sim_num_files[1],1))))
             vol_frac_100 = np.hstack((vol_frac_100,np.zeros((sim_num_files[1],1))))
+            wt_in_turb_100 = np.hstack((wt_in_turb_100,np.zeros((sim_num_files[1],1))))
+            urms_in_turb_100 = np.hstack((urms_in_turb_100,np.zeros((sim_num_files[1],1))))
+        idx = np.where(Fr[1]*np.abs(wz[j,:,:,:]+invRo_100[i]) <= 1)
         horiz_urms_100[i,j] = np.sqrt(np.sum(ux[j,:,:,:]**2 + uy[j,:,:,:]**2))
-        vol_frac_100[i,j] = len(np.where(Fr[1]*np.abs(wz[j,:,:,:]+invRo_100[i])\
-                            <= 1)[0])/(Nz*Nx*Ny)
+        vol_frac_100[i,j] = len(idx[0])/(Nz*Nx*Ny)
+        # compute rms values of wt and urms in turbulent regions
+        wt_in_turb_100[i,j] = np.sqrt(np.sum(\
+            (uz[j,idx[0],idx[1],idx[2]]*temp[j,idx[0],idx[1],idx[2]])**2)/len(idx[0]))
+        urms_in_turb_100[i,j] = np.sqrt(np.sum(\
+            ux[j,idx[0],idx[1],idx[2]]**2 +
+            uy[j,idx[0],idx[1],idx[2]]**2 +
+            uz[j,idx[0],idx[1],idx[2]]**2)/len(idx[0]))
     print("Finished with file: ", fn, ".")
     cdf_file.close()
 
@@ -232,5 +258,8 @@ np.savez("vort_frac", eInvRo_30=eInvRo_30, avg_wT_30=avg_wT_30,\
     invRo_30=invRo_30, horiz_urms_30=horiz_urms_30, vol_frac_30=vol_frac_30,\
     eInvRo_100=eInvRo_100, avg_wT_100=avg_wT_100,\
     eInvRo_err_100=eInvRo_err_100, avg_wT_err_100=avg_wT_err_100,\
-    invRo_100=invRo_100, horiz_urms_100=horiz_urms_100, vol_frac_100=vol_frac_100)
+    invRo_100=invRo_100, horiz_urms_100=horiz_urms_100,
+    vol_frac_100=vol_frac_100,
+    wt_in_turb_30=wt_in_turb_30,wt_in_turb_100=wt_in_turb_100,
+    urms_in_turb_30=urms_in_turb_30, urms_in_turb_100=urms_in_turb_100)
 
