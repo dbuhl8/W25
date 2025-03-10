@@ -4,6 +4,7 @@ import matplotlib as mpl
 import matplotlib.cm as cm
 import matplotlib.colors as colors
 import matplotlib.animation as animation
+from matplotlib.legend_handler import HandlerTuple
 from matplotlib.widgets import Slider
 from netCDF4 import Dataset
 
@@ -88,9 +89,15 @@ invRo_100=npzfile["invRo_100"]
 horiz_urms_100=npzfile["horiz_urms_100"]/np.sqrt(Nz*Ny*Nx)
 vol_frac_100=npzfile["vol_frac_100"]
 
+wt_in_turb_100=npzfile["wt_in_turb_100"]
+wt_in_turb_30=npzfile["wt_in_turb_30"]
+urms_in_turb_100=npzfile["urms_in_turb_100"]
+urms_in_turb_30=npzfile["urms_in_turb_30"]
+
+
 wtMax = [np.max(avg_wT_30), np.max(avg_wT_100)]
 
-fig, ax = plt.subplots(1, 2,figsize=(16,9))
+fig, ax = plt.subplots(1, 3,figsize=(16,9))
 # rearrange ax arary to be indexed 1:4
 #ax = [axitem for axitem in [axset for axset in ax]] 
 dc = cvar/num_files[0]
@@ -189,8 +196,47 @@ for i in range(sim_num_files[1]):
 #ax[1].set_title(r'$Fr = 0.1$', **font)
 ax[1].legend(artists,labels_100,title=r'$S$',loc='upper left',fontsize=fs-dfs)
 
+artists = []
+# wt_rms v u_rms 
+for i in range(sim_num_files[0]):
+    idx_list = np.where(horiz_urms_30[i,:] > 0)
+    ni = len(idx_list[0])
+    clist = ccol(col[i],dc,ni)
+    for j, idx in enumerate(idx_list[0]):
+        item = ax[2].scatter(invRo_30[i]/urms_in_turb_30[i,idx],
+        wt_in_turb_30[i,idx],s = ms,c = cm.nipy_spectral_r(clist[j]),
+        marker='o')
+        if j==int(ni/2):
+            artists.append(item)
+
+fl2 = ax[2].legend(artists,labels_30,title=r'$Fr = 0.18$',loc='lower left',fontsize=fs-dfs)
+
+artists = []
+
+for i in range(sim_num_files[1]):
+    idx_list = np.where(horiz_urms_100[i,:] > 0)
+    ni = len(idx_list[0])
+    clist = ccol(col[cor_idx[i]],dc,ni)
+    for j, idx in enumerate(idx_list[0]):
+        item = ax[2].scatter(invRo_100[i]/urms_in_turb_100[i,idx],
+        wt_in_turb_100[i,idx],s = ms,c = cm.nipy_spectral_r(clist[j]),
+        marker='^')
+        if j==int(ni/2):
+            artists.append(item)
+
+
+ax[2].set_xlabel(r'$Ro_e^{-1}$', **font)
+ax[2].tick_params(axis='both', labelsize=fs-dfs)
+ax[2].set_yscale('log')
+ax[2].set_xscale('log')
+ax[2].sharey(ax[0])
+ax[2].set_title(r'$wT_{turb}$')
+ax[2].legend(artists,labels_100,title=r'$Fr = 0.1$',loc='lower right',fontsize=fs-dfs)
+
+
 ax[0].add_artist(fl0)
 ax[1].add_artist(fl1)
+ax[2].add_artist(fl2)
 #for i in range(sim_num_files[0]):
     #artists.append(ax[1,0].scatter(invRo_30[i]/avg_uh_30[i],
     #1-vol_frac_30[i], s=ms,
